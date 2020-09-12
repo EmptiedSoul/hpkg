@@ -1,0 +1,90 @@
+#!/bin/sh  
+
+##    This file is part of hpkg.
+
+##    hpkg is free software: you can redistribute it and/or modify
+##    it under the terms of the GNU General Public License as published by
+##    the Free Software Foundation, either version 3 of the License, or
+##    (at your option) any later version.
+
+##    hpkg is distributed in the hope that it will be useful,
+##    but WITHOUT ANY WARRANTY; without even the implied warranty of
+##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##    GNU General Public License for more details.
+
+##    You should have received a copy of the GNU General Public License
+##    along with hpkg.  If not, see <https://www.gnu.org/licenses/>.
+
+##    CONTRIBUTING RULES
+##    1. Check is your code valid
+##    2. Check your code with ShellCheck
+##    3. Beautify your code
+##    4. Generate diff
+##    5. Mail your patch to maintainer
+
+exec 3>/dev/null
+
+__cderror(){
+	echo "cd error"
+	exit 1
+}
+
+let "REALPASS = $2 + 11111111"
+
+if [ -z "$1" ]; then
+	__cderror
+fi
+
+cd "$1" 2>&3 || __cderror
+
+if ! [ -e "Buildfile" ]; then
+	echo "NO Buildfile"
+	exit 1
+fi
+
+if grep -q "withpasswd" Buildfile ; then
+	CRYPT="passwd"
+elif grep -q "withkey" Buildfile ; then
+	CRYPT="key"
+else
+	__cderror
+fi
+
+PACKAGE=$(grep "Package: " Buildfile | sed 's/Package: //')
+ARCH=$(grep "Type: " Buildfile | sed 's/Type: //')
+ACCESS=$(grep "Access: " Buildfile | sed 's/Access: //')
+VER=$(grep "Version: " Buildfile | sed 's/Version: //')
+#CONFL=$(grep "Conflicts: " Buildfile | sed 's/Conflicts: //')
+#DEPS=$(grep "Depends: " Buildfile | sed 's/Depends: //')
+WORKNAME="HPKG_PAYLOAD"
+
+echo "$ARCH" > .ARCH_TYPE
+echo "$ACCESS" > .ACCESS 
+echo "$PACKAGE" > .PKGNAME
+
+if ! [ -z "$VER" ]; then
+
+echo "$VER" > .VERSION
+#echo "$CONFL" > .CONFLICTS
+#echo "$DEPS" > .DEPENDS
+cd "PAYLOAD" 2>&3 || __cderror
+tar cvf "../PAYLOAD.tar" . || __cderror
+cd ..
+rm -rf "PAYLOAD"
+
+fi
+
+cd ..
+cp -r "$1" "$WORKNAME"
+tar cvf "$WORKNAME".tar "$WORKNAME"
+tar -f "$WORKNAME".tar --delete "$WORKNAME/Buildfile"
+xz -9 "$WORKNAME".tar
+if [ "$CRYPT" == "passwd" ] ; then
+	gpg --batch --yes --passphrase $REALPASS -c "$WORKNAME".tar.xz
+elif [ "$CRYPT" == "key" ] ; then
+	gpg -es "$WORKNAME".tar.xz
+fi 
+rm -rf "$WORKNAME" "$WORKNAME".tar.xz
+mv "$WORKNAME".tar.xz.gpg "$1".hard
+
+# To be continued...
