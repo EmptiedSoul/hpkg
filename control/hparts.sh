@@ -1,11 +1,12 @@
 #!/bin/bash
+exec 3>errors+supressed.log
 
 __status(){
-	echo -e "PART\t\t\t\t\tSTATUS\n"
+	echo -e "PART\t\t\t\t\t\tSTATUS\n"
 	for line in $(cat /var/hparts/STATUS)
 	do
-		MODULE="$(cut -f 1 -d ^ <<< $line)"
-		STATUS="$(cut -f 2 -d ^ <<< $line)"
+		MODULE="$(cut -f 1 -d \; <<< $line)"
+		STATUS="$(cut -f 2 -d \; <<< $line)"
 		echo -en "$MODULE\t\t\t\t\t"
 		if [ "$STATUS" == "attached" ]; then
 			echo -e "$LOADEDCOLOR$STATUS$CLR"
@@ -16,10 +17,18 @@ __status(){
 } 	
 
 __sanity(){
-	if ! bash -n  
+	for sh in $(realpath /usr/src/hardman/*.sh)
+	do
+		echo -n $sh
+	if ! bash -n $sh 2>&3
 	then
-		true
+		echo -e "$UNLOADEDCOLOR\t\t\tfailed$CLR"
+		return 1	
+	else
+		echo -e "$LOADEDCOLOR\t\t\tok$CLR"
 	fi
+
+	done
 }
 
 __makepatch(){
@@ -28,18 +37,19 @@ __makepatch(){
 	INVOKES="$(grep "Invokes function: " $1 | sed 's/Invokes function: //')"
 	INVOKEDBY="$(grep "Invoked by: " $1 | sed 's/Invoked by: //' )"
 	SRC="$(grep "Function: " $1 | sed 's/Function: //')"
-
 	PREVDIR=$(pwd)
 	WRKDIR="$(mktemp -d)"
 	cp /usr/src/hardman/* "$WRKDIR"
 	cp -r . "$WRKDIR"
-	cd $WRKDIR
+	cd "$WRKDIR" || exit 1
 	rm "$1"
-	echo 'source "/usr/src/hardman/$SRC"' >> INCLUDE.sh
-	ls
+	echo "source \"/usr/src/hardman/$SRC\"" >> include.sh
+	sed -i "/esac/i $INVOKEDBY)" hardman.sh
+	sed -i "/esac/i $INVOKES" hardman.sh
+	sed -i "/esac/i ;;" hardman.sh
 	cd "$PREVDIR"
-	diff -ENwbur /usr/src/hardman "$WRKDIR" > $MODNAME.includepatch
-
+	diff -ENwbur /usr/src/hardman "$WRKDIR" > "$MODDIR"/$MODNAME.hpart
+	rm -rf "$WRKDIR"
 }
 
 __initialize(){
@@ -49,8 +59,46 @@ __initialize(){
 	MODDIR="/var/hparts/modules"
 	STATUS="/var/hparts/STATUS"
 }
-
-
+__setattached(){
+	sed -i -e "s/$1;detached/$1;attached/" -e "" "$STATUS"
+}
+__setdetached(){
+	sed -i -e "s/$1;attached/$1;detached/" "$STATUS"
+}
+__exist(){
+	grep -q "^$1;" "$STATUS"
+	return $?
+}
+__attach(){
+	cd /usr/src/hardman
+	if patch --dry-run < /var/hparts/modules/"$1".hpart ; then
+		patch < /var/hparts/modules/"$1".hpart
+		if __sanity ; then
+			__exist "$1" && __setattached "$1" && return 0
+			echo "$1;attached" >> "$STATUS"
+		else
+			patch -R < /var/hparts/modules/"$1".hpart
+			exit 1
+		fi
+	else
+		exit 1
+	fi
+}
+__detach(){
+	cd /usr/src/hardman
+	if patch -R --dry-run < /var/hparts/modules/"$1".hpart ; then
+		patch -R < /var/hparts/modules/"$1".hpart
+		if __sanity ; then
+			__exist "$1" && __setdetached "$1" && return 0
+			echo "$1;detached" >> "$STATUS"
+		else
+			patch < /var/hparts/modules/"$1".hpart
+			exit 1
+		fi
+	else
+		exit 1
+	fi
+}
 
 
 
@@ -63,10 +111,10 @@ __initialize
 
 case "$1" in
 	attach)
-		mess
+		__attach "$2"
 		;;
 	detach)
-		mess
+		__detach "$2"
 		;;
 	status)
 		__status 
@@ -76,5 +124,10 @@ case "$1" in
 		;;
 	mkpatch)
 		__makepatch "$2"
+		;;
+	*)
+		__status
+		echo -e "\nSanity check:\n"
+		__sanity
 		;;
 esac
