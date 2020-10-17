@@ -1,71 +1,177 @@
 #!/bin/bash  
-
 ##    This file is part of hpkg.
-
 ##    hpkg is free software: you can redistribute it and/or modify
 ##    it under the terms of the GNU General Public License as published by
 ##    the Free Software Foundation, either version 3 of the License, or
 ##    (at your option) any later version.
-
 ##    hpkg is distributed in the hope that it will be useful,
 ##    but WITHOUT ANY WARRANTY; without even the implied warranty of
 ##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ##    GNU General Public License for more details.
-
 ##    You should have received a copy of the GNU General Public License
 ##    along with hpkg.  If not, see <https://www.gnu.org/licenses/>.
 
 exec 3>/dev/null
 
-__cderror(){
-	echo "cd error"
+MAINTAINER="$(whoami)@$(hostname)"
+source /etc/hpkg/make.conf
+
+CONFIGUREOPTS="--prefix=/usr --sysconfdir=/etc"
+DEST="$(pwd)/package/PAYLOAD"
+RESDIR="$(pwd)/package"
+
+[ "$DEBUG" == "YES" ] || exec 1>/dev/null
+
+__bigPointer(){
+
+	echo -e "\033[34;1m==>\033[0m $1" 1>&2
+
+}
+
+nothing(){
+	true
+}
+
+__getsrc(){
+	nothing
+}
+__unpacksrc(){
+	nothing
+}
+__preparesrc(){
+	nothing
+}
+__compilesrc(){
+	nothing
+}
+__installsrc(){
+	false 
+}
+
+__error(){
+	
+	echo -e "\a\033[41;1mError:\033[0m \033[32;1m$1:\033[0m\033[34;1m $2 \033[0m" 1>&2
+	
+	if [ "$TRACE" == "YES" ]; then
+		if ! [ -z "$(cat errors+supressed.log)" ] ; then
+			echo "Trace:" 1>&2
+			cat errors+supressed.log | tail 1>&2
+		fi
+	
+	fi
+	
 	exit 1
 }
-__build(){
-if [ -z "$1" ]; then
-	__cderror
-fi
+__pack(){
 
-cd "$1" 2>&3 || __cderror
+cp -r "$1" "$WORKNAME"
 
-if ! [ -e "Buildfile" ]; then
-	echo "NO Buildfile"
-	exit 1
-fi
+cd "$WORKNAME"
 
-if grep -q "withpasswd" Buildfile ; then
-	CRYPT="passwd"
-elif grep -q "withkey" Buildfile ; then
-	CRYPT="key"
-else
-	__cderror
-fi
+cp $BUILDFILE .
 
-PACKAGE=$(grep "Package: " Buildfile | sed 's/Package: //')
-ARCH=$(grep "Type: " Buildfile | sed 's/Type: //')
-ACCESS=$(grep "Access: " Buildfile | sed 's/Access: //')
-VER=$(grep "Version: " Buildfile | sed 's/Version: //')
-WORKNAME="HPKG_PAYLOAD"
 echo "$ARCH" > .ARCH_TYPE
 echo "$ACCESS" > .ACCESS 
 echo "$PACKAGE" > .PKGNAME
+echo "$MAINTAINER" > .MAINTAINER
+
+touch .DEPENDS .CONFLICTS
+for dependency in "${DEPENDS[@]}" ; do
+	echo "$dependency" >> .DEPENDS
+done
+for conflict in "${CONFLICTS[@]}" ; do
+	echo "$conflict" >> .CONFLICTS
+done
+
 if ! [ -z "$VER" ]; then
-echo "$VER" > .VERSION
-cd "PAYLOAD" 2>&3 || __cderror
-tar cvf "../PAYLOAD.tar" . || __cderror
-cd ..
-rm -rf "PAYLOAD"
+	echo "$VER" > .VERSION
+	cd "PAYLOAD" 2>&3 || __error "pack" "cannot cd into PAYLOAD"
+	tar cvf "../PAYLOAD.tar" . || __error "pack" "cannot tar PAYLOAD"
+	cd ..
+	rm -rf "PAYLOAD"
 fi
+
 cd ..
-cp -r "$1" "$WORKNAME"
 tar cvf "$WORKNAME".tar "$WORKNAME"
-tar -f "$WORKNAME".tar --delete "$WORKNAME/Buildfile"
-xz -9 "$WORKNAME".tar
+xz -9e "$WORKNAME".tar -T $(nproc)
+
 if [ "$CRYPT" == "passwd" ] ; then
-	gpg --batch --yes --passphrase $REALPASS -c "$WORKNAME".tar.xz
+	gpg -c "$WORKNAME".tar.xz
 elif [ "$CRYPT" == "key" ] ; then
-	gpg -es "$WORKNAME".tar.xz
+ 	gpg -s "$WORKNAME".tar.xz
 fi 
+
 rm -rf "$WORKNAME" "$WORKNAME".tar.xz
-mv "$WORKNAME".tar.xz.gpg "$1".hard
+
+if [ -z "$VER" ] ; then
+	mv "$WORKNAME".tar.xz.gpg "$PACKAGE".hard
+else
+	mv "$WORKNAME".tar.xz.gpg "$PACKAGE"_"$VER".hard
+fi
+
 }
+__build(){
+
+[ -e "Buildfile" ] || __error "build" "no Buildfile"
+
+__bigPointer "Reading Buildfile"
+
+source "./Buildfile" || __error "build" "cannot source Buildfile"
+
+BUILDFILE="$(realpath ./Buildfile)"
+
+WORKNAME="HPKG_PAYLOAD"
+
+[ -z "$ARCH" ] && __error "Buildfile" "invalid syntax"
+[ -z "$ACCESS" ] && __error "Buildfile" "invalid syntax"
+[ -z "$PACKAGE" ] && __error "Buildfile" "invalid syntax"
+
+mkdir -p "$DEST"
+
+__bigPointer "Fetching source..."
+
+__getsrc || __error "get src" "cannot get sources"
+__bigPointer "Unpacking source..."
+__unpacksrc || __error "unpack src" "cannot unpack sources"
+
+cd $SRCDIR || __error "cd" "cannot cd to source dir"
+
+__bigPointer "Preparing source..."
+
+__preparesrc || __error "prepare src" "cannot prepare sources"
+__bigPointer "Compiling source..."
+__compilesrc || __error "compile src" "failed compile"
+__bigPointer "Installing image..."
+__installsrc || __error "install src" "failed install"
+
+cd .. || __error "cd" "cannot cd up"
+
+__bigPointer "Creating package..."
+
+__pack "$RESDIR" || __error "pack" "general failure"
+
+}
+__cleanup(){
+	[ -e Buildfile ] || __error "cleanup" "no Buildfile"
+	source "./Buildfile" || __error "cleanup" "cannot source Buildfile"
+	rm -rf package $SRCDIR $SRCTAR || echo "already clean"
+	true
+}
+__installpkg(){
+	[ -z "$PACKAGE" ] && __error "install" "build package first"
+	hpkg "$PACKAGE"_"$VER".hard
+}
+
+for i in $@ ; do
+	case $1 in
+		 install)
+			__installpkg
+			;;
+		 cleanup)
+			__cleanup
+			;;
+		*)
+			__build
+			;;
+	esac
+done

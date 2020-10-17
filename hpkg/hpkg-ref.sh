@@ -15,12 +15,12 @@
 ##    You should have received a copy of the GNU General Public License
 ##    along with hpkg.  If not, see <https://www.gnu.org/licenses/>.
 
-##    CONTRIBUTING RULES
-##    1. Check is your code valid
-##    2. Check your code with ShellCheck
-##    3. Beautify your code
-##    4. Generate diff
-##    5. Mail your patch to maintainer
+# ERROR CODES:
+##	1 - archive not found
+##	2 - unable to unpack
+##	4 - archive unpacked but corrupted
+##	8 - (installer) cannot resolve dependencies
+##	16 - (installer) conflicting packages
 
 # Macro for /dev/null
 exec 3>errors+supressed.log
@@ -38,13 +38,13 @@ __error(){
 		cat errors+supressed.log | tail 1>&2
 	fi
 	fi
-	exit 1
+	exit $3
 
 }
 
 __bigPointerWithTime(){
 
-	echo -e "\033[34;1m==>\033[0m $1 - \033[32;1mTARGET REACHED in $SECONDS seconds\033[0m"
+	echo -e "\033[34;1m==>\033[0m $1 - \033[32;1mDONE in $SECONDS seconds\033[0m"
 
 }
 
@@ -72,16 +72,6 @@ __littlePointer(){
 __warn(){
 
 	echo -e "\033[34;1mhpkg:\033[0m $1" 1>&2
-
-}
-
-__credits(){
-
-	echo "hpkg - .hard packager - v. 0.9.0"
-		echo
-		echo ".hard - hard archives replacing debs"
-		echo
-		echo "Written by Emptied Soul and contributors"
 
 }
 
@@ -117,25 +107,12 @@ __unpack(){
 	WORKNAME="HPKG_PAYLOAD"
 # Primary validation 
 	__bigPointer "Preparing to unpack $stat..."
-	__middlePointer "Searching $stat..."
 	
-	if [ -e "$stat" ] ; then	
-		__littlePointer "Found $stat !"
-	else
+	if ! [ -e "$stat" ] ; then	
 		__littlePointer "$stat Not Found!" "bad"
-		__error "$stat" "No such file"
-	fi
-
-	__middlePointer "Checking $stat extension..."
-	
-	if grep -q ".hard" <<<$stat; then
-		__littlePointer ".hard !"
-	else
-		__littlePointer "Not .hard !" "bad"
-		__error "$stat" "It is not .hard archive"
+		__error "$stat" "No such file" "1"
 	fi
 # If valid	
-	__bigPointerWithTime "Preparing to unpack $stat"
 # Setting PASS
 	if [ "$ENCRYPT" == "password" ] ; then
 		if [ "$2" == "withPass" ] ; then
@@ -145,14 +122,15 @@ __unpack(){
 			echo -e "\033[32;1m Accepted \033[0m"
 		fi
 	fi
-# Dumb hardening (Package cant be extracted manually)
-	let "MODPASS = PASSWORD + 11111111"
 # Unpacking 
 	__middlePointer "Decompressing $stat..."
+
+	gpg --verify $1 1>&3 2>&3 || __error "Decryption" "unable to verify package" "2"
+
 	if [ "$COMPRESS" == "xz" ] ; then
-		gpg --batch --yes --passphrase $MODPASS -d $1 2>&3 | unxz 2>&3 | tar xv 2>ers.list | awk '{print "\033[32;1m    > \033[0mDecompressed \033[34;1m "$0" \033[0m"}'  #echo "Error"; exit 1;
+		gpg --batch --yes --passphrase $MODPASS -d $1 2>&3 | unxz 2>&3 | tar xv 2>ers.list | awk '{print "\033[32;1m    > \033[0mDecompressed \033[34;1m "$0" \033[0m"}'  
 	elif [ "$COMPRESS" == "bz2" ]; then
-		gpg --batch --yes --passphrase $MODPASS -d $1 2>&3 | bunzip 2>&3 | tar xv 2>ers.list | awk '{print "\033[32;1m    > \033[0mDecompressed \033[34;1m "$0" \033[0m"}'  #echo "Error"; exit 1;
+		gpg --batch --yes --passphrase $MODPASS -d $1 2>&3 | bunzip 2>&3 | tar xv 2>ers.list | awk '{print "\033[32;1m    > \033[0mDecompressed \033[34;1m "$0" \033[0m"}' 
 	fi
 
 	# Ensuring that package extracted properly (Dumbest way, replace it)
@@ -171,19 +149,15 @@ __unpack(){
     if [ $RES -eq 0 ]; then 
     	true
     else
-    	__error "Decryption" "Wrong password (missing keys)"
+    	__error "Decryption" "Wrong password (missing keys)" "2"
     fi
 
     # Starting working with extracted package itself
-
-    __middlePointer "Searching .ARCH_TYPE in $1..."
   
     if ! [ -e "$WORKNAME"/.ARCH_TYPE ] ; then
     	rm -rf "$WORKNAME"
-    	__error "Archive" "Corrupted data"
+    	__error "Archive" "Corrupted data" "4"
     else
-    	__littlePointer "Found .ARCH_TYPE !"
-    	__bigPointerWithTime "Unpacking $stat"
     	__bigPointer "Initializating $stat..."
     	__middlePointer "Reading $stat metadata..."
     	ARCH_TYPE=$(cat "$WORKNAME"/.ARCH_TYPE)
@@ -191,33 +165,23 @@ __unpack(){
 		echo -e "\033[32;1m\tArchive Name:\033[0m $stat"
 		echo -e "\033[32;1m\tArchive Type:\033[0m $ARCH_TYPE"
 		echo -e "\033[32;1m\tArchive Access Type:\033[0m $ACCESS"
-		__bigPointerWithTime "Initializating $stat"
 
 		case $ARCH_TYPE in
 			executable)
 				__warn "This archive marked as 'executable', executing..."
     			__bigPointer "Executing $stat"
-    			__middlePointer "Searching main script..."
-    			if [ -e "$WORKNAME"/MAIN.sh ] ; then
+    			if [ -e "$WORKNAME"/MAIN ] ; then
     				__littlePointer "Found !"
-    				__littlePointer "Executing..."
-    				sh "$WORKNAME"/MAIN.sh "$WORKNAME"
-            	    __bigPointerWithTime "Executing $stat"
-            	elif [ -e "$WORKNAME"/MAIN ] ; then
-    				__littlePointer "Found !"
-    				__littlePointer "Executing..."
-            	    ./"$WORKNAME"/MAIN "$WORKNAME"
-					__bigPointerWithTime "Executing $stat"            
+    				./MAIN        
 				else
-    				__error "$stat" "No main script"
+    				__error "$stat" "No main script" "4"
     			fi
     			if [ $ACCESS == "public" ] ; then
     				mv -f $WORKNAME $NAME
-            	elif [ $ACCESS == "restricted" ] ; then
-            	   	rm -rf $WORKNAME
             	else 
-            	   rm -rf $WORKNAME
+            	    rm -rf $WORKNAME
             	fi
+            	__bigPointerWithTime "Unpacking & Executing"
             ;;
             installer)
 				__warn "This archive marked as 'installer', installing..."
@@ -226,6 +190,7 @@ __unpack(){
     			PKG=$(cat "$WORKNAME"/.PKGNAME)
     			CONFL=$(cat "$WORKNAME/.CONFLICTS")
     			DEPS=$(cat "$WORKNAME/.DEPENDS")
+    			MAINTAINER=$(cat "$WORKNAME/.MAINTAINER")
     			FLST="/var/hpkg/installed-files/$PKG-$VER.list"
     			DEPSHERE=1
     			CONFLICTS=0
@@ -236,15 +201,13 @@ __unpack(){
     			__bigPointer "Resolving dependencies for $stat..." 1>&2
     			for depsfind in $DEPS
 				do
-					find /var/hpkg/packages/ -name "$depsfind.info" | grep "."
-  					if [ $? -eq 0 ] ; then
-  						true
-  					else
+					if ! find /var/hpkg/packages/ -name "$depsfind.info" | grep "."
+  					then
 						tempdir=$(mktemp -d)
   						mv HPKG_PAYLOAD $tempdir
 						if ! echo | hardman install "$depsfind" ; then
   						
-							__error "$stat" "$PKG depends on: $depsfind. However it not installed. Stop"
+							__error "$stat" "$PKG depends on: $depsfind. However it not installed. Stop" "8"
 						fi
   						mv $tempdir/HPKG_PAYLOAD HPKG_PAYLOAD
 					fi
@@ -256,20 +219,19 @@ __unpack(){
 				__bigPointer "Checking conflicts for $stat..." 1>&2
     			for conflictfind in $CONFL
 				do
-					#echo $conflictfind
-					find /var/hpkg/packages/ -name "$conflictfind.info" | grep -q "."
-  					if [ $? -eq 0 ] ; then
-  						__error "$stat" "$PKG conflicts with $conflictfind. Stop"
+					if find /var/hpkg/packages/ -name "$conflictfind.info" | grep -q "."
+  				    then
+  						__error "$stat" "$PKG conflicts with $conflictfind. Stop" "16"
   					fi
 				done 
 				if grep -qr "^$PKG" /var/hpkg/packages-conflicts/ ; then
-					__error "$stat" "$(grep -r "^$PKG" /var/hpkg/packages-conflicts/ | sed -e 's/:.*//' -e 's/.CONFLICTS//' -e 's|.*/||') conflicts with $PKG. Stop"
+					__error "$stat" "$(grep -r "^$PKG" /var/hpkg/packages-conflicts/ | sed -e 's/:.*//' -e 's/.CONFLICTS//' -e 's|.*/||') conflicts with $PKG. Stop" "16"
 				fi
 
- 	           	if [ -e "$WORKNAME"/preinstall.sh ] ; then
+ 	           	if [ -e "$WORKNAME"/preinstall ] ; then
 	           	 	cd "$WORKNAME"
-	           	     sh preinstall.sh
-	           	     cd ..
+	           	    ./preinstall
+	           	    cd ..
  	           	fi
  	           		cd "$WORKNAME"
             	
@@ -280,20 +242,20 @@ __unpack(){
 	           	     	echo "Files: $FLST" >> /var/hpkg/packages/"$PKG.info"
 	           	     	echo "Conflicts: $CONFL" >> /var/hpkg/packages/"$PKG.info"
 	           	     	echo "Depends: $DEPS" >> /var/hpkg/packages/"$PKG.info"
-	           	     	cat .DEPENDS > /var/hpkg/packages-dependences/"$PKG.DEPENDS"
+	           	     	echo "Maintainer: $MAINTAINER" >> /var/hpkg/packages/"$PKG.info"
+	           	     	cat .DEPENDS > /var/hpkg/packages-dependencies/"$PKG.DEPENDS"
 	           	     	cat .CONFLICTS > /var/hpkg/packages-conflicts/"$PKG.CONFLICTS"
+	           	     	mkdir /var/hpkg/builds/"$PKG"
+	           	     	mv Buildfile /var/hpkg/builds/"$PKG"/
 	           	     fi
 	           	     cd ..
- 	           	if [ -e "$WORKNAME"/postinstall.sh ] ; then
- 	           	    cd "$WORKNAME"
-	           	     sh postinstall.sh
+ 	           	if [ -e "$WORKNAME"/postinstall ] ; then
+ 	           	     cd "$WORKNAME"
+	           	     ./postinstall
 	           	     cd ..
-	           	 fi
-	           	 if [ $ACCESS == "public" ] ; then
+	           	fi
+	           	if [ $ACCESS == "public" ] ; then
 	           	     mv -f $WORKNAME $NAME
-
-	           	 elif [ $ACCESS == "restricted" ] ; then
-	           	     rm -rf $WORKNAME
  	           	else 
  	           	    	#echo "No access type specified: set as default"
  	           	    rm -rf $WORKNAME
@@ -303,6 +265,7 @@ __unpack(){
 			container)
 				__warn "This archive marked as 'container', all done!"
     			mv -f $WORKNAME $NAME
+    			__bigPointerWithTime "Unpacking"
 			;;
 			port)
 				# Temporary removed

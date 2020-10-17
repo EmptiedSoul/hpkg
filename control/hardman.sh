@@ -17,6 +17,13 @@
 ##    You should have received a copy of the GNU General Public License
 ##    along with hpkg.  If not, see <https://www.gnu.org/licenses/>.
 
+# ERROR CODES:
+##	1 - archive not found
+##	2 - unable to unpack
+##	4 - archive unpacked but corrupted
+##	8 - (installer) cannot resolve dependencies
+##	16 - (installer) conflicting packages
+##	32 - Initialization || permission error
 
 exec 3>errors+supressed.log
 
@@ -63,13 +70,13 @@ __error(){
 		cat errors+supressed.log | tail 1>&2
 	fi
 	fi
-	exit 1
+	exit $3
 
 }
 __remove(){
 
 	fPATH="/var/hpkg/packages/$1.info"
-	dPATH="/var/hpkg/packages-dependences/"
+	dPATH="/var/hpkg/packages-dependencies/"
 	cPATH="/var/hpkg/packages-conflicts/"
 	if [ -e "$fPATH" ] ; then
 		INFO=$(cat $fPATH)
@@ -79,7 +86,7 @@ __remove(){
 		rDEPs="$dPATH$1.DEPENDS"
 		rCONFs="$cPATH$1.CONFLICTS"
 		if grep -qr "^$1" "$dPATH"; then
-			__error "remove" "$(grep -r "^$1" "$dPATH"|sed -e 's/:.*//' -e 's/.DEPENDS//' -e 's|.*/||' ) depends on $1"
+			__error "remove" "$(grep -r "^$1" "$dPATH"|sed -e 's/:.*//' -e 's/.DEPENDS//' -e 's|.*/||' ) depends on $1" "8"
 		fi
 		for TODEL in $FILES
 		do
@@ -93,7 +100,7 @@ __remove(){
 		done
 		rm -f "$fPATH" "$pFILES" "$rDEPs" "$rCONFs"
 	else
-		__error "remove" "$1 not installed"		
+		__error "remove" "$1 not installed"	"1"
 	fi
 }
 __is_installed(){
@@ -113,7 +120,7 @@ __update(){
 	#echo $URL
 	ROADMAP="ROADMAP"
 	if ! curl -# "$URL$ROADMAP" -o /var/hardman/repo/ROADMAP ; then
-		__error "update" "cannot fetch database"
+		__error "update" "cannot fetch database" "1"
 	fi
 	__bigPointer "Calculating upgradable packages..."
 	for rawnewpackage in $(cat /var/hardman/repo/ROADMAP)
@@ -130,7 +137,7 @@ __update(){
 	done
 	echo "Will upgrade:"
 	if ! cat TOUPDATE.list 2>&3; then
-		__error "update" "nothing to do"
+		__error "update" "nothing to do" "0"
 	fi
 	trap "rm -f TOUPDATE.list ; exit 0" SIGINT
 	read -p "Start upgrade? [Enter/^C]"
@@ -138,10 +145,11 @@ __update(){
 	for newpackage in $(cat TOUPDATE.list)
 	do
 		if echo | hardman install "$newpackage" 1>&3 ; then
+			ERRCODE="$?"
 			__littlePointer "$newpackage succesfully upgraded"
 		else
 			__littlePointer "Failed to upgrade $newpackage" "bad"
-			__error "update" "epic fail"
+			__error "update" "epic fail" "$ERRCODE"
 		fi
 	done
 	rm -f TOUPDATE.list
@@ -159,8 +167,9 @@ __install(){
 		if curl -# "$URL$appendURL" -o "$packagename.hard" ; then
 			__bigPointer "Installing $packagename..."
 			if ! hpkg "$packagename.hard" ; then
+				ERRCODE="$?"
 				rm -f "$packagename.hard"
-				__error "install" "failed to install $packagename. Stop"
+				__error "install" "failed to install $packagename. Stop" "$?"
 			else
 				if [ "$KEEP_CACHE" == "YES" ] ; then
 					mv "$packagename.hard" /var/hardman/cached-packages/
@@ -169,10 +178,10 @@ __install(){
 				fi
 			fi
 		else
-			__error "install" "cannot fetch $packagename"
+			__error "install" "cannot fetch $packagename" "1"
 		fi
 	else
-		__error "install" "target $1 not found"
+		__error "install" "target $1 not found" "1"
 	fi
 }
 
@@ -185,7 +194,7 @@ CONFIG="/etc/hpkg/hpkg.conf"
 	if [ -e "$CONFIG" ] ; then
 		source "$CONFIG"
 	else 
-		__error "initialization" "cannot found config"
+		__error "initialization" "cannot found config" "32"
 	fi
 # Setting loglevel
 	#
@@ -214,19 +223,19 @@ __update_roadmap(){
 	__bigPointer "Fetching repo ROADMAP..."
 	ROADMAP="ROADMAP"
 	if ! curl -# "$URL$ROADMAP" -o /var/hardman/repo/ROADMAP ; then
-		__error "update" "cannot fetch database"
+		__error "update" "cannot fetch database" "1"
 	fi
 }
 # Entry point
 
 if [ -z $1 ] ; then 
-	__error "$0" "No args specified"
+	__error "$0" "No args specified" "32"
 fi
   
 _initialize
 
 if ! [ $UID == 0 ]; then
-	__error "Permission" "you should run it as root!"
+	__error "Permission" "you should run it as root!" "32"
 fi
 
 case $1 in
