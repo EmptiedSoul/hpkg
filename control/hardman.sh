@@ -25,9 +25,27 @@
 ##	16 - (installer) conflicting packages
 ##	32 - Initialization || permission error
 
+MYSELF="$0"
+PARAMS="$@"
+
 exec 3>errors+supressed.log
 
-
+__log(){
+	case $1 in
+		REQUEST)
+			local COLOR="\e[36m"
+			;;
+		ERROR)
+			local COLOR="\e[31m"
+			;;
+		SUCCESS)
+			local COLOR="\e[32m"
+			;;
+		CALL)
+			local COLOR="\e[35m"
+	esac
+	echo -e "[ $(date +%F%t%H:%M:%S) ] [ $2 ] [ $COLOR$1\e[0m ] \e[36m$MYSELF\e[0m \e[31m$PARAMS\e[0m\t: $3" >> /var/log/hpkg/pkg.log
+}
 
 __bigPointer(){
 
@@ -68,17 +86,20 @@ __error(){
 	if ! [ -z "$(cat errors+supressed.log)" ] ; then
 		echo "Trace:" 1>&2
 		cat errors+supressed.log | tail 1>&2
+		rm -f errors+supressed.log
 	fi
 	fi
+	__log "ERROR" "$3" "$2"
 	exit $3
 
 }
 __remove(){
-
+	__log "REQUEST" "-" "requested remove for package $1"
 	fPATH="/var/hpkg/packages/$1.info"
-	dPATH="/var/hpkg/packages-dependencies/"
+	dPATH="/var/hpkg/packages-dependences/"
 	cPATH="/var/hpkg/packages-conflicts/"
 	if [ -e "$fPATH" ] ; then
+		[ -e "/var/hpkg/scripts/$1.preremove" ] && /var/hpkg/scripts/"$1".preremove
 		INFO=$(cat $fPATH)
 		cat $fPATH
 		pFILES=$(sed -e '1,2d' -e '4,5d' -e 's/Files: //' $fPATH)
@@ -99,9 +120,12 @@ __remove(){
 			rmdir $DELDIR 2>&3
 		done
 		rm -f "$fPATH" "$pFILES" "$rDEPs" "$rCONFs"
+		[ -e "/var/hpkg/scripts/$1.postremove" ] && /var/hpkg/scripts/"$1".postremove
 	else
 		__error "remove" "$1 not installed"	"1"
 	fi
+	__log "SUCCESS" "0" "removed package $1"
+
 }
 __is_installed(){
 	if find "/var/hpkg/packages/" -name "$1.info" | grep -q "." ; then
@@ -114,14 +138,8 @@ __is_installed(){
 	
 }
 __update(){
-	rm -f /var/hardman/repo/*
-	touch /var/hardman/repo/ROADMAP
-	__bigPointer "Fetching repo ROADMAP..."
-	#echo $URL
-	ROADMAP="ROADMAP"
-	if ! curl -# "$URL$ROADMAP" -o /var/hardman/repo/ROADMAP ; then
-		__error "update" "cannot fetch database" "1"
-	fi
+	__log "REQUEST" "-" "requested full system update"
+	__update_roadmap
 	__bigPointer "Calculating upgradable packages..."
 	for rawnewpackage in $(cat /var/hardman/repo/ROADMAP)
 	do
@@ -152,10 +170,12 @@ __update(){
 			__error "update" "epic fail" "$ERRCODE"
 		fi
 	done
+	__log "SUCCESS" "0" "full system updated"
 	rm -f TOUPDATE.list
 } 
 
 __install(){
+	__log "REQUEST" "-" "requested installation for package $1"
 	__bigPointer "Searching $1..." 2>&1
 	if grep -q "^$1_*" "/var/hardman/repo/ROADMAP" ; then
 		appendURL=$(grep "^$1_*" "/var/hardman/repo/ROADMAP" | sed 's/.*://')
@@ -166,10 +186,11 @@ __install(){
 		__bigPointer "Fetching $packagename..."
 		if curl -# "$URL$appendURL" -o "$packagename.hard" ; then
 			__bigPointer "Installing $packagename..."
+			__log "CALL" "-" "calling hpkg to install $1"
 			if ! hpkg "$packagename.hard" ; then
 				ERRCODE="$?"
 				rm -f "$packagename.hard"
-				__error "install" "failed to install $packagename. Stop" "$?"
+				__error "install" "failed to install $packagename. Stop" "$ERRCODE"
 			else
 				if [ "$KEEP_CACHE" == "YES" ] ; then
 					mv "$packagename.hard" /var/hardman/cached-packages/
@@ -183,6 +204,7 @@ __install(){
 	else
 		__error "install" "target $1 not found" "1"
 	fi
+	__log "SUCCESS" "0" "package $1 installed"
 }
 
 _initialize(){
@@ -210,14 +232,15 @@ __list_available(){
 	echo "Total: $(cat /var/hardman/repo/ROADMAP | sed -e 's/:.*//' | wc -l) available package(s)"
 }
 __info(){
-	echo
 	if ! cat /var/hpkg/packages/"$1.info"  ; then
-		#__error "info" "$1 not installed"
-		true
+		__error "info" "$1 not installed" "1"
 	fi
+	echo
+	cat /var/hpkg/desc/"$1".desc
 	echo
 }
 __update_roadmap(){
+	__log "REQUEST" "-" "requested ROADMAP update"
 	rm -f /var/hardman/repo/*
 	touch /var/hardman/repo/ROADMAP
 	__bigPointer "Fetching repo ROADMAP..."
@@ -225,6 +248,7 @@ __update_roadmap(){
 	if ! curl -# "$URL$ROADMAP" -o /var/hardman/repo/ROADMAP ; then
 		__error "update" "cannot fetch database" "1"
 	fi
+	__log "SUCCESS" "0" "ROADMAP updated"
 }
 # Entry point
 
@@ -240,6 +264,7 @@ fi
 
 case $1 in
 	remove|r|-r|-R)
+		__log "REQUEST" "-" "requested remove for following packages: $PARAMS"
 		for i in $@
 		do
 			if ! [ -z $2 ]; then
@@ -249,9 +274,11 @@ case $1 in
 		done
 		;;
 	update|u|-u)
+		__log "REQUEST" "-" "requested for update"
 		__update
 		;;
 	install|-i|-S|i)
+		__log "REQUEST" "-" "requested installation of following packages: $PARAMS"
 		for i in $@
 		do
 			if ! [ -z $2 ]; then
@@ -267,6 +294,7 @@ case $1 in
 		__list_available
 		;;
 	update-roadmap|-y|ur)
+		__log "REQUEST" "-" "requested ROADMAP update"
 		__update_roadmap
 		;;
 	info)

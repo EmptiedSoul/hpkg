@@ -27,7 +27,22 @@ exec 3>errors+supressed.log
 
 
 ### Here starts declaration of output functions
-
+__log(){
+	case $3 in
+		REQUEST)
+			local COLOR="\e[36m"
+			;;
+		ERROR)
+			local COLOR="\e[31m"
+			;;
+		SUCCESS)
+			local COLOR="\e[32m"
+			;;
+		CALL)
+			local COLOR="\e[35m"
+	esac
+	echo -e "[ $(date +%F%t%H:%M:%S) ] [ $4 ] [ $COLOR$3\e[0m ] \e[36m$1\e[0m \e[31m$2\e[0m\t: $5" >> /var/log/hpkg/pkg.log
+}
 __error(){
 
 	echo -e "\a\033[41;1mError:\033[0m \033[32;1m$1:\033[0m\033[34;1m $2 \033[0m" 1>&2
@@ -36,8 +51,10 @@ __error(){
 	if ! [ -z "$(cat errors+supressed.log)" ]; then
 		echo "Trace:" 1>&2
 		cat errors+supressed.log | tail 1>&2
+		rm -f errors+supressed.log
 	fi
 	fi
+	__log "(hpkg) $1" "" "ERROR" "$3" "$2"
 	exit $3
 
 }
@@ -184,6 +201,7 @@ __unpack(){
             	__bigPointerWithTime "Unpacking & Executing"
             ;;
             installer)
+				__log "(hpkg) $0" "$1" "REQUEST" "-" "installing $1"
 				__warn "This archive marked as 'installer', installing..."
 				__bigPointer "Installing $stat"
     			VER=$(cat "$WORKNAME"/.VERSION)
@@ -201,15 +219,17 @@ __unpack(){
     			__bigPointer "Resolving dependencies for $stat..." 1>&2
     			for depsfind in $DEPS
 				do
-					if ! find /var/hpkg/packages/ -name "$depsfind.info" | grep "."
-  					then
-						tempdir=$(mktemp -d)
-  						mv HPKG_PAYLOAD $tempdir
-						if ! echo | hardman install "$depsfind" ; then
-  						
-							__error "$stat" "$PKG depends on: $depsfind. However it not installed. Stop" "8"
+					if ! grep "^$depsfind" -qr /var/hpkg/packages-provides/ ; then
+						if ! find /var/hpkg/packages/ -name "$depsfind.info" | grep "."
+  						then
+  							__log "(hpkg) $0" "$1" "CALL" "-" "calling hardman to resolve dependences"
+							tempdir=$(mktemp -d)
+  							mv HPKG_PAYLOAD $tempdir
+							if ! echo | hardman install "$depsfind" ; then
+								__error "$stat" "$PKG depends on: $depsfind. However it not installed. Stop" "8"
+							fi
+  							mv $tempdir/HPKG_PAYLOAD HPKG_PAYLOAD
 						fi
-  						mv $tempdir/HPKG_PAYLOAD HPKG_PAYLOAD
 					fi
 				done	 	
 				else
@@ -230,6 +250,7 @@ __unpack(){
 
  	           	if [ -e "$WORKNAME"/preinstall ] ; then
 	           	 	cd "$WORKNAME"
+	           	 	__log "(hpkg) $0" "$1" "CALL" "-" "running preinstall script"
 	           	    ./preinstall
 	           	    cd ..
  	           	fi
@@ -242,15 +263,23 @@ __unpack(){
 	           	     	echo "Files: $FLST" >> /var/hpkg/packages/"$PKG.info"
 	           	     	echo "Conflicts: $CONFL" >> /var/hpkg/packages/"$PKG.info"
 	           	     	echo "Depends: $DEPS" >> /var/hpkg/packages/"$PKG.info"
+	           	     	echo "Provides: $PROV" >> /var/hpkg/packages/"$PKG.info"
 	           	     	echo "Maintainer: $MAINTAINER" >> /var/hpkg/packages/"$PKG.info"
 	           	     	cat .DEPENDS > /var/hpkg/packages-dependencies/"$PKG.DEPENDS"
+	           	     	cat .PROVIDES > /var/hpkg/packages-provides/"$PKG.PROVIDES"
 	           	     	cat .CONFLICTS > /var/hpkg/packages-conflicts/"$PKG.CONFLICTS"
-	           	     	mkdir /var/hpkg/builds/"$PKG"
-	           	     	mv Buildfile /var/hpkg/builds/"$PKG"/
+	           	     	mkdir -p /var/hpkg/builds/"$PKG"
+	           	     	mv -f Buildfile /var/hpkg/builds/"$PKG"/
+	           	     	mv -f preremove /var/hpkg/scripts/"$PKG".preremove 2>&3
+	           	     	mv -f postremove /var/hpkg/scripts/"$PKG".postremove 2>&3
+	           	     	mv -f preinstall /var/hpkg/scripts/"$PKG".preinstall 2>&3
+	           	     	mv -f postinstall /var/hpkg/scripts/"$PKG".postinstall 2>&3
+	           	     	mv -f .DESCRIPTION /var/hpkg/desc/"$PKG".desc 2>&3
 	           	     fi
 	           	     cd ..
  	           	if [ -e "$WORKNAME"/postinstall ] ; then
  	           	     cd "$WORKNAME"
+ 	           	     __log "(hpkg) $0" "$1" "CALL" "-" "running postinstall script"
 	           	     ./postinstall
 	           	     cd ..
 	           	fi
@@ -260,6 +289,7 @@ __unpack(){
  	           	    	#echo "No access type specified: set as default"
  	           	    rm -rf $WORKNAME
  	          	 	fi
+ 	          	 	__log "(hpkg) $0" "$1" "SUCCESS" "0" "$1 installed"
  	          	 	__bigPointerWithTime "Installing $stat"
 			;;
 			container)
