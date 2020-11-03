@@ -233,7 +233,7 @@ __unpack(){
 					fi
 				done	 	
 				else
-					__warn "Slackware mode enabled: dependeces tracking disabled"
+					__warn "Slackware mode enabled: dependecies tracking disabled"
 				fi
 
 				__bigPointer "Checking conflicts for $stat..." 1>&2
@@ -266,10 +266,10 @@ __unpack(){
 	           	     	echo "Provides: $PROV" >> /var/hpkg/packages/"$PKG.info"
 	           	     	echo "Maintainer: $MAINTAINER" >> /var/hpkg/packages/"$PKG.info"
 	           	     	cat .DEPENDS > /var/hpkg/packages-dependencies/"$PKG.DEPENDS"
-	           	     	cat .PROVIDES > /var/hpkg/packages-provides/"$PKG.PROVIDES"
+	           	     	cat .PROVIDES > /var/hpkg/packages-provides/"$PKG.PROVIDES" 2>&3
 	           	     	cat .CONFLICTS > /var/hpkg/packages-conflicts/"$PKG.CONFLICTS"
 	           	     	mkdir -p /var/hpkg/builds/"$PKG"
-	           	     	mv -f Buildfile /var/hpkg/builds/"$PKG"/
+	           	     	mv -f Buildfile /var/hpkg/builds/"$PKG"/ 2>&3
 	           	     	mv -f preremove /var/hpkg/scripts/"$PKG".preremove 2>&3
 	           	     	mv -f postremove /var/hpkg/scripts/"$PKG".postremove 2>&3
 	           	     	mv -f preinstall /var/hpkg/scripts/"$PKG".preinstall 2>&3

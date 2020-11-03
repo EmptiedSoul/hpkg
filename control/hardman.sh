@@ -96,13 +96,13 @@ __error(){
 __remove(){
 	__log "REQUEST" "-" "requested remove for package $1"
 	fPATH="/var/hpkg/packages/$1.info"
-	dPATH="/var/hpkg/packages-dependences/"
+	dPATH="/var/hpkg/packages-dependencies/"
 	cPATH="/var/hpkg/packages-conflicts/"
 	if [ -e "$fPATH" ] ; then
 		[ -e "/var/hpkg/scripts/$1.preremove" ] && /var/hpkg/scripts/"$1".preremove
 		INFO=$(cat $fPATH)
 		cat $fPATH
-		pFILES=$(sed -e '1,2d' -e '4,5d' -e 's/Files: //' $fPATH)
+		pFILES=$(sed -e '1,2d' -e '4,7d' -e 's/Files: //' $fPATH)
 		FILES=$(cat $pFILES)
 		rDEPs="$dPATH$1.DEPENDS"
 		rCONFs="$cPATH$1.CONFLICTS"
@@ -178,8 +178,8 @@ __install(){
 	__log "REQUEST" "-" "requested installation for package $1"
 	__bigPointer "Searching $1..." 2>&1
 	if grep -q "^$1_*" "/var/hardman/repo/ROADMAP" ; then
-		appendURL=$(grep "^$1_*" "/var/hardman/repo/ROADMAP" | sed 's/.*://')
-		packagename=$(grep "^$1_*" "/var/hardman/repo/ROADMAP" | sed 's/:.*//')
+		appendURL=$(grep "^$1_*" "/var/hardman/repo/ROADMAP" | cut -d: -f 2 ) #sed 's/.*://')
+		packagename=$(grep "^$1_*" "/var/hardman/repo/ROADMAP" | cut -d: -f 1 ) #sed 's/:.*//')
 		__littlePointer "Found: $packagename" 2>&1
 		trap "echo -e '\nAborting' ; exit 0" SIGINT
 		read -p "Proceed installation? [Enter/^C]" 
@@ -238,6 +238,11 @@ __info(){
 	echo
 	cat /var/hpkg/desc/"$1".desc
 	echo
+}
+__files(){
+	fPATH="/var/hpkg/packages/$1.info"
+	pFILES=$(sed -e '1,2d' -e '4,7d' -e 's/Files: //' $fPATH)
+	cat $pFILES
 }
 __update_roadmap(){
 	__log "REQUEST" "-" "requested ROADMAP update"
@@ -302,6 +307,15 @@ case $1 in
 		do
 			if ! [ -z $2 ]; then
 				__info "$2"
+				shift
+			fi
+		done
+		;;
+	files|f|-F)
+		for i in $@
+		do
+			if ! [ -z $2 ]; then
+				__files "$2"
 				shift
 			fi
 		done
