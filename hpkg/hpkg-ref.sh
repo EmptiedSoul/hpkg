@@ -223,12 +223,18 @@ __unpack(){
 						if ! find /var/hpkg/packages/ -name "$depsfind.info" | grep "."
   						then
   							__log "(hpkg) $0" "$1" "CALL" "-" "calling hardman to resolve dependences"
-							tempdir=$(mktemp -d)
+							if [ "$USETEMPDIR" == "NO" ]; then
+								tempdir="/var/cache/hpkg/payload.$RANDOM"
+								mkdir -p $tempdir
+							else
+								tempdir=$(mktemp -d)
+							fi 
   							mv HPKG_PAYLOAD $tempdir
 							if ! echo | hardman install "$depsfind" ; then
 								__error "$stat" "$PKG depends on: $depsfind. However it not installed. Stop" "8"
 							fi
   							mv $tempdir/HPKG_PAYLOAD HPKG_PAYLOAD
+							rm -rf $tempdir
 						fi
 					fi
 				done	 	

@@ -15,6 +15,25 @@
 ##    along with hpkg.  If not, see <https://www.gnu.org/licenses/>.
 exec 3>errors+supressed.log
 
+
+
+
+
+
+#
+#
+# ITS BROKEN !!!!!!!!!!!!
+# FIX WILL COME SOON
+#
+#
+#
+#
+
+
+
+
+
+
 __status(){
 	echo -e "PART\t\t\t\t\t\tSTATUS\n"
 	for line in $(cat /var/hparts/STATUS)
@@ -31,7 +50,7 @@ __status(){
 } 	
 
 __sanity(){
-	for sh in $(realpath /usr/src/hardman/*.sh)
+	for sh in $(realpath /usr/src/hpkg/*/*.sh)
 	do
 		echo -n $sh
 	if ! bash -n $sh 2>&3

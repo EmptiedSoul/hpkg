@@ -12,7 +12,6 @@
 ##    along with hpkg.  If not, see <https://www.gnu.org/licenses/>.
 
 exec 3>/dev/null
-
 MAINTAINER="$(whoami)@$(hostname)"
 source /etc/hpkg/make.conf
 
@@ -44,6 +43,37 @@ __preparesrc(){
 __compilesrc(){
 	nothing
 }
+__stripbin(){
+save_lib="ld-2.32.so libc-2.32.so libpthread-2.32.so libthread_db-1.0.so"
+#PWD=$(pwd)
+pushd $DEST/lib 
+for LIB in $save_lib; do
+    objcopy --only-keep-debug $LIB $LIB.dbg 
+    strip --strip-unneeded $LIB
+    objcopy --add-gnu-debuglink=$LIB.dbg $LIB 
+done 
+popd
+save_usrlib="libquadmath.so.0.0.0 libstdc++.so.6.0.28
+             libitm.so.1.0.0 libatomic.so.1.2.0" 
+
+pushd $DEST/usr/lib
+for LIB in $save_usrlib; do
+    objcopy --only-keep-debug $LIB $LIB.dbg
+    strip --strip-unneeded $LIB
+    objcopy --add-gnu-debuglink=$LIB.dbg $LIB
+done
+popd
+unset LIB save_lib save_usrlib
+#cd $PWD
+find $DEST/usr/lib -type f -name \*.a \
+   -exec strip --strip-debug {} ';'
+
+find $DEST/lib $DEST/usr/lib -type f -name \*.so* ! -name \*dbg \
+   -exec strip --strip-unneeded {} ';'
+
+find $DEST/{bin,sbin} $DEST/usr/{bin,sbin,libexec} -type f \
+    -exec strip --strip-all {} ';'
+}
 __installsrc(){
 	false 
 }
@@ -63,9 +93,7 @@ __error(){
 	exit 1
 }
 __pack(){
-
 cp -r "$1" "$WORKNAME"
-
 cd "$WORKNAME"
 
 cp $BUILDFILE .
@@ -92,7 +120,7 @@ if ! [ -z "$VER" ]; then
 fi
 
 cd ..
-tar cvf "$WORKNAME".tar "$WORKNAME"
+tar cvf --owner=0 --group=0 "$WORKNAME".tar "$WORKNAME"
 xz -9e "$WORKNAME".tar -T $(nproc)
 
 if [ "$CRYPT" == "passwd" ] ; then
@@ -143,32 +171,44 @@ __bigPointer "Compiling source..."
 __compilesrc || __error "compile src" "failed compile"
 __bigPointer "Installing image..."
 __installsrc || __error "install src" "failed install"
-
+__bigPointer "Stripping binaries..."
+__stripbin 2>/dev/null >/dev/null
 cd .. || __error "cd" "cannot cd up"
 
 __bigPointer "Creating package..."
-
 __pack "$RESDIR" || __error "pack" "general failure"
 
 }
 __cleanup(){
 	[ -e Buildfile ] || __error "cleanup" "no Buildfile"
 	source "./Buildfile" || __error "cleanup" "cannot source Buildfile"
-	rm -rf package $SRCDIR $SRCTAR || echo "already clean"
+	rm -rf package $SRCDIR $SRCTGZ || echo "already clean"
+	true
+}
+__mrproper(){
+	[ -e Buildfile ] || __error "cleanup" "no Buildfile"	
+	source "./Buildfile" || __error "cleanup" "cannot source Buildfile"
+	rm -rf package $SRCDIR $SRCTGZ *.hard || echo "already clean"
+	__bigPointer "$(pwd) clean"
 	true
 }
 __installpkg(){
+	[ -e Buildfile ] || __error "cleanup" "no Buildfile"
+	source "./Buildfile" || __error "cleanup" "cannot source Buildfile"
 	[ -z "$PACKAGE" ] && __error "install" "build package first"
 	hpkg "$PACKAGE"_"$VER".hard
 }
 
 for i in $@ ; do
 	case $1 in
-		 install)
+		install)
 			__installpkg
 			;;
-		 cleanup)
+		cleanup)
 			__cleanup
+			;;
+		distclean)
+			__mrproper
 			;;
 		*)
 			__build
