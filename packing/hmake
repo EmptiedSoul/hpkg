@@ -120,7 +120,7 @@ if ! [ -z "$VER" ]; then
 fi
 
 cd ..
-tar --owner=0 --group=0 cvf "$WORKNAME".tar "$WORKNAME"
+tar cvf "$WORKNAME".tar "$WORKNAME" --owner=0 --group=0
 xz -9e "$WORKNAME".tar -T $(nproc)
 
 if [ "$CRYPT" == "passwd" ] ; then
