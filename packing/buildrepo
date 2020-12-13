@@ -20,10 +20,11 @@ do
 	grep -q "$dir" .processed && continue
 	pushd $dir >/dev/null
 	__bigPointer "Building $dir"
-	hmake build |& awk '{print "\t"$0;}' && echo "$dir" >> ../.processed 
+	(hmake build || echo >> ../.fuckedup) |& awk '{print "\t"$0;}' && echo "$dir" >> ../.processed 
 	popd >/dev/null
 done
 __bigPointer "Collecting repository..."
+rm -rf repo
 mkdir repo
 cp */*.hard repo
 __bigPointer "Collected $(ls -1 repo | wc -l) packages"

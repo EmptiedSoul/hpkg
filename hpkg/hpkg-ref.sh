@@ -230,7 +230,7 @@ __unpack(){
 								tempdir=$(mktemp -d)
 							fi 
   							mv HPKG_PAYLOAD $tempdir
-							if ! echo | hardman install "$depsfind" ; then
+							if ! echo | hardman install "$depsfind_" ; then
 								__error "$stat" "$PKG depends on: $depsfind. However it not installed. Stop" "8"
 							fi
   							mv $tempdir/HPKG_PAYLOAD HPKG_PAYLOAD
