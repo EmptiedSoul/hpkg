@@ -262,7 +262,7 @@ __unpack(){
  	           	fi
  	           		cd "$WORKNAME"
             	
-	           	     if tar xpf PAYLOAD.tar -C "$ROOT" ; then
+	           	     if tar xpf PAYLOAD.tar -C "$ROOT" --owner=0 --group=0 ; then
 	           	     	tar --list -f PAYLOAD.tar > "$FLST"
 	           	     	echo "Package: $PKG" > /var/hpkg/packages/"$PKG.info"
 	           	     	echo "Version: $VER" >> /var/hpkg/packages/"$PKG.info"
