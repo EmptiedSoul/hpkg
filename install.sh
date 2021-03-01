@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ROOT=$1
+
 dependencies=("mv" "rm" "cp" "sort" "cat" "cut" "echo" "mkdir" "tar" "xz" "gpg" "curl" "sed" "awk")
 hpkgdirs=(/var/hparts/modules /usr/src/hpkg /etc/hpkg /var/hardman/{repo,cached-packages} /var/hpkg/{packages,packages-dependencies,packages-conflicts,packages-provides,builds,installed-files} /var/log/hpkg)
 
@@ -17,26 +19,29 @@ done
 printf "Creating dirs...\n"
 for hdir in "${hpkgdirs[@]}"
 do
-	mkdir -pv $hdir
+	mkdir -pv $ROOT$hdir
 done
 
 printf "Installing hpkg source...\n"
-cp -rv hpkg /usr/src/hpkg/
+cp -rv hpkg $ROOT/usr/src/hpkg/
 printf "Installing control source...\n"
-cp -rv control /usr/src/hpkg/
+cp -rv control $ROOT/usr/src/hpkg/
 printf "Installing packing source...\n"
-cp -rv packing /usr/src/hpkg/
+cp -rv packing $ROOT/usr/src/hpkg/
 printf "Installing documentation...\n"
-cp -v doc/man/* /usr/share/man/man8/
+cp -v doc/man/* $ROOT/usr/share/man/man8/
 printf "Creating symlinks...\n"
-cp -r .git /usr/src/hpkg/
-ln -sfv /usr/src/hpkg/hpkg/hpkg-ref.sh /usr/bin/hpkg
-ln -sfv /usr/src/hpkg/control/hardman.sh /usr/bin/hardman
-ln -sfv /usr/src/hpkg/control/hcfg.sh /usr/bin/hcfg
-ln -sfv /usr/src/hpkg/control/hlog.sh  /usr/bin/hlog
-ln -sfv /usr/src/hpkg/control/hparts.sh /usr/bin/hparts
-ln -sfv /usr/src/hpkg/control/hpkg-update.sh /usr/bin/hpkg-update
-ln -sfv /usr/src/hpkg/packing/hmake /usr/bin/hmake
-ln -sfv /usr/src/hpkg/packing/buildrepo /usr/bin/buildrepo
+cp -r .git $ROOT/usr/src/hpkg/
+ln -sfv /usr/src/hpkg/hpkg/hpkg			$ROOT/usr/bin/hpkg
+ln -sfv /usr/src/hpkg/hpkg/lib/hpkglib.sh	$ROOT/usr/lib/hpkglib.sh
+#ln -sfv /usr/src/hpkg/control/hardman.sh /usr/bin/hardman
+#ln -sfv /usr/src/hpkg/control/hcfg.sh /usr/bin/hcfg
+#ln -sfv /usr/src/hpkg/control/hlog.sh  /usr/bin/hlog
+#ln -sfv /usr/src/hpkg/control/hparts.sh /usr/bin/hparts
+ln -sfv /usr/src/hpkg/control/hpkg-update.sh	$ROOT/usr/bin/hpkg-update
+ln -sfv /usr/src/hpkg/packing/hmake		$ROOT/usr/bin/hmake
+ln -sfv /usr/src/hpkg/packing/buildrepo		$ROOT/usr/bin/buildrepo
+ln -sfv /usr/src/hpkg/hpkg/hpkg-explode		$ROOT/usr/bin/hpkg-explode
+ln -sfv	/usr/src/hpkg/hpkg/hpkg-info		$ROOT/usr/bin/hpkg-info
 printf "All done. Now you can generate config by 'hcfg'\n"
 

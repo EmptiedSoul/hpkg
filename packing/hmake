@@ -1,217 +1,204 @@
-#!/bin/bash  
-##    This file is part of hpkg.
-##    hpkg is free software: you can redistribute it and/or modify
-##    it under the terms of the GNU General Public License as published by
-##    the Free Software Foundation, either version 3 of the License, or
-##    (at your option) any later version.
-##    hpkg is distributed in the hope that it will be useful,
-##    but WITHOUT ANY WARRANTY; without even the implied warranty of
-##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-##    GNU General Public License for more details.
-##    You should have received a copy of the GNU General Public License
-##    along with hpkg.  If not, see <https://www.gnu.org/licenses/>.
+#!/bin/bash
 
-exec 3>/dev/null
-MAINTAINER="$(whoami)@$(hostname)"
-source /etc/hpkg/make.conf
+#DEBUG=YES
+
+. /usr/lib/hpkglib.sh
 
 CONFIGUREOPTS="--prefix=/usr --sysconfdir=/etc"
-DEST="$(pwd)/package/PAYLOAD"
-RESDIR="$(pwd)/package"
+MAINTAINER="$(whoami)@$(hostname)"
 
-[ "$DEBUG" == "YES" ] || exec 1>/dev/null
+. /etc/hpkg/make.conf
 
-__bigPointer(){
+#[[ "$UID" == 0 ]] || error "$_root_or_fakeroot" "32" 
 
-	echo -e "\033[34;1m==>\033[0m $1" 1>&2
+FD1="1"
+exec 5>/var/log/hmake
 
+is_true "$DEBUG" || FD1="5"
+
+__getsrc()	{	true;	}
+__unpacksrc()	{	true;	}
+__preparesrc()	{	true;	}
+__compilesrc()	{	true;	}
+__installsrc()	{	false;	}
+
+usage(){
+printf "\
+$_hmake_make_hards\n\
+\n\
+$_hmake_synt\n\
+\n\
+$Options:\n\
+  build		$_hmake_build\n\
+  pack		$_hmake_pack\n\
+  clean		$_hmake_clean\n\
+  build_clean	$_hmake_build_clean\n\
+  mrproper	$_hmake_mrproper\n\
+  install	$_hmake_install\n\
+\n\
+$More_information_available_at_hmake8\n\
+$Copyright_information_available_with_option_version\n"
+exit 0
 }
 
-nothing(){
-	true
+strip_result(){
+	local save_lib="ld* libc*o libpthread* libthread_db*"
+	pushd $DEST/lib
+		for LIB in $save_lib; do
+			objcopy --only-keep-debug $LIB $LIB.dbg
+			strip --strip-unneeded $LIB
+			objcopy --add-gnu-debuglink=$LIB.dbg $LIB
+		done
+	popd
+	local save_usr_lib="libquadmath* libstdc++* libitm* libatomic*"
+	pushd $DEST/usr/lib
+		for LIB in $save_usr_lib; do
+			objcopy --only-keep-debug $LIB $LIB.dbg
+			strip --strip-unneeded $LIB
+			objcopy --add-gnu-debuglink=$LIB.dbg $LIB
+		done
+	popd
+	unset LIB save_lib save_usr_lib
+	find $DEST/usr/lib $DEST/lib -type f -name "*.a" \
+		-exec strip --strip-debug {} ';'
+	find $DEST/usr/lib $DEST/lib -type f -name "*.so*" ! -name "*dbg" \
+		-exec strip --strip-unneeded {} ';'
+	find $DEST/{bin,sbin} $DEST/usr/{bin,sbin,libexec} -type f \
+		-exec strip --strip-all {} ';'
+	find $DEST/ -type f -name "*.la" \
+		-delete
 }
 
-__getsrc(){
-	nothing
-}
-__unpacksrc(){
-	nothing
-}
-__preparesrc(){
-	nothing
-}
-__compilesrc(){
-	nothing
-}
-__stripbin(){
-save_lib="ld-2.32.so libc-2.32.so libpthread-2.32.so libthread_db-1.0.so"
-#PWD=$(pwd)
-pushd $DEST/lib 
-for LIB in $save_lib; do
-    objcopy --only-keep-debug $LIB $LIB.dbg 
-    strip --strip-unneeded $LIB
-    objcopy --add-gnu-debuglink=$LIB.dbg $LIB 
-done 
-popd
-save_usrlib="libquadmath.so.0.0.0 libstdc++.so.6.0.28
-             libitm.so.1.0.0 libatomic.so.1.2.0" 
+pack(){
+	pushd $PACKAGEDIR
+		echo "#!/bin/bash"			>> METADATA
+		echo "PKGNAME=\"$PACKAGE\""		>> METADATA
+		echo "VERSION=\"$VER\""			>> METADATA
+		echo "DESCRIPTION=\"$DESCRIPTION\""	>> METADATA
+		echo "MAINTAINER=\"$MAINTAINER\""	>> METADATA
+		echo "DEPENDS=(${DEPENDS[@]})"		>> METADATA
+		echo "CONFLICTS=(${CONFLICTS[@]})"	>> METADATA
+		echo "PROVIDES=(${PROVIDES[@]})"	>> METADATA
+		type pkg_preinstall 	|& sed '1d'	>> METADATA
+		type pkg_postinstall 	|& sed '1d'	>> METADATA
+		type pkg_preremove	|& sed '1d'	>> METADATA
+		type pkg_postremove	|& sed '1d'	>> METADATA
+		
+		tar cv --numeric-owner --owner=0 --group=0 -f $PACKAGE.hard METADATA
+		tar --append -f $PACKAGE.hard PAYLOAD.tar.xz
 
-pushd $DEST/usr/lib
-for LIB in $save_usrlib; do
-    objcopy --only-keep-debug $LIB $LIB.dbg
-    strip --strip-unneeded $LIB
-    objcopy --add-gnu-debuglink=$LIB.dbg $LIB
-done
-popd
-unset LIB save_lib save_usrlib
-#cd $PWD
-find $DEST/usr/lib -type f -name \*.a \
-   -exec strip --strip-debug {} ';'
+		gpg -s $PACKAGE.hard
+		mv $PACKAGE.hard.gpg ${PACKAGE}_${VER}.hard
 
-find $DEST/lib $DEST/usr/lib -type f -name \*.so* ! -name \*dbg \
-   -exec strip --strip-unneeded {} ';'
-
-find $DEST/{bin,sbin} $DEST/usr/{bin,sbin,libexec} -type f \
-    -exec strip --strip-all {} ';'
-}
-__installsrc(){
-	false 
+		rm PAYLOAD.tar.xz
+	popd &>/dev/null
 }
 
-__error(){
-	
-	echo -e "\a\033[41;1mError:\033[0m \033[32;1m$1:\033[0m\033[34;1m $2 \033[0m" 1>&2
-	
-	if [ "$TRACE" == "YES" ]; then
-		if ! [ -z "$(cat errors+supressed.log)" ] ; then
-			echo "Trace:" 1>&2
-			cat errors+supressed.log | tail 1>&2
-		fi
-	
-	fi
-	
-	exit 1
-}
-__pack(){
-cp -r "$1" "$WORKNAME"
-cd "$WORKNAME"
-
-cp $BUILDFILE .
-
-echo "$ARCH" > .ARCH_TYPE
-echo "$ACCESS" > .ACCESS 
-echo "$PACKAGE" > .PKGNAME
-echo "$MAINTAINER" > .MAINTAINER
-
-touch .DEPENDS .CONFLICTS
-for dependency in "${DEPENDS[@]}" ; do
-	echo "$dependency" >> .DEPENDS
-done
-for conflict in "${CONFLICTS[@]}" ; do
-	echo "$conflict" >> .CONFLICTS
-done
-
-if ! [ -z "$VER" ]; then
-	echo "$VER" > .VERSION
-	cd "PAYLOAD" 2>&3 || __error "pack" "cannot cd into PAYLOAD"
-	tar cvf "../PAYLOAD.tar" . || __error "pack" "cannot tar PAYLOAD"
-	cd ..
-	rm -rf "PAYLOAD"
-fi
-
-cd ..
-tar cvf "$WORKNAME".tar "$WORKNAME" --owner=0 --group=0
-xz -9e "$WORKNAME".tar -T $(nproc)
-
-if [ "$CRYPT" == "passwd" ] ; then
-	gpg -c "$WORKNAME".tar.xz
-elif [ "$CRYPT" == "key" ] ; then
- 	gpg -s "$WORKNAME".tar.xz
-fi 
-
-rm -rf "$WORKNAME" "$WORKNAME".tar.xz
-
-if [ -z "$VER" ] ; then
-	mv "$WORKNAME".tar.xz.gpg "$PACKAGE".hard
-else
-	mv "$WORKNAME".tar.xz.gpg "$PACKAGE"_"$VER".hard
-fi
-
-}
-__build(){
-
-[ -e "Buildfile" ] || __error "build" "no Buildfile"
-
-__bigPointer "Reading Buildfile"
-
-source "./Buildfile" || __error "build" "cannot source Buildfile"
-
-BUILDFILE="$(realpath ./Buildfile)"
-
-WORKNAME="HPKG_PAYLOAD"
-
-[ -z "$ARCH" ] && __error "Buildfile" "invalid syntax"
-[ -z "$ACCESS" ] && __error "Buildfile" "invalid syntax"
-[ -z "$PACKAGE" ] && __error "Buildfile" "invalid syntax"
-
-mkdir -p "$DEST"
-
-__bigPointer "Fetching source..."
-
-__getsrc || __error "get src" "cannot get sources"
-__bigPointer "Unpacking source..."
-__unpacksrc || __error "unpack src" "cannot unpack sources"
-
-cd $SRCDIR || __error "cd" "cannot cd to source dir"
-
-__bigPointer "Preparing source..."
-
-__preparesrc || __error "prepare src" "cannot prepare sources"
-__bigPointer "Compiling source..."
-__compilesrc || __error "compile src" "failed compile"
-__bigPointer "Installing image..."
-__installsrc || __error "install src" "failed install"
-__bigPointer "Stripping binaries..."
-__stripbin 2>/dev/null >/dev/null
-cd .. || __error "cd" "cannot cd up"
-
-__bigPointer "Creating package..."
-__pack "$RESDIR" || __error "pack" "general failure"
-
-}
-__cleanup(){
-	[ -e Buildfile ] || __error "cleanup" "no Buildfile"
-	source "./Buildfile" || __error "cleanup" "cannot source Buildfile"
-	rm -rf package $SRCDIR $SRCTGZ || echo "already clean"
-	true
-}
-__mrproper(){
-	[ -e Buildfile ] || __error "cleanup" "no Buildfile"	
-	source "./Buildfile" || __error "cleanup" "cannot source Buildfile"
-	rm -rf package $SRCDIR $SRCTGZ *.hard || echo "already clean"
-	__bigPointer "$(pwd) clean"
-	true
-}
-__installpkg(){
-	[ -e Buildfile ] || __error "cleanup" "no Buildfile"
-	source "./Buildfile" || __error "cleanup" "cannot source Buildfile"
-	[ -z "$PACKAGE" ] && __error "install" "build package first"
-	hpkg "$PACKAGE"_"$VER".hard
+build(){
+	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	{ [[ -z "$PACKAGE" ]] || \
+	  [[ -z "$VER" ]]; } && error "$_invalid_buildfile" "32"
+	declare -xf __installsrc
+	declare -xf __compilesrc
+	declare -xf strip_result
+	declare -xf error
+	declare -xf pointer
+	declare -xf warn
+	declare -xf is_true
+	PACKAGEDIR="$DISTDIR/$PACKAGE"
+	DEST="$PACKAGEDIR/root"
+	BUILDDIR="$PACKAGEDIR/build"
+	export DISTDIR
+	export PACKAGE
+	export PACKAGEDIR
+	export DEST
+	export BUILDDIR
+	export MAKEOPTS
+	export FD1
+	export SRCDIR CONFIGUREOPTS
+	export _stripping _cannot_install_into_package _cannot_strip _creating_package _cannot_pack_payload _cannot_compile_source failing_due_previous_errors
+	export POINTERCOLOR WARNCOLOR CLRCOLOR
+	mkdir -p $DEST $BUILDDIR
+	pushd $BUILDDIR &>/dev/null
+	pointer "$_running_getsrc..."
+	__getsrc 1>&${FD1} 2>&${FD1} || error "$_cannot_get_sources" "1"
+	pointer "$_running_unpacksrc..." 
+	__unpacksrc 1>&${FD1} 2>&${FD1} || error "$_cannot_unpack_sources" "1"
+	pushd $SRCDIR &>/dev/null
+	pointer "$_running_preparesrc..."
+	__preparesrc 1>&${FD1} 2>&${FD1} || error "$_cannot_prepare_source" "1"
+	pointer "$_running_compilesrc..."
+	popd &>/dev/null
+	popd &>/dev/null
+	fakeroot <<EOF
+	pushd $BUILDDIR &>/dev/null
+	pushd $SRCDIR	&>/dev/null
+	__compilesrc 1>&${FD1} 2>&${FD1} || error "$_cannot_compile_source" "1"
+	pointer "$_running_installsrc..."
+	__installsrc 	1>&${FD1} 2>&${FD1} || error "$_cannot_install_into_package" "1"
+	pointer "$_stripping..." 
+	strip_result 	1>&${FD1} 2>&${FD1} || error "$_cannot_strip" "1"
+	popd 		&>/dev/null
+	popd 		&>/dev/null
+	pointer "$_creating_package..."
+	pushd $DEST 	&>/dev/null
+		tar cvpJf $PACKAGEDIR/PAYLOAD.tar.xz . 1>&${FD1} 2>&${FD1} || error "$_cannot_pack_payload" "1"
+	popd 		&>/dev/null
+EOF
+	pack 		1>&${FD1} 2>&${FD1} || error "$_cannot_create_package" "1"
 }
 
-for i in $@ ; do
-	case $1 in
-		install)
-			__installpkg
-			;;
-		cleanup)
-			__cleanup
-			;;
-		distclean)
-			__mrproper
-			;;
-		*)
-			__build
-			;;
-	esac
-done
+clean(){
+	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	PACKAGEDIR="$DISTDIR/$PACKAGE"
+	DEST="$PACKAGEDIR/root"
+	BUILDDIR="$PACKAGEDIR/build"
+	rm -rf $BUILDDIR
+	rm -rf $DEST
+}
+
+build_clean(){
+	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	PACKAGEDIR="$DISTDIR/$PACKAGE"
+	DEST="$PACKAGEDIR/root"
+	BUILDDIR="$PACKAGEDIR/build"
+	rm -rf $BUILDDIR
+}
+
+mrproper(){
+	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	PACKAGEDIR="$DISTDIR/$PACKAGE"
+	DEST="$PACKAGEDIR/root"
+	BUILDDIR="$PACKAGEDIR/build"
+	rm -rf $PACKAGEDIR
+}
+
+[[ -z "$*" ]] && usage
+{ [[ "$1" == "--help" ]] || [[ "$1" == "--usage" ]]; } && usage
+[[ "$1" == "--version" ]] && version
+
+
+case $1 in 
+	build)	build;;
+	pack)
+		cd $2
+		{
+			. ./METADATA || error "$_cannot_source_metadata" "32"
+			tar cvf "package.tar" METADATA
+			cd root
+			tar cvpJf ../PAYLOAD.tar.xz .
+			cd ..
+			tar --append -f package.tar PAYLOAD.tar.xz
+			gpg -s package.tar
+			mv package.tar.gpg ../${PKGNAME}_${VER}.hard
+		} >&${FD1}
+		cd ..
+		exit 0;;
+	install)
+		. ./Buildfile || error "$_cannot_source_buildfile" "32"
+		hpkg -p $DISTDIR/$PKGNAME/*.hard || error $_cannot_install_package "1";;
+	clean) 		clean;;
+	build_clean) 	build_clean;;
+	mrproper) 	mrproper;;
+esac
+

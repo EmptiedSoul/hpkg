@@ -1,0 +1,55 @@
+#!/bin/bash
+
+. /usr/lib/hpkglib.sh
+
+usage(){
+printf "\
+$_hpkg_info\n\
+\n\
+$_hpkg_info_desc\n\
+\n\
+$Options:\n\
+  -V | --version	$print_version_info_and_exit\n\
+  -h | --help | --usage	$print_this_help\n\
+  -d			$_dump_metadata\n\
+  -a			$_print_fully\n\
+  -k			$_key\n\
+  -o			$_output\n\
+\n\
+$More_information_available_at_hpkg_info8\n\
+$Copyright_and_licensing_information_available_with_option_version\n"
+exit 0
+}
+
+[[ -z "$*" ]] && usage
+{ [[ "$1" == "--usage" ]] || [[ "$1" == "--help" ]]; } && usage
+[[ "$1" == "--version" ]] && version
+
+while getopts ":Vhdak:o:p:" opt
+do
+case $opt in
+	V)	version;;
+	h)	usage;;
+	d)	DUMP="YES";;
+	a)	ALL="YES";;
+	k)	KEY="$OPTARG";;
+	o)	exec 1>$OPTARG;;
+	p)	PKG="$OPTARG";;
+	:)	;& # FALLTHROUGH
+	*)	case "$OPTARG" in
+			k)	error "$Option \'-k\' $requires <$_key_opt>. $Consult_usage_or_hpkg_info8" "32" ;;
+			o)	error "$Option \'-o\' $requires <$_output_opt>. $Consult_usage_or_hpkg_info8" "32" ;;	
+			p)	error "$Option \'-p\' $requires <$Package>. $Consult_usage_or_hpkg_info8" "32" ;;
+			*)	error "$Unknown_option: -$OPTARG. $Consult_usage_or_hpkg_info8" "32" ;;
+		esac
+	;;
+esac
+done 
+
+[[ -z "$PKG" ]] && error "$Package $is_not_set. $Consult_usage_or_hpkg_info8" "32"
+[[ -e "$PKG" ]] || error "$Package \"$PKG\" $does_not_exist" "1"
+[[ "$PKG" != *.hard ]] && error "\"$PKG\" $is_not_a_hard_package" "1"
+
+# int main() {
+
+

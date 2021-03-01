@@ -1,0 +1,169 @@
+#!/bin/bash
+
+log(){
+	local DATE=$(date)
+	printf "[ %s ] %s\n" "$DATE" "$1" >> /var/log/packages
+}
+
+. /usr/lib/hpkglib.sh
+ERRCODE=0
+usage(){
+printf "\
+$hpkg_install_pkgs\n\
+\n\
+$hpkg_desc\n\
+\n\
+$Options:\n\
+  -V | --version	$print_version_info_and_exit\n\
+  -h | --help | --usage $print_this_help\n\
+  -v			$be_verbose\n\
+  -s			$be_silent\n\
+  -d			$as_dependency\n\
+  -n			$no_run_hooks\n\
+  -f			$_force
+  -P			$_pretend\n\
+  $copt	$install_in_dir\n\
+  $popt		$package_to_be_installed\n\
+\n\
+$More_information_available_at_hpkg8\n\
+$Copyright_and_licensing_information_available_with_option_version\n"
+exit 0
+}
+
+[[ -z "$*" ]] && usage
+{ [[ "$1" == "--usage" ]] || [[ "$1" == "--help" ]]; } && usage
+[[ "$1" == "--version" ]] && version
+
+while getopts ":vsdnfhPVC:p:" opt
+do
+case $opt in
+	v)
+		VERBOSE="YES";;
+	s)
+		exec 1>&3
+		exec 2>&3
+		;;
+	f)
+		SLACK="YES";;
+	V)
+		version;;
+	h)
+		usage;;
+	P)
+		PRETEND="YES";;
+	d)
+		ASDEP="YES";;
+	n)
+		NOHOOK="YES";;
+	C)
+		ROOT="$OPTARG";;
+	p)
+		PKG="$OPTARG";;
+	:)
+		;& # FALLTHROUGH
+	*)
+		if	[[ "$OPTARG" == "C" ]]; then # If there is -C option, not followed by DIR
+			error "$Option \'-C\' $requires $root_set. $Consult_usage_or_hpkg8" "32"
+		elif	[[ "$OPTARG" == "p" ]]; then # If there is -p option, not followed by PKG
+			error "$Option \'-p\' $requires <$Package>. $Consult_usage_or_hpkg8" "32"
+		else
+			error "$Unknown_option: -$OPTARG. $Consult_usage_or_hpkg8" "32"
+		fi
+	;;
+esac
+done
+
+[[ -z "$PKG" ]] && error "$Package $is_not_set. $Consult_usage_or_hpkg8" "32"
+[[ -e "$PKG" ]] || error "$Package \"$PKG\" $does_not_exist" "1"
+[[ "$PKG" != *.hard ]] && error "\"$PKG\" $is_not_a_hard_package" "1"
+is_true "$PRETEND" || {
+	[[ "$UID" != "0" ]] && error "$need_root_permissions" "32" 
+}
+# int main()
+FD1=1
+FD2=2
+is_true "$VERBOSE" || { FD1=3; FD2=3; } # Supress FDs if -v is not passed
+
+pointer "$Reading_metadata..."
+
+PKGDEC="/tmp/${RANDOM}${PKG}.decrypted"
+PKGMET="/tmp/${RANDOM}${PKG}.metadata"
+
+gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || warn "$Package_cannot_be_verified"
+{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
+
+is_true "$CORRUPTED" && error "$Package $is_corrupted" "4"
+. "$PKGMET" || error "$Package $is_corrupted" "4"
+
+is_true "$SLACK" && warn "$_slack_warning"
+is_true "$SLACK" || {
+
+for dependency in "${DEPENDS[@]}"
+do
+	grep "^$dependency" -qr $ROOT/var/hpkg/packages-provides/ || \
+		{ find $ROOT/var/hpkg/packages -name "$dependency" | grep "."; } || {
+			is_true "$PRETEND" || \
+			echo | hardman install $dependency || {
+			error "$Couldnt_resolve_dependency: $dependency, $needed_for $PKGNAME" "8"
+			}
+		}
+done
+
+for conflict in "${CONFLICTS[@]}"
+do
+	{ find $ROOT/var/hpkg/packages -name "$conflict" | grep "."; } && {
+		error "$_Conflict: $conflict" "16"	
+	}
+done
+
+grep -qr "^$PKGNAME" $ROOT/var/hpkg/packages-conflicts && \
+error "$_Conflict: $(grep -r "^$PKGNAME" $ROOT/var/hpkg/packages-conflicts/ | sed -e 's/:.*//' -e 's|.*/||' -e 's/.CONFLICTS//')" "16"
+}
+
+is_true "$PRETEND" && exit
+
+is_true "$PREINST" && { pointer "$Running_script"; pkg_preinstall || warn "$Preinst_failed"; }
+
+pointer "$Installing_package..."
+
+{ tar xvf "$PKGDEC" PAYLOAD.tar.xz -O | tar xpvJ -C "$ROOT" --numeric-owner; } 2>&${FD2} 1>&${FD1} && {
+  tar xvf "$PKGDEC" PAYLOAD.tar.xz -O | tar -J --list > $ROOT/var/hpkg/installed-files/$PKGNAME-$VERSION.list
+	cp $PKGMET  $ROOT/var/hpkg/packages/$PKGNAME
+	
+	printf "" > $ROOT/var/hpkg/packages-dependecies/$PKGNAME
+	printf "" > $ROOT/var/hpkg/packages-conflicts/$PKGNAME
+	printf "" > $ROOT/var/hpkg/packages-provides/$PKGNAME
+	
+	for dependency in "${DEPENDS[@]}"
+	do
+		printf "%s\n" "$dependency" >> $ROOT/var/hpkg/packages-dependencies/$PKGNAME
+	done
+
+	for conflict in "${CONFLICTS[@]}"
+	do
+		printf "%s\n" "$conflict" >> $ROOT/var/hpkg/packages-conflicts/$PKGNAME
+	done
+
+	for providence in "${PROVIDES[@]}"
+	do
+		printf "%s\n" "$providence" >> $ROOT/var/hpkg/packages-provides/$PKGNAME
+	done
+	
+	is_true "$ASDEP" && ln -sv $ROOT/var/hpkg/packages/$PKGNAME $ROOT/var/hpkg/as-dep/$PKGNAME
+
+} 2>&${FD2} 1>&${FD1}
+
+log "installed $PKGNAME"
+ 
+is_true "$NOHOOK" || {
+	pointer "$Running_hooks..."
+	for hook in "$(ls -1 $ROOT/etc/hpkg/hooks/*.hook)"
+	do
+		$hook || warn "$Hook_failed: $hook"
+	done
+} 
+
+is_true "$POSTINST" && { pointer "$Running_postinst..."; pkg_postinstall || warn "$Post_failed"; }
+
+exit 0;
+

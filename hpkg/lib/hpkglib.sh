@@ -18,6 +18,9 @@
 ##      8 - (installer) cannot resolve dependencies
 ##      16 - (installer) conflicting packages
 
+# shellcheck disable=2059
+
+
 ## Here's definition of functions shared with hpkg, hardman and other hardclanz' utilities
 
 POINTERCOLOR="\e[34;1m"
@@ -33,7 +36,7 @@ exec 3>/var/hpkg/supressed						# Opening file for further output redirection
 LC_ALL=C								# As msgs are already localized we dont need any other locales
 									# So lets fall back to default C locale to speed up our script
 sleep(){
-	read -t "$1" -u $sleeper
+	read -rt "$1" -u $sleeper
 }
 errlog(){
 	printf "${FUNCNAME[1]}: $1" >&3
@@ -52,7 +55,7 @@ pointer(){
 	printf "${POINTERCOLOR}==>${CLRCOLOR} $1\n"			# ==> Doing something
 }
 warn(){
-	printf "${WARNCOLOR}!  ${CLRCOLOR} $1\n"			# ! Alarm
+	printf "${WARNCOLOR}<!>${CLRCOLOR} $1\n" >&2			# ! Alarm
 }
 error(){
 	warn "$1"                       				# Saying error
@@ -65,7 +68,7 @@ error(){
 		warn "--- Trace ---"
 	fi
 	warn "($2) $failing_due_previous_errors"			# Saying exit code
-	exit $2								# Going down
+	exit "$2"							# Going down
 }
 version(){
 	printf "$this_is ${0##*/} $from hpkg-utils\n\n\
