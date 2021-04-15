@@ -9,24 +9,24 @@ log(){
 ERRCODE=0
 usage(){
 printf "\
-$hpkg_install_pkgs\n\
+$(i18n "hpkg - install .hard package")\n\
 \n\
-$hpkg_desc\n\
+$(i18n "hpkg [options] -p <package>")\n\
 \n\
-$Options:\n\
-  -V | --version	$print_version_info_and_exit\n\
-  -h | --help | --usage $print_this_help\n\
-  -v			$be_verbose\n\
-  -s			$be_silent\n\
-  -d			$as_dependency\n\
-  -n			$no_run_hooks\n\
-  -f			$_force
-  -P			$_pretend\n\
-  $copt	$install_in_dir\n\
-  $popt		$package_to_be_installed\n\
+$(i18n "Options"):\n\
+  -V | --version	$(i18n "Print version info and exit")\n\
+  -h | --help | --usage $(i18n "Print this help")\n\
+  -v			$(i18n "Be verbose")\n\
+  -s			$(i18n "Be silent")\n\
+  -d			$(i18n "Install as dependency")\n\
+  -n			$(i18n "Disable hooks")\n\
+  -f			$(i18n "Do not resolve dependencies and conflicts")
+  -P			$(i18n "Do not really install package")\n\
+  $(i18n "-C <directory>")	$(i18n "Install in <directory>")\n\
+  $(i18n "-p <package>")		$(i18n "Specify package to install")\n\
 \n\
-$More_information_available_at_hpkg8\n\
-$Copyright_and_licensing_information_available_with_option_version\n"
+$(i18n "More information available at hpkg(8) manpage")\n\
+$(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
 exit 0
 }
 
@@ -63,92 +63,87 @@ case $opt in
 		;& # FALLTHROUGH
 	*)
 		if	[[ "$OPTARG" == "C" ]]; then # If there is -C option, not followed by DIR
-			error "$Option \'-C\' $requires $root_set. $Consult_usage_or_hpkg8" "32"
+			error "$(i18n "Option") \'-C\' $(i18n "requires") $(i18n "<directory> argument"). $(i18n "Consult a manpage or '--help' option")" "32"
 		elif	[[ "$OPTARG" == "p" ]]; then # If there is -p option, not followed by PKG
-			error "$Option \'-p\' $requires <$Package>. $Consult_usage_or_hpkg8" "32"
+			error "$(i18n "Option") \'-p\' $(i18n "requires") $(i18n "<package> argument"). $(i18n "Consult a manpage or '--help' option")" "32"
 		else
-			error "$Unknown_option: -$OPTARG. $Consult_usage_or_hpkg8" "32"
+			error "$(i18n "Unknown option"): -$OPTARG. $(i18n "Consult a manpage or '--help' option")" "32"
 		fi
 	;;
 esac
 done
 
-[[ -z "$PKG" ]] && error "$Package $is_not_set. $Consult_usage_or_hpkg8" "32"
-[[ -e "$PKG" ]] || error "$Package \"$PKG\" $does_not_exist" "1"
-[[ "$PKG" != *.hard ]] && error "\"$PKG\" $is_not_a_hard_package" "1"
+[[ -z "$PKG" ]] && error "$(i18n "Package is not set"). $(i18n "Consult a manpage or '--help' option")" "32"
+[[ -e "$PKG" ]] || error "$PKG: $(i18n "No such package")" "1"
+[[ "$PKG" != *.hard ]] && error "\"$PKG\" $(i18n "is not a .hard package")" "1"
 is_true "$PRETEND" || {
-	[[ "$UID" != "0" ]] && error "$need_root_permissions" "32" 
+	[[ "$UID" != "0" ]] && error "$(i18n "You need root permissions for this action")" "32" 
 }
 # int main()
 FD1=1
 FD2=2
 is_true "$VERBOSE" || { FD1=3; FD2=3; } # Supress FDs if -v is not passed
 
-pointer "$Reading_metadata..."
+pointer "$(i18n "Reading metadata")..."
 
 PKGDEC="/tmp/${RANDOM}${PKG}.decrypted"
 PKGMET="/tmp/${RANDOM}${PKG}.metadata"
 
-gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || warn "$Package_cannot_be_verified"
-{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
+gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
 
-is_true "$CORRUPTED" && error "$Package $is_corrupted" "4"
-. "$PKGMET" || error "$Package $is_corrupted" "4"
+is_true "$NOTSIGNED" || \
+	{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
+is_true "$NOTSIGNED" && \
+	{ cat    "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
 
-is_true "$SLACK" && warn "$_slack_warning"
+
+is_true "$CORRUPTED" && error "$(i18n "Package is corrupted")" "4"
+. "$PKGMET" || error "$(i18n "Package is corrupted")" "4"
+
+is_true "$SLACK" && warn "$(i18n "Dependency tracking disabled")"
 is_true "$SLACK" || {
 
 for dependency in "${DEPENDS[@]}"
 do
-	grep "^$dependency" -qr $ROOT/var/hpkg/packages-provides/ || \
-		{ find $ROOT/var/hpkg/packages -name "$dependency" | grep "."; } || {
-			is_true "$PRETEND" || \
-			echo | hardman install $dependency || {
-			error "$Couldnt_resolve_dependency: $dependency, $needed_for $PKGNAME" "8"
-			}
-		}
+	{ [[ -f "$ROOT/var/hpkg/packages-provides/*/$dependency" ]] || [[ -f "$ROOT/var/hpkg/packages/$dependency" ]]; } || {
+		{ is_true "$PRETEND" || ${HARDMAN_NON_INTERACTIVE_INSTALL} $dependency; } || error "$(i18n "Can not resolve dependency"): $dependency $(i18n "needed for") $PKGNAME" "8" 
+	}
+
 done
 
 for conflict in "${CONFLICTS[@]}"
 do
-	{ find $ROOT/var/hpkg/packages -name "$conflict" | grep "."; } && {
-		error "$_Conflict: $conflict" "16"	
-	}
+	[[ -f "$ROOT/var/hpkg/packages/$conflict" ]] && error "$(i18n "Conflict"): $conflict"
 done
 
-grep -qr "^$PKGNAME" $ROOT/var/hpkg/packages-conflicts && \
-error "$_Conflict: $(grep -r "^$PKGNAME" $ROOT/var/hpkg/packages-conflicts/ | sed -e 's/:.*//' -e 's|.*/||' -e 's/.CONFLICTS//')" "16"
+[[ -f "$ROOT/var/hpkg/packages-conflicts/*/$PKGNAME" ]] && \
+error "$(i18n "Installed package conflicts with $PKGNAME")" "16"
 }
 
 is_true "$PRETEND" && exit
 
-is_true "$PREINST" && { pointer "$Running_script"; pkg_preinstall || warn "$Preinst_failed"; }
+type pkg_preinstall 1>&${FD1} 2>&${FD2} && { pointer "$(i18n "Running 'pkg_preinstall'")"; pkg_preinstall || warn "$(i18n "'pkg_preinstall' exited with non-zero code")"; }
 
-pointer "$Installing_package..."
+pointer "$(i18n "Installing package")..."
 
-{ tar xvf "$PKGDEC" PAYLOAD.tar.xz -O | tar xpvJ -C "$ROOT" --numeric-owner; } 2>&${FD2} 1>&${FD1} && {
-  tar xvf "$PKGDEC" PAYLOAD.tar.xz -O | tar -J --list > $ROOT/var/hpkg/installed-files/$PKGNAME-$VERSION.list
+{ tar xvf "$PKGDEC" PAYLOAD.tar.zst -O | tar xpv --zstd -C "$ROOT" --numeric-owner > $ROOT/var/hpkg/installed-files/$PKGNAME-$VERSION.list; } 2>&${FD2} 1>&${FD1} && { 	  	
 	cp $PKGMET  $ROOT/var/hpkg/packages/$PKGNAME
 	
-	printf "" > $ROOT/var/hpkg/packages-dependecies/$PKGNAME
-	printf "" > $ROOT/var/hpkg/packages-conflicts/$PKGNAME
-	printf "" > $ROOT/var/hpkg/packages-provides/$PKGNAME
-	
-	for dependency in "${DEPENDS[@]}"
-	do
-		printf "%s\n" "$dependency" >> $ROOT/var/hpkg/packages-dependencies/$PKGNAME
-	done
+	mkdir -p $ROOT/var/hpkg/packages-dependencies/$PKGNAME
+	pushd $_
+	touch ${DEPENDS[@]} 
+	popd
 
-	for conflict in "${CONFLICTS[@]}"
-	do
-		printf "%s\n" "$conflict" >> $ROOT/var/hpkg/packages-conflicts/$PKGNAME
-	done
+	mkdir -p $ROOT/var/hpkg/packages-conflicts/$PKGNAME
+	pushd $_
+	touch ${CONFLICTS[@]} 
+	popd
 
-	for providence in "${PROVIDES[@]}"
-	do
-		printf "%s\n" "$providence" >> $ROOT/var/hpkg/packages-provides/$PKGNAME
-	done
-	
+	mkdir -p $ROOT/var/hpkg/packages-provides/$PKGNAME
+	pushd $_
+	touch ${PROVIDES[@]} 
+	popd
+
 	is_true "$ASDEP" && ln -sv $ROOT/var/hpkg/packages/$PKGNAME $ROOT/var/hpkg/as-dep/$PKGNAME
 
 } 2>&${FD2} 1>&${FD1}
@@ -156,14 +151,14 @@ pointer "$Installing_package..."
 log "installed $PKGNAME"
  
 is_true "$NOHOOK" || {
-	pointer "$Running_hooks..."
+	pointer "$(i18n "Running hooks")..."
 	for hook in "$(ls -1 $ROOT/etc/hpkg/hooks/*.hook)"
 	do
-		$hook || warn "$Hook_failed: $hook"
+		$hook || warn "$(i18n "Hook exited with non-zero code"): $hook"
 	done
 } 
 
-is_true "$POSTINST" && { pointer "$Running_postinst..."; pkg_postinstall || warn "$Post_failed"; }
+type pkg_postinstall 1>&${FD1} 2>&${FD2}&& { pointer "$(i18n "Running 'pkg_postinstall'")..."; pkg_postinstall || warn "$(i18n "'pkg_postinstall' exited with non-zero code")"; }
 
 exit 0;
 

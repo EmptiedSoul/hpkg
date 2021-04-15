@@ -23,15 +23,15 @@ do
 done
 
 printf "Installing hpkg source...\n"
-cp -rv hpkg $ROOT/usr/src/hpkg/
+cp -fprv hpkg $ROOT/usr/src/hpkg/
 printf "Installing control source...\n"
-cp -rv control $ROOT/usr/src/hpkg/
+cp -fprv control $ROOT/usr/src/hpkg/
 printf "Installing packing source...\n"
-cp -rv packing $ROOT/usr/src/hpkg/
+cp -fprv packing $ROOT/usr/src/hpkg/
 printf "Installing documentation...\n"
-cp -v doc/man/* $ROOT/usr/share/man/man8/
+cp -fpv doc/man/* $ROOT/usr/share/man/man8/
 printf "Creating symlinks...\n"
-cp -r .git $ROOT/usr/src/hpkg/
+cp -fpr .git $ROOT/usr/src/hpkg/
 ln -sfv /usr/src/hpkg/hpkg/hpkg			$ROOT/usr/bin/hpkg
 ln -sfv /usr/src/hpkg/hpkg/lib/hpkglib.sh	$ROOT/usr/lib/hpkglib.sh
 #ln -sfv /usr/src/hpkg/control/hardman.sh /usr/bin/hardman

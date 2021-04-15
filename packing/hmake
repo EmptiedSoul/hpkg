@@ -24,25 +24,25 @@ __installsrc()	{	false;	}
 
 usage(){
 printf "\
-$_hmake_make_hards\n\
+$(i18n "hmake - create .hard package")\n\
 \n\
-$_hmake_synt\n\
+$(i18n "hmake <command>")\n\
 \n\
-$Options:\n\
-  build		$_hmake_build\n\
-  pack		$_hmake_pack\n\
-  clean		$_hmake_clean\n\
-  build_clean	$_hmake_build_clean\n\
-  mrproper	$_hmake_mrproper\n\
-  install	$_hmake_install\n\
+$(i18n "Commands"):\n\
+  build			$(i18n "Read Buildfile and build package")\n\
+  pack $(i18n "<directory>")	$(i18n "Create package from given directory")\n\
+  clean			$(i18n "Clean build and destination directories")\n\
+  build_clean		$(i18n "Like 'clean' but keep destination directory")\n\
+  mrproper		$(i18n "Completely purge everyrhing related to package")\n\
+  install		$(i18n "Install built package")\n\
 \n\
-$More_information_available_at_hmake8\n\
-$Copyright_information_available_with_option_version\n"
+$(i18n "More information available at hmake(1) manpage")\n\
+$(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
 exit 0
 }
 
 strip_result(){
-	local save_lib="ld* libc*o libpthread* libthread_db*"
+	local save_lib="ld* libc* libpthread* libthread_db*"
 	pushd $DEST/lib
 		for LIB in $save_lib; do
 			objcopy --only-keep-debug $LIB $LIB.dbg
@@ -85,71 +85,59 @@ pack(){
 		type pkg_postremove	|& sed '1d'	>> METADATA
 		
 		tar cv --numeric-owner --owner=0 --group=0 -f $PACKAGE.hard METADATA
-		tar --append -f $PACKAGE.hard PAYLOAD.tar.xz
+		tar --append -f $PACKAGE.hard PAYLOAD.tar.zst
 
 		gpg -s $PACKAGE.hard
 		mv $PACKAGE.hard.gpg ${PACKAGE}_${VER}.hard
 
-		rm PAYLOAD.tar.xz
+		rm PAYLOAD.tar.zst
 	popd &>/dev/null
 }
 
 build(){
-	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	. ./Buildfile || error "$(i18n "Cannot read Buildfile")" "32"
 	{ [[ -z "$PACKAGE" ]] || \
-	  [[ -z "$VER" ]]; } && error "$_invalid_buildfile" "32"
-	declare -xf __installsrc
-	declare -xf __compilesrc
-	declare -xf strip_result
-	declare -xf error
-	declare -xf pointer
-	declare -xf warn
-	declare -xf is_true
+	  [[ -z "$VER" ]]; } && error "$(i18n "Invalid Buildfile")" "32"
+	declare -xf __installsrc __compilesrc strip_result error pointer warn is_true i18n
 	PACKAGEDIR="$DISTDIR/$PACKAGE"
 	DEST="$PACKAGEDIR/root"
 	BUILDDIR="$PACKAGEDIR/build"
-	export DISTDIR
-	export PACKAGE
-	export PACKAGEDIR
-	export DEST
-	export BUILDDIR
-	export MAKEOPTS
-	export FD1
-	export SRCDIR CONFIGUREOPTS
-	export _stripping _cannot_install_into_package _cannot_strip _creating_package _cannot_pack_payload _cannot_compile_source failing_due_previous_errors
-	export POINTERCOLOR WARNCOLOR CLRCOLOR
+	export DISTDIR PACKAGE PACKAGEDIR DEST BUILDDIR MAKEOPTS FD1 FD2 SRCDIR CONFIGUREOPTS POINTERCOLOR WARNCOLOR CLRCOLOR
 	mkdir -p $DEST $BUILDDIR
 	pushd $BUILDDIR &>/dev/null
-	pointer "$_running_getsrc..."
-	__getsrc 1>&${FD1} 2>&${FD1} || error "$_cannot_get_sources" "1"
-	pointer "$_running_unpacksrc..." 
-	__unpacksrc 1>&${FD1} 2>&${FD1} || error "$_cannot_unpack_sources" "1"
+	pointer "$(i18n "Running getsrc()")..."
+	__getsrc 1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to get sources")" "1"
+	pointer "$(i18n "Running unpacksrc()")..." 
+	__unpacksrc 1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to unpack sources")" "1"
 	pushd $SRCDIR &>/dev/null
-	pointer "$_running_preparesrc..."
-	__preparesrc 1>&${FD1} 2>&${FD1} || error "$_cannot_prepare_source" "1"
-	pointer "$_running_compilesrc..."
+	pointer "$(i18n "Running preparesrc()")..."
+	__preparesrc 1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to prepare sources")" "1"
 	popd &>/dev/null
 	popd &>/dev/null
+	pointer "$(i18n "Entering chroot environment")..."
 	fakeroot <<EOF
 	pushd $BUILDDIR &>/dev/null
 	pushd $SRCDIR	&>/dev/null
-	__compilesrc 1>&${FD1} 2>&${FD1} || error "$_cannot_compile_source" "1"
-	pointer "$_running_installsrc..."
-	__installsrc 	1>&${FD1} 2>&${FD1} || error "$_cannot_install_into_package" "1"
-	pointer "$_stripping..." 
-	strip_result 	1>&${FD1} 2>&${FD1} || error "$_cannot_strip" "1"
+	pointer "$(i18n "Running compilesrc()")"
+	__compilesrc 1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to compile sources")" "1"
+	pointer "$(i18n "Running installsrc()")..."
+	__installsrc 	1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to install into package")" "1"
+	pointer "$(i18n "Stripping")..." 
+	strip_result 	1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to strip")" "1"
 	popd 		&>/dev/null
 	popd 		&>/dev/null
-	pointer "$_creating_package..."
+	pointer "$(i18n "Creating package")..."
 	pushd $DEST 	&>/dev/null
-		tar cvpJf $PACKAGEDIR/PAYLOAD.tar.xz . 1>&${FD1} 2>&${FD1} || error "$_cannot_pack_payload" "1"
+		tar cvp -I "zstd -10" -f $PACKAGEDIR/PAYLOAD.tar.zst . 1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to create package")" "1"
 	popd 		&>/dev/null
 EOF
-	pack 		1>&${FD1} 2>&${FD1} || error "$_cannot_create_package" "1"
+	pointer "$(i18n "Leaving chroot environment")..."
+	pointer "$(i18n "Signing package")..."
+	pack 		1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to create package")" "1"
 }
 
 clean(){
-	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	. ./Buildfile || error "$(i18n "Can not read Buildfile")" "32"
 	PACKAGEDIR="$DISTDIR/$PACKAGE"
 	DEST="$PACKAGEDIR/root"
 	BUILDDIR="$PACKAGEDIR/build"
@@ -158,7 +146,7 @@ clean(){
 }
 
 build_clean(){
-	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	. ./Buildfile || error "$(i18n "Can not read Buildfile")" "32"
 	PACKAGEDIR="$DISTDIR/$PACKAGE"
 	DEST="$PACKAGEDIR/root"
 	BUILDDIR="$PACKAGEDIR/build"
@@ -166,7 +154,7 @@ build_clean(){
 }
 
 mrproper(){
-	. ./Buildfile || error "$_cannot_source_buildfile" "32"
+	. ./Buildfile || error "$(i18n "Can not read Buildfile")" "32"
 	PACKAGEDIR="$DISTDIR/$PACKAGE"
 	DEST="$PACKAGEDIR/root"
 	BUILDDIR="$PACKAGEDIR/build"
@@ -183,7 +171,7 @@ case $1 in
 	pack)
 		cd $2
 		{
-			. ./METADATA || error "$_cannot_source_metadata" "32"
+			. ./METADATA || error "$(i18n "Can not read METADATA")" "32"
 			tar cvf "package.tar" METADATA
 			cd root
 			tar cvpJf ../PAYLOAD.tar.xz .
@@ -195,8 +183,8 @@ case $1 in
 		cd ..
 		exit 0;;
 	install)
-		. ./Buildfile || error "$_cannot_source_buildfile" "32"
-		hpkg -p $DISTDIR/$PKGNAME/*.hard || error $_cannot_install_package "1";;
+		. ./Buildfile || error "$(i18n "Can not read Buildfile")" "32"
+		hpkg -p $DISTDIR/$PKGNAME/*_*.hard || error "$(i18n "Can not install package")" "1";;
 	clean) 		clean;;
 	build_clean) 	build_clean;;
 	mrproper) 	mrproper;;

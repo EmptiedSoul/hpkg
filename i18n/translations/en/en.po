@@ -1,255 +1,441 @@
-# English translations for PACKAGE package.
-# Copyright (C) 2021 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Translation file for hpkg - hard packager.
+# Copyright (C) 2020-2021 Arseniy 'emptiedsoul' Lesin
+# This file is distributed under the same license as the hpkg package.
+# Arseniy Lesin <emptiedsoul@hardclanz.site> 2020-2021.
 #
-#  <emptiedsoul@hardclanz.site>, 2021.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: hpkg 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-15 22:05+0300\n"
-"PO-Revision-Date: 2021-02-15 22:51+0300\n"
-"Last-Translator: emptiedsoul <emptiedsoul@hardclanz.site>\n"
-"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
-"Language: en\n"
+"POT-Creation-Date: 2021-03-23 21:14+0300\n"
+"PO-Revision-Date: 2021-03-23 21:22+0300\n"
+"Last-Translator: Арсений Лесин <emptiedsoul@hardclanz.site>\n"
+"Language-Team: English\n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=US-ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 20.08.3\n"
 
-#: /etc/hpkg/hpkg.locale:8
-msgid "Failing due previous errors"
-msgstr "Failing due previous errors"
-
-#: /etc/hpkg/hpkg.locale:9
-msgid "File not found"
-msgstr "File not found"
-
-#: /etc/hpkg/hpkg.locale:10
-msgid "This is"
-msgstr "This is"
-
-#: /etc/hpkg/hpkg.locale:11
-msgid "from"
-msgstr "from"
-
-#: /etc/hpkg/hpkg.locale:12
-msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
-msgstr "License: GPLv3 or newer: <https://gnu.org/licenses>"
-
-#: /etc/hpkg/hpkg.locale:13
-msgid ""
-"This is free software: You are free to run, inspect, modify and distribute "
-"the source code"
-msgstr ""
-"This is free software: You are free to run, inspect, modify and distribute "
-"the source code"
-
-#: /etc/hpkg/hpkg.locale:14
-msgid "NO WARRANTY AT ALL"
-msgstr "NO WARRANTY AT ALL"
-
-#: /etc/hpkg/hpkg.locale:15
-msgid "hpkg-explode - rawly extract .hard archive"
-msgstr "hpkg-explode - rawly extract .hard archive"
-
-#: /etc/hpkg/hpkg.locale:16
-msgid "hpkg-explode <options> -p PACKAGE"
-msgstr "hpkg-explode <options> -p PACKAGE"
-
-#: /etc/hpkg/hpkg.locale:17
-msgid "Options"
-msgstr "Options"
-
-#: /etc/hpkg/hpkg.locale:18
-msgid "-C <directory>"
-msgstr "-C <directory>"
-
-#: /etc/hpkg/hpkg.locale:19
-msgid "-p <package>"
-msgstr "-p <package>"
-
-#: /etc/hpkg/hpkg.locale:20
-msgid "Print version info and exit"
-msgstr "Print version info and exit"
-
-#: /etc/hpkg/hpkg.locale:21
-msgid "Print this help"
-msgstr "Print this help"
-
-#: /etc/hpkg/hpkg.locale:22
-msgid "Be verbose"
-msgstr "Be verbose"
-
-#: /etc/hpkg/hpkg.locale:23
-msgid "Be silent"
-msgstr "Be silent"
-
-#: /etc/hpkg/hpkg.locale:24
-msgid "Also extract PAYLOAD.tar"
-msgstr "Also extract PAYLOAD.tar"
-
-#: /etc/hpkg/hpkg.locale:25
-msgid "Extract in <directory>"
-msgstr "Extract in <directory>"
-
-#: /etc/hpkg/hpkg.locale:26
-msgid "Package to be extracted"
-msgstr "Package to be extracted"
-
-#: /etc/hpkg/hpkg.locale:27
-msgid "More information available at hpkg-explode(8)"
-msgstr "More information available at hpkg-explode(8)"
-
-#: /etc/hpkg/hpkg.locale:28
-msgid "Copyright and licensing information available with option --version"
-msgstr "Copyright and licensing information available with option --version"
-
-#: /etc/hpkg/hpkg.locale:29
-msgid "Option"
-msgstr "Option"
-
-#: /etc/hpkg/hpkg.locale:30
-msgid "requires"
-msgstr "requires"
-
-#: /etc/hpkg/hpkg.locale:31
-msgid "Consult --usage or hpkg-explode(8)"
-msgstr "Consult --usage or hpkg-explode(8)"
-
-#: /etc/hpkg/hpkg.locale:32
-msgid "Package"
-msgstr "Package"
-
-#: /etc/hpkg/hpkg.locale:33
-msgid "is not set"
-msgstr "is not set"
-
-#: /etc/hpkg/hpkg.locale:34
-msgid "does not exist"
-msgstr "does not exist"
-
-#: /etc/hpkg/hpkg.locale:35
-msgid "is not a hard package"
-msgstr "is not a hard package"
-
-#: /etc/hpkg/hpkg.locale:36
-msgid "Extracting"
-msgstr "Extracting"
-
-#: /etc/hpkg/hpkg.locale:37
-msgid "Package cannot be verified"
-msgstr "Package cannot be verified"
-
-#: /etc/hpkg/hpkg.locale:38
-msgid "Failed to extract package"
-msgstr "Failed to extract package"
-
-#: /etc/hpkg/hpkg.locale:39
-msgid "Extracting PAYLOAD.tar"
-msgstr "Extracting PAYLOAD.tar"
-
-#: /etc/hpkg/hpkg.locale:40
-msgid "is corrupted"
-msgstr "is corrupted"
-
-#: /etc/hpkg/hpkg.locale:41
-msgid "Moving to"
-msgstr "Moving to"
-
-#: /etc/hpkg/hpkg.locale:42
-msgid "Unknown option"
-msgstr "Unknown option"
-
-#: /etc/hpkg/hpkg.locale:43
+#: ../../hpkg/hpkg:12
 msgid "hpkg - install .hard package"
 msgstr "hpkg - install .hard package"
 
-#: /etc/hpkg/hpkg.locale:44
-msgid "hpkg <options> -p PACKAGE"
-msgstr "hpkg <options> -p PACKAGE"
+#: ../../hpkg/hpkg:14
+msgid "hpkg [options] -p <package>"
+msgstr "hpkg [options] -p <package>"
 
-#: /etc/hpkg/hpkg.locale:45
-msgid "Install package as dependency"
-msgstr "Install package as dependency"
+#: ../../hpkg/hpkg:16 ../../hpkg/hpkg-explode:11 ../../hpkg/hpkg-info:11
+msgid "Options"
+msgstr "Options"
 
-#: /etc/hpkg/hpkg.locale:46
+#: ../../hpkg/hpkg:17 ../../hpkg/hpkg-explode:12 ../../hpkg/hpkg-info:12
+msgid "Print version info and exit"
+msgstr "Print version info and exit"
+
+#: ../../hpkg/hpkg:18 ../../hpkg/hpkg-info:13
+msgid "Print this help"
+msgstr "Print this help"
+
+#: ../../hpkg/hpkg:19 ../../hpkg/hpkg-explode:14
+msgid "Be verbose"
+msgstr "Be verbose"
+
+#: ../../hpkg/hpkg:20 ../../hpkg/hpkg-explode:15
+msgid "Be silent"
+msgstr "Be silent"
+
+#: ../../hpkg/hpkg:21
+msgid "Install as dependency"
+msgstr "Install as dependency"
+
+#: ../../hpkg/hpkg:22
 msgid "Disable hooks"
 msgstr "Disable hooks"
 
-#: /etc/hpkg/hpkg.locale:47
-msgid "Check dependenies and conflicts without installation"
-msgstr "Check dependenies and conflicts without installation"
+#: ../../hpkg/hpkg:23
+msgid "Do not resolve dependencies and conflicts"
+msgstr "Do not resolve dependencies and conflicts"
 
-#: /etc/hpkg/hpkg.locale:48
+#: ../../hpkg/hpkg:24
+msgid "Do not really install package"
+msgstr "Do not really install package"
+
+#: ../../hpkg/hpkg:25 ../../hpkg/hpkg-explode:17
+msgid "-C <directory>"
+msgstr "-C <directory>"
+
+#: ../../hpkg/hpkg:25
 msgid "Install in <directory>"
 msgstr "Install in <directory>"
 
-#: /etc/hpkg/hpkg.locale:49
-msgid "Package to be installed"
-msgstr "Package to be installed"
+#: ../../hpkg/hpkg:26 ../../hpkg/hpkg-explode:18
+msgid "-p <package>"
+msgstr "-p <package>"
 
-#: /etc/hpkg/hpkg.locale:50
-msgid "More information available at hpkg(8)"
-msgstr "More information available at hpkg(8)"
+#: ../../hpkg/hpkg:26
+msgid "Specify package to install"
+msgstr "Specify package to install"
 
-#: /etc/hpkg/hpkg.locale:51
-msgid "Consult --usage or hpkg(8)"
-msgstr "Consult --usage or hpkg(8)"
+#: ../../hpkg/hpkg:28
+msgid "More information available at hpkg(8) manpage"
+msgstr "More information available at hpkg(8) manpage"
 
-#: /etc/hpkg/hpkg.locale:52
-msgid "<rootdir> set"
-msgstr "<rootdir> set"
+#: ../../hpkg/hpkg:29 ../../hpkg/hpkg-explode:21 ../../hpkg/hpkg-info:20
+#: ../../packing/hmake:40
+msgid "Copyright and licensing information can be obtained via '--version' option"
+msgstr "Copyright and licensing information can be obtained via '--version' option"
 
-#: /etc/hpkg/hpkg.locale:53
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg:68 ../../hpkg/hpkg-explode:53
+#: ../../hpkg/hpkg-explode:55 ../../hpkg/hpkg-info:40 ../../hpkg/hpkg-info:41
+#: ../../hpkg/hpkg-info:42
+msgid "Option"
+msgstr "Option"
+
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg:68 ../../hpkg/hpkg-explode:53
+#: ../../hpkg/hpkg-explode:55 ../../hpkg/hpkg-info:40 ../../hpkg/hpkg-info:41
+#: ../../hpkg/hpkg-info:42
+msgid "requires"
+msgstr "requires"
+
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg-explode:53
+msgid "<directory> argument"
+msgstr "<directory> argument"
+
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg:68 ../../hpkg/hpkg:70 ../../hpkg/hpkg:76
+#: ../../hpkg/hpkg-explode:53 ../../hpkg/hpkg-explode:55
+#: ../../hpkg/hpkg-explode:57 ../../hpkg/hpkg-explode:64
+#: ../../hpkg/hpkg-info:40 ../../hpkg/hpkg-info:41 ../../hpkg/hpkg-info:42
+#: ../../hpkg/hpkg-info:43 ../../hpkg/hpkg-info:49
+msgid "Consult a manpage or '--help' option"
+msgstr "Consult a manpage or '--help' option"
+
+#: ../../hpkg/hpkg:68 ../../hpkg/hpkg-explode:55 ../../hpkg/hpkg-info:42
+msgid "<package> argument"
+msgstr "<package> argument"
+
+#: ../../hpkg/hpkg:70 ../../hpkg/hpkg-explode:57 ../../hpkg/hpkg-info:43
+msgid "Unknown option"
+msgstr "Unknown option"
+
+#: ../../hpkg/hpkg:76 ../../hpkg/hpkg-explode:64 ../../hpkg/hpkg-info:49
+msgid "Package is not set"
+msgstr "Package is not set"
+
+#: ../../hpkg/hpkg:77 ../../hpkg/hpkg-explode:65 ../../hpkg/hpkg-info:50
+msgid "No such package"
+msgstr "No such package"
+
+#: ../../hpkg/hpkg:78 ../../hpkg/hpkg-explode:66 ../../hpkg/hpkg-info:51
+msgid "is not a .hard package"
+msgstr "is not a .hard package"
+
+#: ../../hpkg/hpkg:80
 msgid "You need root permissions for this action"
 msgstr "You need root permissions for this action"
 
-#: /etc/hpkg/hpkg.locale:54
+#: ../../hpkg/hpkg:87
 msgid "Reading metadata"
 msgstr "Reading metadata"
 
-#: /etc/hpkg/hpkg.locale:55
+#: ../../hpkg/hpkg:92 ../../hpkg/hpkg-explode:75 ../../hpkg/hpkg-info:56
+msgid "Package can not be verified"
+msgstr "Package can not be verified"
+
+#: ../../hpkg/hpkg:100 ../../hpkg/hpkg:101 ../../hpkg/hpkg-info:63
+#: ../../hpkg/hpkg-info:70
+msgid "Package is corrupted"
+msgstr "Package is corrupted"
+
+#: ../../hpkg/hpkg:103
 msgid "Dependency tracking disabled"
 msgstr "Dependency tracking disabled"
 
-#: /etc/hpkg/hpkg.locale:56
+#: ../../hpkg/hpkg:109
 msgid "Can not resolve dependency"
 msgstr "Can not resolve dependency"
 
-#: /etc/hpkg/hpkg.locale:57
+#: ../../hpkg/hpkg:109
 msgid "needed for"
 msgstr "needed for"
 
-#: /etc/hpkg/hpkg.locale:58
+#: ../../hpkg/hpkg:115
 msgid "Conflict"
 msgstr "Conflict"
 
-#: /etc/hpkg/hpkg.locale:59
-msgid "Running pre-install script"
-msgstr "Running pre-install script"
+#: ../../hpkg/hpkg:124
+msgid "Running 'pkg_preinstall'"
+msgstr "Running 'pkg_preinstall'"
 
-#: /etc/hpkg/hpkg.locale:60
-msgid "Pre-install script exited with non-zero code"
-msgstr "Pre-install script exited with non-zero code"
+#: ../../hpkg/hpkg:124
+msgid "'pkg_preinstall' exited with non-zero code"
+msgstr "'pkg_preinstall' exited with non-zero code"
 
-#: /etc/hpkg/hpkg.locale:61
+#: ../../hpkg/hpkg:126
 msgid "Installing package"
 msgstr "Installing package"
 
-#: /etc/hpkg/hpkg.locale:62
+#: ../../hpkg/hpkg:153
 msgid "Running hooks"
 msgstr "Running hooks"
 
-#: /etc/hpkg/hpkg.locale:63
+#: ../../hpkg/hpkg:156
 msgid "Hook exited with non-zero code"
 msgstr "Hook exited with non-zero code"
 
-#: /etc/hpkg/hpkg.locale:64
-msgid "Running post-install script"
-msgstr "Running post-install script"
+#: ../../hpkg/hpkg:160
+msgid "Running 'pkg_postinstall'"
+msgstr "Running 'pkg_postinstall'"
 
-#: /etc/hpkg/hpkg.locale:65
-msgid "Post-install script exited with non-zero code"
-msgstr "Post-install script exited with non-zero code"
+#: ../../hpkg/hpkg:160
+msgid "'pkg_postinstall' exited with non-zero code"
+msgstr "'pkg_postinstall' exited with non-zero code"
+
+#: ../../hpkg/hpkg-explode:7
+msgid "hpkg-explode - rawly extract .hard archive"
+msgstr "hpkg-explode - rawly extract .hard archive"
+
+#: ../../hpkg/hpkg-explode:9
+msgid "hpkg-explode [options] -p <package>"
+msgstr "hpkg-explode [options] -p <package>"
+
+#: ../../hpkg/hpkg-explode:13
+msgid "Print this text"
+msgstr "Print this text"
+
+#: ../../hpkg/hpkg-explode:16
+msgid "Also extract PAYLOAD.tar.xz"
+msgstr "Also extract PAYLOAD.tar.xz"
+
+#: ../../hpkg/hpkg-explode:17
+msgid "Extract in directory"
+msgstr "Extract in directory"
+
+#: ../../hpkg/hpkg-explode:18
+msgid "Specify package to be extracted"
+msgstr "Specify package to be extracted"
+
+#: ../../hpkg/hpkg-explode:20
+msgid "More information available at hpkg-explode(1) manpage"
+msgstr "More information available at hpkg-explode(1) manpage"
+
+#: ../../hpkg/hpkg-explode:73
+msgid "Extracting"
+msgstr "Extracting"
+
+#: ../../hpkg/hpkg-explode:87
+msgid "Extracting PAYLOAD"
+msgstr "Extracting PAYLOAD"
+
+#: ../../hpkg/hpkg-explode:90
+msgid "is corrupted"
+msgstr "is corrupted"
+
+#: ../../hpkg/hpkg-explode:96
+msgid "Moving to"
+msgstr "Moving to"
+
+#: ../../hpkg/hpkg-info:7
+msgid "hpkg-info - obtain information about .hard package"
+msgstr "hpkg-info - obtain information about .hard package"
+
+#: ../../hpkg/hpkg-info:9
+msgid "hpkg-info [options] -p <package>"
+msgstr "hpkg-info [options] -p <package>"
+
+#: ../../hpkg/hpkg-info:14
+msgid "Dump entire METADATA file"
+msgstr "Dump entire METADATA file"
+
+#: ../../hpkg/hpkg-info:15
+msgid "Print as \"KEY=VALUE\""
+msgstr "Print as \"KEY=VALUE\""
+
+#: ../../hpkg/hpkg-info:16
+msgid "-k <key>"
+msgstr "-k <key>"
+
+#: ../../hpkg/hpkg-info:16
+msgid "Specify key to obtain"
+msgstr "Specify key to obtain"
+
+#: ../../hpkg/hpkg-info:17
+msgid "-o <file>"
+msgstr "-o <file>"
+
+#: ../../hpkg/hpkg-info:17
+msgid "Specify output (default stdout)"
+msgstr "Specify output (default stdout)"
+
+#: ../../hpkg/hpkg-info:19
+msgid "More information available at hpkg-info(1) manpage"
+msgstr "More information available at hpkg-info(1) manpage"
+
+#: ../../hpkg/hpkg-info:40
+msgid "<key> argument"
+msgstr "<key> argument"
+
+#: ../../hpkg/hpkg-info:41
+msgid "<file> argurment"
+msgstr "<file> argurment"
+
+#: ../../hpkg/lib/hpkglib.sh:81
+msgid "Failing due to previous warnings"
+msgstr "Failing due to previous warnings"
+
+#: ../../hpkg/lib/hpkglib.sh:85
+msgid "This is"
+msgstr "This is"
+
+#: ../../hpkg/lib/hpkglib.sh:85 ../../hpkg/lib/hpkglib.sh:86
+msgid "from"
+msgstr "from"
+
+#: ../../hpkg/lib/hpkglib.sh:86
+msgid "Arseniy 'EmptiedSoul' Lesin"
+msgstr "Arseniy 'EmptiedSoul' Lesin"
+
+#: ../../hpkg/lib/hpkglib.sh:87
+msgid "License: GPLv3 or newer: <https://gnu.org/license>"
+msgstr "License: GPLv3 or newer: <https://gnu.org/license>"
+
+#: ../../hpkg/lib/hpkglib.sh:88
+msgid "This is free software: you can freely run, inspect, modify and distribute this program"
+msgstr "This is free software: you can freely run, inspect, modify and distribute this program"
+
+#: ../../hpkg/lib/hpkglib.sh:89
+msgid "NO WARRANTY AT ALL"
+msgstr "NO WARRANTY AT ALL"
+
+#: ../../packing/hmake:27
+msgid "hmake - create .hard package"
+msgstr "hmake - create .hard package"
+
+#: ../../packing/hmake:29
+msgid "hmake <command>"
+msgstr "hmake <command>"
+
+#: ../../packing/hmake:31
+msgid "Commands"
+msgstr "Commands"
+
+#: ../../packing/hmake:32
+msgid "Read Buildfile and build package"
+msgstr "Read Buildfile and build package"
+
+#: ../../packing/hmake:33
+msgid "<directory>"
+msgstr "<directory>"
+
+#: ../../packing/hmake:33
+msgid "Create package from given directory"
+msgstr "Create package from given directory"
+
+#: ../../packing/hmake:34
+msgid "Clean build and destination directories"
+msgstr "Clean build and destination directories"
+
+#: ../../packing/hmake:35
+msgid "Like 'clean' but keep destination directory"
+msgstr "Like 'clean' but keep destination directory"
+
+#: ../../packing/hmake:36
+msgid "Completely purge everyrhing related to package"
+msgstr "Completely purge everyrhing related to package"
+
+#: ../../packing/hmake:37
+msgid "Install built package"
+msgstr "Install built package"
+
+#: ../../packing/hmake:39
+msgid "More information available at hmake(1) manpage"
+msgstr "More information available at hmake(1) manpage"
+
+#: ../../packing/hmake:100
+msgid "Cannot read Buildfile"
+msgstr "Cannot read Buildfile"
+
+#: ../../packing/hmake:102
+msgid "Invalid Buildfile"
+msgstr "Invalid Buildfile"
+
+#: ../../packing/hmake:110
+msgid "Running getsrc()"
+msgstr "Running getsrc()"
+
+#: ../../packing/hmake:111
+msgid "Failed to get sources"
+msgstr "Failed to get sources"
+
+#: ../../packing/hmake:112
+msgid "Running unpacksrc()"
+msgstr "Running unpacksrc()"
+
+#: ../../packing/hmake:113
+msgid "Failed to unpack sources"
+msgstr "Failed to unpack sources"
+
+#: ../../packing/hmake:115
+msgid "Running preparesrc()"
+msgstr "Running preparesrc()"
+
+#: ../../packing/hmake:116
+msgid "Failed to prepare sources"
+msgstr "Failed to prepare sources"
+
+#: ../../packing/hmake:119
+msgid "Entering chroot environment"
+msgstr "Entering chroot environment"
+
+#: ../../packing/hmake:123
+msgid "Running compilesrc()"
+msgstr "Running compilesrc()"
+
+#: ../../packing/hmake:124
+msgid "Failed to compile sources"
+msgstr "Failed to compile sources"
+
+#: ../../packing/hmake:125
+msgid "Running installsrc()"
+msgstr "Running installsrc()"
+
+#: ../../packing/hmake:126
+msgid "Failed to install into package"
+msgstr "Failed to install into package"
+
+#: ../../packing/hmake:127
+msgid "Stripping"
+msgstr "Stripping"
+
+#: ../../packing/hmake:128
+msgid "Failed to strip"
+msgstr "Failed to strip"
+
+#: ../../packing/hmake:131
+msgid "Creating package"
+msgstr "Creating package"
+
+#: ../../packing/hmake:133 ../../packing/hmake:138
+msgid "Failed to create package"
+msgstr "Failed to create package"
+
+#: ../../packing/hmake:136
+msgid "Leaving chroot environment"
+msgstr "Leaving chroot environment"
+
+#: ../../packing/hmake:137
+msgid "Signing package"
+msgstr "Signing package"
+
+#: ../../packing/hmake:142 ../../packing/hmake:151 ../../packing/hmake:159
+#: ../../packing/hmake:188
+msgid "Can not read Buildfile"
+msgstr "Can not read Buildfile"
+
+#: ../../packing/hmake:176
+msgid "Can not read METADATA"
+msgstr "Can not read METADATA"
+
+#: ../../packing/hmake:189
+msgid "Can not install package"
+msgstr "Can not install package"

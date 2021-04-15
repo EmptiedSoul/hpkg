@@ -4,20 +4,20 @@
 
 usage(){
 printf "\
-$_hpkg_info\n\
+$(i18n "hpkg-info - obtain information about .hard package")\n\
 \n\
-$_hpkg_info_desc\n\
+$(i18n "hpkg-info [options] -p <package>")\n\
 \n\
-$Options:\n\
-  -V | --version	$print_version_info_and_exit\n\
-  -h | --help | --usage	$print_this_help\n\
-  -d			$_dump_metadata\n\
-  -a			$_print_fully\n\
-  -k			$_key\n\
-  -o			$_output\n\
+$(i18n "Options"):\n\
+  -V | --version	$(i18n "Print version info and exit")\n\
+  -h | --help | --usage	$(i18n "Print this help")\n\
+  -d			$(i18n "Dump entire METADATA file")\n\
+  -a			$(i18n "Print as \"KEY=VALUE\"")\n\
+  $(i18n "-k <key>")		$(i18n "Specify key to obtain")\n\
+  $(i18n "-o <file>")		$(i18n "Specify output (default stdout)")\n\
 \n\
-$More_information_available_at_hpkg_info8\n\
-$Copyright_and_licensing_information_available_with_option_version\n"
+$(i18n "More information available at hpkg-info(1) manpage")\n\
+$(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
 exit 0
 }
 
@@ -37,19 +37,43 @@ case $opt in
 	p)	PKG="$OPTARG";;
 	:)	;& # FALLTHROUGH
 	*)	case "$OPTARG" in
-			k)	error "$Option \'-k\' $requires <$_key_opt>. $Consult_usage_or_hpkg_info8" "32" ;;
-			o)	error "$Option \'-o\' $requires <$_output_opt>. $Consult_usage_or_hpkg_info8" "32" ;;	
-			p)	error "$Option \'-p\' $requires <$Package>. $Consult_usage_or_hpkg_info8" "32" ;;
-			*)	error "$Unknown_option: -$OPTARG. $Consult_usage_or_hpkg_info8" "32" ;;
+			k)	error "$(i18n "Option") \'-k\' $(i18n "requires") $(i18n "<key> argument"). $(i18n "Consult a manpage or '--help' option")" "32" ;;
+			o)	error "$(i18n "Option") \'-o\' $(i18n "requires") $(i18n "<file> argurment"). $(i18n "Consult a manpage or '--help' option")" "32" ;;	
+			p)	error "$(i18n "Option") \'-p\' $(i18n "requires") $(i18n "<package> argument"). $(i18n "Consult a manpage or '--help' option")" "32" ;;
+			*)	error "$(i18n "Unknown option"): -$OPTARG. $(i18n "Consult a manpage or \`--help\' option")" "32" ;;
 		esac
 	;;
 esac
 done 
 
-[[ -z "$PKG" ]] && error "$Package $is_not_set. $Consult_usage_or_hpkg_info8" "32"
-[[ -e "$PKG" ]] || error "$Package \"$PKG\" $does_not_exist" "1"
-[[ "$PKG" != *.hard ]] && error "\"$PKG\" $is_not_a_hard_package" "1"
+[[ -z "$PKG" ]] && error "$(i18n "Package is not set"). $(i18n "Consult a manpage or '--help' option")" "32"
+[[ -e "$PKG" ]] || error "$PKG: $(i18n "No such package")" "1"
+[[ "$PKG" != *.hard ]] && error "\"$PKG\" $(i18n "is not a .hard package")" "1"
 
-# int main() {
+PKGDEC="/tmp/${RANDOM}${PKG}.decrypted"
+PKGMET="/tmp/${RANDOM}${PKG}.metadata"
 
+FD2=3
+FD1=3
 
+gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
+
+is_true "$NOTSIGNED" || \
+	{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&3 2>&3
+is_true "$NOTSIGNED" && \
+	{ cat    "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&3 2>&3
+
+is_true "$CORRUPTED" && error "$(i18n "Package is corrupted")" "4"
+
+is_true "$DUMP" && {
+	cat $PKGMET
+	rm $PKGDEC $PKGMET
+	exit
+}
+. "$PKGMET" || error "$(i18n "Package is corrupted")" "4"
+
+rm $PKGDEC $PKGMET
+
+is_true "$ALL" && \
+	echo $KEY=$(eval echo \${$KEY}) || \
+	eval echo \${$KEY}

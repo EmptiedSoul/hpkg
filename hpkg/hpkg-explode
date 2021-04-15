@@ -4,21 +4,21 @@
 ERRCODE=0
 usage(){
 printf "\
-$hpkg_explode_rawly_extract_hard_archive\n\
+$(i18n "hpkg-explode - rawly extract .hard archive")\n\
 \n\
-$hpkg_explode_desc\n\
+$(i18n "hpkg-explode [options] -p <package>")\n\
 \n\
-$Options:\n\
- -V | --version		$print_version_info_and_exit\n\
- -h | --help | --usage	$print_this_help\n\
- -v			$be_verbose\n\
- -s			$be_silent\n\
- -r | -R		$also_extract_PAYLOAD_tar\n\
- $copt		$extract_in_dir\n\
- $popt		$package_to_be_extracted\n\
+$(i18n "Options"):\n\
+ -V | --version		$(i18n "Print version info and exit")\n\
+ -h | --help | --usage	$(i18n "Print this text")\n\
+ -v			$(i18n "Be verbose")\n\
+ -s			$(i18n "Be silent")\n\
+ -r | -R		$(i18n "Also extract PAYLOAD.tar.xz")\n\
+ $(i18n "-C <directory>")	$(i18n "Extract in directory")\n\
+ $(i18n "-p <package>")		$(i18n "Specify package to be extracted")\n\
 \n\
-$More_information_available_at_hpkgexplode8\n\
-$Copyright_and_licensing_information_available_with_option_version\n"
+$(i18n "More information available at hpkg-explode(1) manpage")\n\
+$(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
 exit 0
 }
 
@@ -50,29 +50,29 @@ case $opt in
 		# FALLTHROUGH
 	*)	
 		if 	[[ "$OPTARG" == "C" ]]; then # If there is -C option, not followed by DIR
-			error "$Option \`-C\' $requires \`<DIR>\'. $Consult_usage_or_hpkg_explode8" "32"
+			error "$(i18n "Option") \`-C\' $(i18n "requires") $(i18n "<directory> argument"). $(i18n "Consult a manpage or '--help' option")" "32"
 		elif	[[ "$OPTARG" == "p" ]]; then # If there is -p option, not followed by PKG
-			error "$Option \'-p\' $requires \`<PKG>\'. $Consult_usage_or_hpkg_explode8" "32"
+			error "$(i18n "Option") \'-p\' $(i18n "requires") $(i18n "<package> argument"). $(i18n "Consult a manpage or '--help' option")" "32"
 		else
-			error "$Unknown_option: -$OPTARG. $Consult_usage_or_hpkg_explode8" "32"
+			error "$(i18n "Unknown option"): -$OPTARG. $(i18n "Consult a manpage or '--help' option")" "32"
 		fi
 	;;
 
 esac
 done
 
-[[ -z "$PKG" ]] && error "$Package $is_not_set. $Consult_usage_or_hpkg_explode8" "32"
-[[ -e "$PKG" ]] || error "$Package \"$PKG\" $does_not_exist" "1"
-[[ "$PKG" != *.hard ]] && error "\"$PKG\" $is_not_a_hard_package" "1"
+[[ -z "$PKG" ]] && error "$(i18n "Package is not set"). $(i18n "Consult a manpage or '--help' option")" "32"
+[[ -e "$PKG" ]] || error "$PKG: $(i18n "No such package")" "1"
+[[ "$PKG" != *.hard ]] && error "\"$PKG\" $(i18n "is not a .hard package")" "1"
 # int main()
 FD1=1	
 FD2=2
 is_true "$VERBOSE" || { FD1=3; FD2=3; }
 # If -v is not set - redirect 1 and 2 to 3 (supressed) 
 
-pointer "$Extracting..."
+pointer "$(i18n "Extracting")..."
 
-gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$Package_cannot_be_verified" && NOTSIGNED="YES"; }
+gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
 
 mkdir ${PKG%.hard} &>/dev/null
 
@@ -84,16 +84,16 @@ is_true "$NOTSIGNED" && \
 # Verifying and extracting package
 
 is_true "$RECURSIVE" && {
-	pointer "$Extracting_PAYLOAD..."
+	pointer "$(i18n "Extracting PAYLOAD")..."
 	pushd ${PKG%.hard} &>/dev/null
 	mkdir -p PAYLOAD
-	{ tar xvJf PAYLOAD.tar.xz -C PAYLOAD | awk '{print "\033[34;1m -> \033[0m"$0;}'; } 2>&${FD2} 1>&${FD1} || { warn "PAYLOAD.tar $is_corrupted"; ERRCODE=4; }
-	rm -f PAYLOAD.tar.xz
+	{ tar xv --zstd -f PAYLOAD.tar.zst -C PAYLOAD | awk '{print "\033[34;1m -> \033[0m"$0;}'; } 2>&${FD2} 1>&${FD1} || { warn "PAYLOAD.tar $(i18n "is corrupted")"; ERRCODE=4; }
+	rm -f PAYLOAD.tar.zst
 	popd &>/dev/null
 }	# If -r or -R is set - also unpacking PAYLOAD.tar
 
 [[ -z "$DIR" ]] || {
-	pointer "$Moving_to $DIR..."
+	pointer "$(i18n "Moving to") $DIR..."
 	mkdir -p "$DIR"
 	cp -v ${PKG%.hard}/{*,.*} "$DIR/" 2>&${FD2} 1>&${FD1}
 	is_true "$RECURSIVE" && cp -vR ${PKG%.hard}/PAYLOAD "$DIR/" 2>&${FD2} 1>&${FD1}

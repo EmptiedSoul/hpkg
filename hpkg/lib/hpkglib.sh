@@ -26,15 +26,19 @@
 POINTERCOLOR="\e[34;1m"
 WARNCOLOR="\e[31;1m"
 CLRCOLOR="\e[0m"
+YESNOCLOR="\e[34;1m"
+
+i18n(){
+	gettext "hpkg" "$1"
+}
+
+export i18n
 
 exec {sleeper}<> <(:)							# Opening fd for read-sleep
 exec 3>/var/hpkg/supressed						# Opening file for further output redirection
 
 . /etc/hpkg/hpkg.conf							# Sourcing main config file
-. /etc/hpkg/hpkg.locale							# Getting localized msgs
 
-LC_ALL=C								# As msgs are already localized we dont need any other locales
-									# So lets fall back to default C locale to speed up our script
 sleep(){
 	read -rt "$1" -u $sleeper
 }
@@ -51,6 +55,13 @@ is_true(){
 		;;
 	esac
 }
+
+yesno(){
+	printf "${YESNOCOLOR}(?)${CLRCOLOR} $1 [Y/N] "
+	read _answer
+	{ is_true "$_answer" || [[ -z $_answer ]]; } && return 0 || return 1
+}
+
 pointer(){
 	printf "${POINTERCOLOR}==>${CLRCOLOR} $1\n"			# ==> Doing something
 }
@@ -67,14 +78,14 @@ error(){
 		do	warn "$line";	       done			# Printing output line-by-line with warn's "!" prefix
 		warn "--- Trace ---"
 	fi
-	warn "($2) $failing_due_previous_errors"			# Saying exit code
+	warn "($2) $(i18n "Failing due to previous warnings")"			# Saying exit code
 	exit "$2"							# Going down
 }
 version(){
-	printf "$this_is ${0##*/} $from hpkg-utils\n\n\
-Copyright (C) 2020-2021, Arseniy 'EmptiedSoul' Lesin\n\
-$gpl_notice\n\
-$this_is_free_software\n\
-$no_warranty\n"
+	printf "$(i18n "This is") ${0##*/} $(i18n "from") hpkg-utils\n\n\
+Copyright (C) 2020-2021, $(i18n "Arseniy 'EmptiedSoul' Lesin") $(i18n "from") hardclanz.org \n\
+$(i18n "License: GPLv3 or newer: <https://gnu.org/license>")\n\
+$(i18n "This is free software: you can freely run, inspect, modify and distribute this program")\n\
+$(i18n "NO WARRANTY AT ALL")\n"
 	exit 0
 }

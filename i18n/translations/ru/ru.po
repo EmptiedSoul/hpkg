@@ -1,23 +1,15 @@
-# #-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#
-# Russian translations for PACKAGE package
-# Английские переводы для пакета PACKAGE.
-# Copyright (C) 2021 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-#
-# #-#-#-#-#  ru.po (hpkg 999git)  #-#-#-#-#
-# TEMPORARY TRANSLATION TEMPLATE.
+# Translation file for hpkg - hard packager.
 # Copyright (C) 2020-2021 Arseniy 'emptiedsoul' Lesin
 # This file is distributed under the same license as the hpkg package.
-# .
+# Arseniy Lesin <emptiedsoul@hardclanz.site> 2020-2021.
 #
-#  <emptiedsoul@hardclanz.site>, 2021.
+# emptiedsoul <emptiedsoul@hardclanz.site>, 2021.
 msgid ""
 msgstr ""
-"#-#-#-#-#  ru.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"Project-Id-Version: \n"
+"Project-Id-Version: hpkg 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-15 22:05+0300\n"
-"PO-Revision-Date: 2021-02-15 23:00+0300\n"
+"POT-Creation-Date: 2021-03-23 21:14+0300\n"
+"PO-Revision-Date: 2021-03-23 21:55+0300\n"
 "Last-Translator: emptiedsoul <emptiedsoul@hardclanz.site>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: ru\n"
@@ -26,261 +18,434 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
 "=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"#-#-#-#-#  ru.po (hpkg 999git)  #-#-#-#-#\n"
-"Project-Id-Version: hpkg 999git\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-02 22:38+0300\n"
-"PO-Revision-Date: 2021-01-02 22:42+0300\n"
-"Last-Translator:  <emptiedsoul@hardclanz.site>\n"
-"Language-Team: Russian \n"
-"Language: ru\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 20.08.3\n"
 
-#: /etc/hpkg/hpkg.locale:7
-msgid "Failing due previous errors"
-msgstr "Выхожу ввиду предыдущих ошибок"
+#: ../../hpkg/hpkg:12
+msgid "hpkg - install .hard package"
+msgstr "hpkg - установить пакет .hard"
 
-#: /etc/hpkg/hpkg.locale:8
-msgid "File not found"
-msgstr "Файл не найден"
+#: ../../hpkg/hpkg:14
+msgid "hpkg [options] -p <package>"
+msgstr "hpkg [опции] -p <пакетик>"
 
-#: /etc/hpkg/hpkg.locale:9
-msgid "This is"
-msgstr "Это"
-
-#: /etc/hpkg/hpkg.locale:10
-msgid "from"
-msgstr "из"
-
-#: /etc/hpkg/hpkg.locale:11
-msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
-msgstr "Лицензия GPLv3 или новее: <https://gnu.org/licenses>"
-
-#: /etc/hpkg/hpkg.locale:12
-msgid ""
-"This is free software: You are free to run, inspect, modify and distribute "
-"the source code"
-msgstr ""
-"Это свободное ПО: Вы можете свободно запускать, изучать, модифицировать и "
-"распространять программу и ее исходный код"
-
-#: /etc/hpkg/hpkg.locale:13
-msgid "NO WARRANTY AT ALL"
-msgstr "НИКАКИХ ГАРАНТИЙ НЕ ПРЕДОСТАВЛЯЕТСЯ"
-
-#: /etc/hpkg/hpkg.locale:14
-msgid "hpkg-explode - rawly extract .hard archive"
-msgstr "hpkg-explode - грубо извлечь содержимое .hard-пакета"
-
-#: /etc/hpkg/hpkg.locale:15
-msgid "hpkg-explode <options> -p PACKAGE"
-msgstr "hpkg-explode <опции> -p ПАКЕТИК"
-
-#: /etc/hpkg/hpkg.locale:16
+#: ../../hpkg/hpkg:16 ../../hpkg/hpkg-explode:11 ../../hpkg/hpkg-info:11
 msgid "Options"
 msgstr "Опции"
 
-#: /etc/hpkg/hpkg.locale:18
-msgid "-C <directory>"
-msgstr "-C <директория>"
-
-#: /etc/hpkg/hpkg.locale:18
-msgid "-p <package>"
-msgstr "-p <пакетик>"
-
-#: /etc/hpkg/hpkg.locale:19
+#: ../../hpkg/hpkg:17 ../../hpkg/hpkg-explode:12 ../../hpkg/hpkg-info:12
 msgid "Print version info and exit"
-msgstr "Вывести информацию о версии"
+msgstr "Вывести информацию о версии и выйти"
 
-#: /etc/hpkg/hpkg.locale:20
+#: ../../hpkg/hpkg:18 ../../hpkg/hpkg-info:13
 msgid "Print this help"
 msgstr "Вывести этот текст"
 
-#: /etc/hpkg/hpkg.locale:21
+#: ../../hpkg/hpkg:19 ../../hpkg/hpkg-explode:14
 msgid "Be verbose"
 msgstr "Подробный режим"
 
-#: /etc/hpkg/hpkg.locale:22
+#: ../../hpkg/hpkg:20 ../../hpkg/hpkg-explode:15
 msgid "Be silent"
 msgstr "Тихий режим"
 
-#: /etc/hpkg/hpkg.locale:23
-msgid "Also extract PAYLOAD.tar"
-msgstr "Также извлечь содержимое PAYLOAD.tar"
+#: ../../hpkg/hpkg:21
+msgid "Install as dependency"
+msgstr "Установить как зависимость"
 
-#: /etc/hpkg/hpkg.locale:25
-msgid "Extract in <directory>"
-msgstr "Извлечь в <директорию>"
-
-#: /etc/hpkg/hpkg.locale:25
-msgid "Package to be extracted"
-msgstr "Пакет для извлечения"
-
-#: /etc/hpkg/hpkg.locale:26
-msgid "More information available at hpkg-explode(8)"
-msgstr "Больше информации доступно на странице hpkg-explode(8)"
-
-#: /etc/hpkg/hpkg.locale:27
-msgid "Copyright and licensing information available with option --version"
-msgstr "Информация о лицензии и авторском праве доступна с опцией --version"
-
-#: /etc/hpkg/hpkg.locale:28
-msgid "Option"
-msgstr "Опция"
-
-#: /etc/hpkg/hpkg.locale:29
-msgid "requires"
-msgstr "требует"
-
-#: /etc/hpkg/hpkg.locale:30
-msgid "Consult --usage or hpkg-explode(8)"
-msgstr "Обратитесь к --usage или hpkg-explode(8)"
-
-#: /etc/hpkg/hpkg.locale:31
-msgid "Package"
-msgstr "Пакет"
-
-#: /etc/hpkg/hpkg.locale:32
-msgid "is not set"
-msgstr "не указан"
-
-#: /etc/hpkg/hpkg.locale:33
-msgid "does not exist"
-msgstr "не существует"
-
-#: /etc/hpkg/hpkg.locale:34
-msgid "is not a hard package"
-msgstr "не является пакетом .hard"
-
-#: /etc/hpkg/hpkg.locale:35
-msgid "Extracting"
-msgstr "Извлекаю"
-
-#: /etc/hpkg/hpkg.locale:36
-msgid "Package cannot be verified"
-msgstr "Пакет не может быть верифицирован"
-
-#: /etc/hpkg/hpkg.locale:37
-msgid "Failed to extract package"
-msgstr "Не удалось извлечь пакет"
-
-#: /etc/hpkg/hpkg.locale:38
-msgid "Extracting PAYLOAD.tar"
-msgstr "Извлекаю PAYLOAD.tar"
-
-#: /etc/hpkg/hpkg.locale:39
-msgid "is corrupted"
-msgstr "повреждён"
-
-#: /etc/hpkg/hpkg.locale:40
-msgid "Moving to"
-msgstr "Перемещаю в"
-
-#: /etc/hpkg/hpkg.locale:42
-msgid "Unknown option"
-msgstr "Неизвестная опция"
-
-#: /etc/hpkg/hpkg.locale:43
-msgid "hpkg - install .hard package"
-msgstr "hpkg - установить .hard-пакет"
-
-#: /etc/hpkg/hpkg.locale:44
-msgid "hpkg <options> -p PACKAGE"
-msgstr "hpkg <опции> -p ПАКЕТИК"
-
-#: /etc/hpkg/hpkg.locale:45
-msgid "Install package as dependency"
-msgstr "Установить пакет как зависимость другого пакета"
-
-#: /etc/hpkg/hpkg.locale:46
+#: ../../hpkg/hpkg:22
 msgid "Disable hooks"
 msgstr "Отменить выполнение хуков"
 
-#: /etc/hpkg/hpkg.locale:47
-msgid "Check dependenies and conflicts without installation"
-msgstr "Проверить зависимости и конфликты без реальной установки"
+#: ../../hpkg/hpkg:23
+msgid "Do not resolve dependencies and conflicts"
+msgstr "Не разрешать зависимости и конфликты"
 
-#: /etc/hpkg/hpkg.locale:48
+#: ../../hpkg/hpkg:24
+msgid "Do not really install package"
+msgstr "Не устанавливать пакет на самом деле"
+
+#: ../../hpkg/hpkg:25 ../../hpkg/hpkg-explode:17
+msgid "-C <directory>"
+msgstr "-C <директория>"
+
+#: ../../hpkg/hpkg:25
 msgid "Install in <directory>"
 msgstr "Установить в <директорию>"
 
-#: /etc/hpkg/hpkg.locale:49
-msgid "Package to be installed"
-msgstr "Пакет для установки"
+#: ../../hpkg/hpkg:26 ../../hpkg/hpkg-explode:18
+msgid "-p <package>"
+msgstr "-p <пакетик>"
 
-#: /etc/hpkg/hpkg.locale:50
-msgid "More information available at hpkg(8)"
-msgstr "Больше информации доступно на странице hpkg(8)"
+#: ../../hpkg/hpkg:26
+msgid "Specify package to install"
+msgstr "Указать пакет для установки"
 
-#: /etc/hpkg/hpkg.locale:51
-msgid "Consult --usage or hpkg(8)"
-msgstr "Обратитесь к --usage или hpkg(8)"
+#: ../../hpkg/hpkg:28
+msgid "More information available at hpkg(8) manpage"
+msgstr "Больше информации доступно на man-странице hpkg(8)"
 
-#: /etc/hpkg/hpkg.locale:52
-msgid "<rootdir> set"
-msgstr "указать корневую директорию"
+#: ../../hpkg/hpkg:29 ../../hpkg/hpkg-explode:21 ../../hpkg/hpkg-info:20
+#: ../../packing/hmake:40
+msgid ""
+"Copyright and licensing information can be obtained via '--version' option"
+msgstr ""
+"Информация о авторском праве и лицензировании может быть получена с помощью"
+" опции '--version'"
 
-#: /etc/hpkg/hpkg.locale:53
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg:68 ../../hpkg/hpkg-explode:53
+#: ../../hpkg/hpkg-explode:55 ../../hpkg/hpkg-info:40 ../../hpkg/hpkg-info:41
+#: ../../hpkg/hpkg-info:42
+msgid "Option"
+msgstr "Опция"
+
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg:68 ../../hpkg/hpkg-explode:53
+#: ../../hpkg/hpkg-explode:55 ../../hpkg/hpkg-info:40 ../../hpkg/hpkg-info:41
+#: ../../hpkg/hpkg-info:42
+msgid "requires"
+msgstr "требует"
+
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg-explode:53
+msgid "<directory> argument"
+msgstr "аргумент <директория>"
+
+#: ../../hpkg/hpkg:66 ../../hpkg/hpkg:68 ../../hpkg/hpkg:70 ../../hpkg/hpkg:76
+#: ../../hpkg/hpkg-explode:53 ../../hpkg/hpkg-explode:55
+#: ../../hpkg/hpkg-explode:57 ../../hpkg/hpkg-explode:64
+#: ../../hpkg/hpkg-info:40 ../../hpkg/hpkg-info:41 ../../hpkg/hpkg-info:42
+#: ../../hpkg/hpkg-info:43 ../../hpkg/hpkg-info:49
+msgid "Consult a manpage or '--help' option"
+msgstr "Обратитесь к man-странице или опции '--help'"
+
+#: ../../hpkg/hpkg:68 ../../hpkg/hpkg-explode:55 ../../hpkg/hpkg-info:42
+msgid "<package> argument"
+msgstr "аргумент <пакетик>"
+
+#: ../../hpkg/hpkg:70 ../../hpkg/hpkg-explode:57 ../../hpkg/hpkg-info:43
+msgid "Unknown option"
+msgstr "Неизвестная опция"
+
+#: ../../hpkg/hpkg:76 ../../hpkg/hpkg-explode:64 ../../hpkg/hpkg-info:49
+msgid "Package is not set"
+msgstr "Пакет не указан"
+
+#: ../../hpkg/hpkg:77 ../../hpkg/hpkg-explode:65 ../../hpkg/hpkg-info:50
+msgid "No such package"
+msgstr "Нет такого пакета"
+
+#: ../../hpkg/hpkg:78 ../../hpkg/hpkg-explode:66 ../../hpkg/hpkg-info:51
+msgid "is not a .hard package"
+msgstr "не является пакетом .hard"
+
+#: ../../hpkg/hpkg:80
 msgid "You need root permissions for this action"
-msgstr "Для этого действия вам необходимы права администратора"
+msgstr "Вам необходимы права администратора для этого действия"
 
-#: /etc/hpkg/hpkg.locale:54
+#: ../../hpkg/hpkg:87
 msgid "Reading metadata"
 msgstr "Читаю метаданные"
 
-#: /etc/hpkg/hpkg.locale:55
+#: ../../hpkg/hpkg:92 ../../hpkg/hpkg-explode:75 ../../hpkg/hpkg-info:56
+msgid "Package can not be verified"
+msgstr "Пакет не может быть верифицирован"
+
+#: ../../hpkg/hpkg:100 ../../hpkg/hpkg:101 ../../hpkg/hpkg-info:63
+#: ../../hpkg/hpkg-info:70
+msgid "Package is corrupted"
+msgstr "Пакет поврежден"
+
+#: ../../hpkg/hpkg:103
 msgid "Dependency tracking disabled"
 msgstr "Отслеживание зависимостей отключено"
 
-#: /etc/hpkg/hpkg.locale:56
+#: ../../hpkg/hpkg:109
 msgid "Can not resolve dependency"
 msgstr "Не могу разрешить зависимость"
 
-#: /etc/hpkg/hpkg.locale:57
+#: ../../hpkg/hpkg:109
 msgid "needed for"
-msgstr "необходимый для"
+msgstr "необходимую для"
 
-#: /etc/hpkg/hpkg.locale:58
+#: ../../hpkg/hpkg:115
 msgid "Conflict"
 msgstr "Конфликт"
 
-#: /etc/hpkg/hpkg.locale:59
-msgid "Running pre-install script"
-msgstr "Запускаю предустановочный скрипт"
+#: ../../hpkg/hpkg:124
+msgid "Running 'pkg_preinstall'"
+msgstr "Запускаю 'pkg_preinstall'"
 
-#: /etc/hpkg/hpkg.locale:60
-msgid "Pre-install script exited with non-zero code"
-msgstr "Предустановочный скрипт завершился с кодом, не равным нулю"
+#: ../../hpkg/hpkg:124
+msgid "'pkg_preinstall' exited with non-zero code"
+msgstr "'pkg_preinstall' завершился с ошибкой"
 
-#: /etc/hpkg/hpkg.locale:61
+#: ../../hpkg/hpkg:126
 msgid "Installing package"
 msgstr "Устанавливаю пакет"
 
-#: /etc/hpkg/hpkg.locale:62
+#: ../../hpkg/hpkg:153
 msgid "Running hooks"
 msgstr "Запускаю хуки"
 
-#: /etc/hpkg/hpkg.locale:63
+#: ../../hpkg/hpkg:156
 msgid "Hook exited with non-zero code"
-msgstr "Хук завершился с кодом, не равным нулю"
+msgstr "Хук завершился с ошибкой"
 
-#: /etc/hpkg/hpkg.locale:64
-msgid "Running post-install script"
-msgstr "Запускаю послеустановочный скрипт"
+#: ../../hpkg/hpkg:160
+msgid "Running 'pkg_postinstall'"
+msgstr "Запускаю 'pkg_postinstall'"
 
-#: /etc/hpkg/hpkg.locale:65
-msgid "Post-install script exited with non-zero code"
-msgstr "Послеустановочный скрипт завершился с кодом, не равным нулю"
+#: ../../hpkg/hpkg:160
+msgid "'pkg_postinstall' exited with non-zero code"
+msgstr "'pkg_postinstall' завершился с ошибкой"
 
-#: /etc/hpkg/hpkg.locale:17
-msgid "-C <dir>"
-msgstr "-С <директория>"
+#: ../../hpkg/hpkg-explode:7
+msgid "hpkg-explode - rawly extract .hard archive"
+msgstr "hpkg-explode - грубо распаковать пакет .hard"
 
-#: /etc/hpkg/hpkg.locale:24
-msgid "Extract in <dir>"
-msgstr "Извлечь в <директорию>"
+#: ../../hpkg/hpkg-explode:9
+msgid "hpkg-explode [options] -p <package>"
+msgstr "hpkg-explode [опции] -p <пакетик>"
+
+#: ../../hpkg/hpkg-explode:13
+msgid "Print this text"
+msgstr "Вывести этот текст"
+
+#: ../../hpkg/hpkg-explode:16
+msgid "Also extract PAYLOAD.tar.xz"
+msgstr "Также распаковать PAYLOAD.tar"
+
+#: ../../hpkg/hpkg-explode:17
+msgid "Extract in directory"
+msgstr "Распаковать в директорию"
+
+#: ../../hpkg/hpkg-explode:18
+msgid "Specify package to be extracted"
+msgstr "Указать пакет для распаковки"
+
+#: ../../hpkg/hpkg-explode:20
+msgid "More information available at hpkg-explode(1) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-explode(1)"
+
+#: ../../hpkg/hpkg-explode:73
+msgid "Extracting"
+msgstr "Распаковываю"
+
+#: ../../hpkg/hpkg-explode:87
+msgid "Extracting PAYLOAD"
+msgstr "Распаковываю PAYLOAD"
+
+#: ../../hpkg/hpkg-explode:90
+msgid "is corrupted"
+msgstr "поврежден"
+
+#: ../../hpkg/hpkg-explode:96
+msgid "Moving to"
+msgstr "Перемещаю в"
+
+#: ../../hpkg/hpkg-info:7
+msgid "hpkg-info - obtain information about .hard package"
+msgstr "hpkg-info - получить информацию о пакете .hard"
+
+#: ../../hpkg/hpkg-info:9
+msgid "hpkg-info [options] -p <package>"
+msgstr "hpkg-info [опции] -p <пакетик>"
+
+#: ../../hpkg/hpkg-info:14
+msgid "Dump entire METADATA file"
+msgstr "Вывести файл METADATA целиком"
+
+#: ../../hpkg/hpkg-info:15
+msgid "Print as \"KEY=VALUE\""
+msgstr "Выводить в формате: КЛЮЧ=ЗНАЧЕНИЕ"
+
+#: ../../hpkg/hpkg-info:16
+msgid "-k <key>"
+msgstr "-k <ключ>"
+
+#: ../../hpkg/hpkg-info:16
+msgid "Specify key to obtain"
+msgstr "Указать ключ для вывода"
+
+#: ../../hpkg/hpkg-info:17
+msgid "-o <file>"
+msgstr "-o <файл>"
+
+#: ../../hpkg/hpkg-info:17
+msgid "Specify output (default stdout)"
+msgstr "Указать куда перенаправить вывод (по-умолчанию на терминал)"
+
+#: ../../hpkg/hpkg-info:19
+msgid "More information available at hpkg-info(1) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-info(1)"
+
+#: ../../hpkg/hpkg-info:40
+msgid "<key> argument"
+msgstr "аргумент <ключ>"
+
+#: ../../hpkg/hpkg-info:41
+msgid "<file> argurment"
+msgstr "аргумент <файл>"
+
+#: ../../hpkg/lib/hpkglib.sh:81
+msgid "Failing due to previous warnings"
+msgstr "Выхожу ввиду предыдущих сообщений"
+
+#: ../../hpkg/lib/hpkglib.sh:85
+msgid "This is"
+msgstr "Это"
+
+#: ../../hpkg/lib/hpkglib.sh:85 ../../hpkg/lib/hpkglib.sh:86
+msgid "from"
+msgstr "из"
+
+#: ../../hpkg/lib/hpkglib.sh:86
+msgid "Arseniy 'EmptiedSoul' Lesin"
+msgstr "Арсений 'EmptiedSoul' Лесин"
+
+#: ../../hpkg/lib/hpkglib.sh:87
+msgid "License: GPLv3 or newer: <https://gnu.org/license>"
+msgstr "Лицензия: GPLv3 или новее: <https://gnu.org/license>"
+
+#: ../../hpkg/lib/hpkglib.sh:88
+msgid ""
+"This is free software: you can freely run, inspect, modify and distribute"
+" this program"
+msgstr ""
+"Это свободное ПО: вы можете свободно запускать, изучать, изменять и"
+" распространять эту программу"
+
+#: ../../hpkg/lib/hpkglib.sh:89
+msgid "NO WARRANTY AT ALL"
+msgstr "НИКАКИХ ГАРАНТИЙ НЕ ПРЕДОСТАВЛЯЕТСЯ"
+
+#: ../../packing/hmake:27
+msgid "hmake - create .hard package"
+msgstr "hmake - создать пакет .hard"
+
+#: ../../packing/hmake:29
+msgid "hmake <command>"
+msgstr "hmake <команда>"
+
+#: ../../packing/hmake:31
+msgid "Commands"
+msgstr "Команды"
+
+#: ../../packing/hmake:32
+msgid "Read Buildfile and build package"
+msgstr "Собрать пакет в соответствии с Buildfile"
+
+#: ../../packing/hmake:33
+msgid "<directory>"
+msgstr "<директория>"
+
+#: ../../packing/hmake:33
+msgid "Create package from given directory"
+msgstr "Создать пакет из указанной директории"
+
+#: ../../packing/hmake:34
+msgid "Clean build and destination directories"
+msgstr "Очистить директорию сборки и назначения"
+
+#: ../../packing/hmake:35
+msgid "Like 'clean' but keep destination directory"
+msgstr "Как 'clean', только сохранить директорию назначения"
+
+#: ../../packing/hmake:36
+msgid "Completely purge everyrhing related to package"
+msgstr "Полностью очистить все связаное с пакетом"
+
+#: ../../packing/hmake:37
+msgid "Install built package"
+msgstr "Установить собраный пакет"
+
+#: ../../packing/hmake:39
+msgid "More information available at hmake(1) manpage"
+msgstr "Больше информации доступно на man-странице hmake(1)"
+
+#: ../../packing/hmake:100
+msgid "Cannot read Buildfile"
+msgstr "Не могу прочитать Buildfile"
+
+#: ../../packing/hmake:102
+msgid "Invalid Buildfile"
+msgstr "Некорректный Buildfile"
+
+#: ../../packing/hmake:110
+msgid "Running getsrc()"
+msgstr "Запускаю getsrc()"
+
+#: ../../packing/hmake:111
+msgid "Failed to get sources"
+msgstr "Не удалось получить исходники"
+
+#: ../../packing/hmake:112
+msgid "Running unpacksrc()"
+msgstr "Запускаю unpacksrc()"
+
+#: ../../packing/hmake:113
+msgid "Failed to unpack sources"
+msgstr "Не удалось распаковать исходники"
+
+#: ../../packing/hmake:115
+msgid "Running preparesrc()"
+msgstr "Запускаю preparesrc()"
+
+#: ../../packing/hmake:116
+msgid "Failed to prepare sources"
+msgstr "Не удалось подготовить исходники"
+
+#: ../../packing/hmake:119
+msgid "Entering chroot environment"
+msgstr "Вхожу в окружение chroot"
+
+#: ../../packing/hmake:123
+msgid "Running compilesrc()"
+msgstr "Запускаю compilesrc()"
+
+#: ../../packing/hmake:124
+msgid "Failed to compile sources"
+msgstr "Не удалось скомпилировать исходники"
+
+#: ../../packing/hmake:125
+msgid "Running installsrc()"
+msgstr "Запускаю installsrc()"
+
+#: ../../packing/hmake:126
+msgid "Failed to install into package"
+msgstr "Установка в пакет не удалась"
+
+#: ../../packing/hmake:127
+msgid "Stripping"
+msgstr "Очищаю ненужные секции бинарников"
+
+#: ../../packing/hmake:128
+msgid "Failed to strip"
+msgstr "Не удалось произвести зачистку бинарников"
+
+#: ../../packing/hmake:131
+msgid "Creating package"
+msgstr "Создаю пакет"
+
+#: ../../packing/hmake:133 ../../packing/hmake:138
+msgid "Failed to create package"
+msgstr "Не удалось создать пакет"
+
+#: ../../packing/hmake:136
+msgid "Leaving chroot environment"
+msgstr "Покидаю окружение chroot"
+
+#: ../../packing/hmake:137
+msgid "Signing package"
+msgstr "Подписываю пакет"
+
+#: ../../packing/hmake:142 ../../packing/hmake:151 ../../packing/hmake:159
+#: ../../packing/hmake:188
+msgid "Can not read Buildfile"
+msgstr "Не могу прочитать Buildfile"
+
+#: ../../packing/hmake:176
+msgid "Can not read METADATA"
+msgstr "Не могу прочитать метаданные"
+
+#: ../../packing/hmake:189
+msgid "Can not install package"
+msgstr "Не могу установить пакет"
