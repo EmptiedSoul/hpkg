@@ -1,5 +1,4 @@
-Warning! developer usage only due to reason below<br/>
-Warning! hpkg is being huge refactored so many parts are omit at the moment
+Warning! hpkg is being hugely refactored so many parts are omit at the moment (use on your own risk)
 # hpkg
 lightning-fast .hard package manager 
 ### Goals
