@@ -5,7 +5,7 @@ CFLAGS =
 RCFLAGS := $(CFLAGS) -Ofast -flto -fuse-linker-plugin -fuse-ld=gold
 #DBGFLAGS = -g2 -ggdb
 DBGFLAGS =
-WARNFLAGS = -Wall -Wextra -pedantic -Wshadow -Werror
+WARNFLAGS = -Wall -Wextra -pedantic -Wshadow -Wno-unused-result -Werror
 
 all: hsfd-resolv
 
