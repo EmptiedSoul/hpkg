@@ -31,7 +31,9 @@ YESNOCLOR="\e[34;1m"
 i18n(){
 	gettext "hpkg" "$1"
 }
-
+_cleanup(){
+	true
+}
 export i18n
 
 exec {sleeper}<> <(:)							# Opening fd for read-sleep
@@ -66,7 +68,7 @@ pointer(){
 	printf "${POINTERCOLOR}==>${CLRCOLOR} $1\n"			# ==> Doing something
 }
 warn(){
-	printf "${WARNCOLOR}<!>${CLRCOLOR} $1\n" >&2			# ! Alarm
+	printf "${WARNCOLOR}<!>${CLRCOLOR} $1\n" >&2			# <!> Alarm
 }
 error(){
 	warn "$1"                       				# Saying error
@@ -78,7 +80,8 @@ error(){
 		do	warn "$line";	       done			# Printing output line-by-line with warn's "!" prefix
 		warn "--- Trace ---"
 	fi
-	warn "($2) $(i18n "Failing due to previous warnings")"			# Saying exit code
+	warn "($2) $(i18n "Failing due to previous warnings")"		# Saying exit code
+	_cleanup
 	exit "$2"							# Going down
 }
 version(){

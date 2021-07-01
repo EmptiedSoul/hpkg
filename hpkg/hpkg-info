@@ -2,6 +2,10 @@
 
 . /usr/lib/hpkglib.sh
 
+_cleanup(){
+	rm -f $PKGDEC $PKGMET
+}
+
 usage(){
 printf "\
 $(i18n "hpkg-info - obtain information about .hard package")\n\
@@ -77,3 +81,4 @@ rm $PKGDEC $PKGMET
 is_true "$ALL" && \
 	echo $KEY=$(eval echo \${$KEY}) || \
 	eval echo \${$KEY}
+exit 0

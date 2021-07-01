@@ -1,12 +1,20 @@
 #!/bin/bash
 
+
+
 log(){
 	local DATE=$(date)
 	printf "[ %s ] %s\n" "$DATE" "$1" >> /var/log/packages
 }
 
 . /usr/lib/hpkglib.sh
+
+_cleanup(){
+	rm -f $PKGDEC $PKGMET
+}
+
 ERRCODE=0
+
 usage(){
 printf "\
 $(i18n "hpkg - install .hard package")\n\
@@ -105,7 +113,7 @@ is_true "$SLACK" || {
 
 for dependency in "${DEPENDS[@]}"
 do
-	{ [[ -f "$ROOT/var/hpkg/packages-provides/*/$dependency" ]] || [[ -f "$ROOT/var/hpkg/packages/$dependency" ]]; } || {
+	{ [[ -f "$ROOT/var/hpkg/packages-provides/$dependency" ]] || [[ -f "$ROOT/var/hpkg/packages/$dependency" ]]; } || {
 		{ is_true "$PRETEND" || ${HARDMAN_NON_INTERACTIVE_INSTALL} $dependency; } || error "$(i18n "Can not resolve dependency"): $dependency $(i18n "needed for") $PKGNAME" "8" 
 	}
 
@@ -116,7 +124,7 @@ do
 	[[ -f "$ROOT/var/hpkg/packages/$conflict" ]] && error "$(i18n "Conflict"): $conflict"
 done
 
-[[ -f "$ROOT/var/hpkg/packages-conflicts/*/$PKGNAME" ]] && \
+[[ -f "$ROOT/var/hpkg/packages-conflicts-with/$PKGNAME" ]] && \
 error "$(i18n "Installed package conflicts with $PKGNAME")" "16"
 }
 
@@ -129,20 +137,23 @@ pointer "$(i18n "Installing package")..."
 { tar xvf "$PKGDEC" PAYLOAD.tar.zst -O | tar xpv --zstd -C "$ROOT" --numeric-owner > $ROOT/var/hpkg/installed-files/$PKGNAME-$VERSION.list; } 2>&${FD2} 1>&${FD1} && { 	  	
 	cp $PKGMET  $ROOT/var/hpkg/packages/$PKGNAME
 	
-	mkdir -p $ROOT/var/hpkg/packages-dependencies/$PKGNAME
-	pushd $_
-	touch ${DEPENDS[@]} 
-	popd
+	for dependency in "${DEPENDS[@]}"
+	do
+		mkdir -p $ROOT/var/hpkg/packages-depend-on/$dependency
+		touch $_/$PKGNAME
+	done
 
-	mkdir -p $ROOT/var/hpkg/packages-conflicts/$PKGNAME
-	pushd $_
-	touch ${CONFLICTS[@]} 
-	popd
-
-	mkdir -p $ROOT/var/hpkg/packages-provides/$PKGNAME
-	pushd $_
-	touch ${PROVIDES[@]} 
-	popd
+	for conflict in "${CONFLICTS[@]}"
+	do
+		mkdir -p $ROOT/var/hpkg/packages-conflict-with/$conflict
+		touch $_/$PKGNAME
+	done
+	
+	for provision in "${PROVIDES[@]}"
+	do
+		mkdir -p $ROOT/var/hpkg/packages-provides/$provision
+		touch $_/$PKGNAME
+	done
 
 	is_true "$ASDEP" && ln -sv $ROOT/var/hpkg/packages/$PKGNAME $ROOT/var/hpkg/as-dep/$PKGNAME
 
@@ -161,4 +172,3 @@ is_true "$NOHOOK" || {
 type pkg_postinstall 1>&${FD1} 2>&${FD2}&& { pointer "$(i18n "Running 'pkg_postinstall'")..."; pkg_postinstall || warn "$(i18n "'pkg_postinstall' exited with non-zero code")"; }
 
 exit 0;
-
