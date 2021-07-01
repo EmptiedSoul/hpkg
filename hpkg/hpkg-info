@@ -50,8 +50,8 @@ done
 [[ -e "$PKG" ]] || error "$PKG: $(i18n "No such package")" "1"
 [[ "$PKG" != *.hard ]] && error "\"$PKG\" $(i18n "is not a .hard package")" "1"
 
-PKGDEC="/tmp/${RANDOM}${PKG}.decrypted"
-PKGMET="/tmp/${RANDOM}${PKG}.metadata"
+PKGDEC="/tmp/${RANDOM}${PKG##*/}.decrypted"
+PKGMET="/tmp/${RANDOM}${PKG##*/}.metadata"
 
 FD2=3
 FD1=3

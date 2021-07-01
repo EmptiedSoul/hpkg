@@ -86,8 +86,8 @@ is_true "$VERBOSE" || { FD1=3; FD2=3; } # Supress FDs if -v is not passed
 
 pointer "$(i18n "Reading metadata")..."
 
-PKGDEC="/tmp/${RANDOM}${PKG}.decrypted"
-PKGMET="/tmp/${RANDOM}${PKG}.metadata"
+PKGDEC="/tmp/${RANDOM}${PKG##*/}.decrypted"
+PKGMET="/tmp/${RANDOM}${PKG##*/}.metadata"
 
 gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
 

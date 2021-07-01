@@ -89,3 +89,10 @@ $(i18n "This is free software: you can freely run, inspect, modify and distribut
 $(i18n "NO WARRANTY AT ALL")\n"
 	exit 0
 }
+
+is_true $NO_COLOR && {
+	POINTERCOLOR=""
+	WARNCOLOR=""
+	CLRCOLOR=""
+	YESNOCLOR=""
+}
