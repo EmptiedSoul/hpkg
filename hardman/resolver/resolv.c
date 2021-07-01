@@ -14,6 +14,7 @@ int main(int argc, char* argv[]){
 		query_add_package(argv[i]);					
 	}
 	for (int i = 0; i<query.amount; i++){
+		(void)package_can_be_installed(query.package[i]);
 		char* dependencies = package_get_dependencies_string(query.package[i]);
 		if (dependencies == NULL) continue;
 		char* dependency   = strtok(dependencies, " ");
@@ -25,5 +26,5 @@ int main(int argc, char* argv[]){
 		free(dependencies);
 	}
 	query_print_packages();
-	return EXIT_SUCCESS;
+	return RESOLV_SUCCESS;
 }
