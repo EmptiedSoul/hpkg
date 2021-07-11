@@ -1,0 +1,120 @@
+#!/bin/bash
+
+log(){
+	local DATE=$(date)
+	printf "[ %s ] %s\n" "$DATE" "$1" >> /var/log/packages
+}
+
+. /usr/lib/hpkglib.sh
+
+usage(){
+printf "\
+$(i18n "hpkg-remove - uninstall .hard package")\n\
+\n\
+$(i18n "hpkg-remove [options] -p <package>")\n\
+\n\
+$(i18n "Options"):\n\
+  -V | --version	$(i18n "Print version info and exit")\n\
+  -h | --help | --usage $(i18n "Print this help")\n\
+  -v			$(i18n "Be verbose")\n\
+  -s			$(i18n "Be silent")\n\
+  -f			$(i18n "Ignore dependencies and conflicts")\n\
+  -P			$(i18n "Do not really remove package")\n\
+  $(i18n "-C <directory>")	$(i18n "Remove from <directory>")\n\
+  $(i18n "-p <package>")		$(i18n "Specify package to remove")\n\
+\n\
+$(i18n "More information available at hpkg-remove(8) manpage")\n\
+$(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
+exit 0
+}
+
+[[ -z "$*" ]] && usage
+{ [[ "$1" == "--usage" ]] || [[ "$1" == "--help" ]]; } && usage
+[[ "$1" == "--version" ]] && version
+
+
+while getopts ":vsfhPVp:" opt
+do
+case $opt in
+	v)
+		VERBOSE="YES";;
+	s)
+		exec 1>&3
+		exec 2>&3
+		;;
+	f)
+		SLACK="YES";;
+	V)
+		version;;
+	h)
+		usage;;
+	P)
+		PRETEND="YES";;
+	p)
+		PKG="$OPTARG";;
+	:)
+		;& # FALLTHROUGH
+	*)
+		if	[[ "$OPTARG" == "p" ]]; then # If there is -p option, not followed by PKG
+			error "$(i18n "Option") \'-p\' $(i18n "requires") $(i18n "<package> argument"). $(i18n "Consult a manpage or '--help' option")" "32"
+		else
+			error "$(i18n "Unknown option"): -$OPTARG. $(i18n "Consult a manpage or '--help' option")" "32"
+		fi
+	;;
+esac
+done
+
+FD1=1
+FD2=2
+
+is_true "$VERBOSE" || {
+	FD1=3
+	FD2=3
+}
+
+is_true "$PRETEND" || {
+	[[ "$UID" == 0 ]] || {
+		error "$(i18n "You need root permissions for this action")" 32
+	}
+}
+
+[[ -e /var/hpkg/packages/$PKG ]] || {
+	error "$(i18n "Package is not installed so not removed")" 1
+}
+
+is_true "$SLACK" && warn "$(i18n "Dependency tracking disabled")" || {
+	[[ -e /var/hpkg/packages-depend-on/$PKG ]] && {
+		warn "$(i18n "Following packages depend on") $PKG:"
+		ls /var/hpkg/packages-depend-on/$PKG/
+		error "$(i18n "Cannot remove package due to dependency breakage")" 8 
+	}
+}
+
+is_true "$PRETEND" && exit 0
+
+pointer "$(i18n "Removing package...")"
+{
+	. /var/hpkg/packages/$PKG
+	FILES=$(tac /var/hpkg/installed-files/$PKGNAME-$VER.list | sed -e 's/^\.//' -e 's|^/$||' | tr '\n' ' ')
+	rm -fvd $FILES
+	to_del=" "
+	for dependency in "${DEPENDS[@]}"
+	do
+		to_del+="/var/hpkg/packages-depend-on/$dependency/$PKGNAME /var/hpkg/packages-depend-on/$dependency/ "
+	done
+	for conflict in "${CONFLICTS[@]}"
+	do
+		to_del+="/var/hpkg/packages-conflict-with/$conflict/$PKGNAME /var/hpkg/packages-conflict-with/$conflict/ "
+	done
+	for provision in "${PROVIDES[@]}"
+	do
+		to_del+="/var/hpkg/packages-provides/$provision/$PKGNAME /var/hpkg/packages-provides/$provision/ "
+	done
+	to_del+="/var/hpkg/package/$PKG /var/hpkg/as-dep/$PKG"
+	rm -fvd $to_del
+	unset FILES to_del
+} 1>&${FD1} 2>&${FD2}
+
+log "removed $PKG"
+
+exit 0;

@@ -4,7 +4,7 @@
 
 log(){
 	local DATE=$(date)
-	printf "[ %s ] %s\n" "$DATE" "$1" >> /var/log/packages
+	printf "[ %s ] %s\n" "$DATE" "$1" >> $ROOT/var/log/packages
 }
 
 . /usr/lib/hpkglib.sh
@@ -114,7 +114,7 @@ is_true "$SLACK" || {
 for dependency in "${DEPENDS[@]}"
 do
 	{ [[ -f "$ROOT/var/hpkg/packages-provides/$dependency" ]] || [[ -f "$ROOT/var/hpkg/packages/$dependency" ]]; } || {
-		{ is_true "$PRETEND" || ${HARDMAN_NON_INTERACTIVE_INSTALL} $dependency; } || error "$(i18n "Can not resolve dependency"): $dependency $(i18n "needed for") $PKGNAME" "8" 
+		{ is_true "$PRETEND" && HARDMAN_NON_INTERACTIVE_INSTALL=false; ${HARDMAN_NON_INTERACTIVE_INSTALL} $dependency; } || error "$(i18n "Can not resolve dependency"): $dependency $(i18n "needed for") $PKGNAME" "8" 
 	}
 
 done
@@ -128,7 +128,7 @@ done
 error "$(i18n "Installed package conflicts with $PKGNAME")" "16"
 }
 
-is_true "$PRETEND" && exit
+is_true "$PRETEND" && { _cleanup; exit 0 }
 
 type pkg_preinstall 1>&${FD1} 2>&${FD2} && { pointer "$(i18n "Running 'pkg_preinstall'")"; pkg_preinstall || warn "$(i18n "'pkg_preinstall' exited with non-zero code")"; }
 
@@ -136,24 +136,43 @@ pointer "$(i18n "Installing package")..."
 
 { tar xvf "$PKGDEC" PAYLOAD.tar.zst -O | tar xpv --zstd -C "$ROOT" --numeric-owner > $ROOT/var/hpkg/installed-files/$PKGNAME-$VERSION.list; } 2>&${FD2} 1>&${FD1} && { 	  	
 	cp $PKGMET  $ROOT/var/hpkg/packages/$PKGNAME
-	
+
+	mkdirs=" "
+	touches=" "
+
 	for dependency in "${DEPENDS[@]}"
 	do
-		mkdir -p $ROOT/var/hpkg/packages-depend-on/$dependency
-		touch $_/$PKGNAME
+		mkdirs+="$ROOT/var/hpkg/packages-depend-on/$dependency "
+		touches+="$ROOT/var/hpkg/packages-depend-on/$dependency/$PKGNAME "
 	done
+	
+	mkdir -vp $mkdirs
+	touch $touches
+
+	mkdirs=" "
+	touches=" "
 
 	for conflict in "${CONFLICTS[@]}"
 	do
-		mkdir -p $ROOT/var/hpkg/packages-conflict-with/$conflict
-		touch $_/$PKGNAME
+		mkdirs+="$ROOT/var/hpkg/packages-conflict-with/$conflict "
+		touches+="$ROOT/var/hpkg/packages-conflict-with/$conflict/$PKGNAME "
 	done
-	
+		
+	mkdir -vp $mkdirs
+	touch $touches
+
+	mkdirs=" "
+	touches=" "
+
 	for provision in "${PROVIDES[@]}"
 	do
-		mkdir -p $ROOT/var/hpkg/packages-provides/$provision
-		touch $_/$PKGNAME
+		mkdirs+="$ROOT/var/hpkg/packages-provides/$provision "
+		touches+="$ROOT/var/hpkg/packages-provides/$provision/$PKGNAME "
 	done
+	
+	mkdir -vp $mkdirs
+	touch $touches
+	unset mkdirs touches
 
 	is_true "$ASDEP" && ln -sv $ROOT/var/hpkg/packages/$PKGNAME $ROOT/var/hpkg/as-dep/$PKGNAME
 
@@ -171,4 +190,5 @@ is_true "$NOHOOK" || {
 
 type pkg_postinstall 1>&${FD1} 2>&${FD2}&& { pointer "$(i18n "Running 'pkg_postinstall'")..."; pkg_postinstall || warn "$(i18n "'pkg_postinstall' exited with non-zero code")"; }
 
+_cleanup
 exit 0;

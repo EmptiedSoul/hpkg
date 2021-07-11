@@ -49,7 +49,7 @@ errlog(){
 }
 is_true(){
 	case $1 in
-		y*|Y*|0|true|TRUE|on)
+		y*|Y*|1|true|TRUE|on)
 			return 0
 		;;
 		*)
@@ -59,7 +59,7 @@ is_true(){
 }
 
 yesno(){
-	printf "${YESNOCOLOR}(?)${CLRCOLOR} $1 [Y/N] "
+	echo -en "${YESNOCOLOR}(?)${CLRCOLOR} $1 [Y/n] "
 	read _answer
 	{ is_true "$_answer" || [[ -z $_answer ]]; } && return 0 || return 1
 }

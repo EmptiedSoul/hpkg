@@ -50,6 +50,10 @@ case $opt in
 esac
 done 
 
+{ [[ -z "$KEY" ]] && [[ -z "$DUMP" ]]; } && {
+	error "$(i18n "You should specify a key to obtain")" "32"
+}
+
 [[ -z "$PKG" ]] && error "$(i18n "Package is not set"). $(i18n "Consult a manpage or '--help' option")" "32"
 [[ -e "$PKG" ]] || error "$PKG: $(i18n "No such package")" "1"
 [[ "$PKG" != *.hard ]] && error "\"$PKG\" $(i18n "is not a .hard package")" "1"
@@ -81,4 +85,6 @@ rm $PKGDEC $PKGMET
 is_true "$ALL" && \
 	echo $KEY=$(eval echo \${$KEY}) || \
 	eval echo \${$KEY}
+
+_cleanup
 exit 0

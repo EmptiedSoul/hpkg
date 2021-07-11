@@ -39,9 +39,9 @@ ln -sfv /usr/src/hpkg/hpkg/lib/hpkglib.sh	$ROOT/usr/lib/hpkglib.sh
 #ln -sfv /usr/src/hpkg/control/hlog.sh  /usr/bin/hlog
 #ln -sfv /usr/src/hpkg/control/hparts.sh /usr/bin/hparts
 ln -sfv /usr/src/hpkg/control/hpkg-update.sh	$ROOT/usr/bin/hpkg-update
-ln -sfv /usr/src/hpkg/packing/hmake		$ROOT/usr/bin/hmake
-ln -sfv /usr/src/hpkg/packing/buildrepo		$ROOT/usr/bin/buildrepo
+ln -sfv /usr/src/hpkg/packing/hpkg-make		$ROOT/usr/bin/hpkg-make
 ln -sfv /usr/src/hpkg/hpkg/hpkg-explode		$ROOT/usr/bin/hpkg-explode
 ln -sfv	/usr/src/hpkg/hpkg/hpkg-info		$ROOT/usr/bin/hpkg-info
+ln -sfv /usr/src/hpkg/hpkg/hpkg-remove		$ROOT/usr/bin/hpkg-remove
 printf "All done. Now you can generate config by 'hcfg'\n"
 

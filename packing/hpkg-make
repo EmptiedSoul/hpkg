@@ -12,7 +12,7 @@ MAINTAINER="$(whoami)@$(hostname)"
 #[[ "$UID" == 0 ]] || error "$_root_or_fakeroot" "32" 
 
 FD1="1"
-exec 5>/var/log/hmake
+exec 5>"${DISTDIR}/hpkg-make.log"
 
 is_true "$DEBUG" || FD1="5"
 
@@ -24,9 +24,9 @@ __installsrc()	{	false;	}
 
 usage(){
 printf "\
-$(i18n "hmake - create .hard package")\n\
+$(i18n "hpkg-make - create .hard package")\n\
 \n\
-$(i18n "hmake <command>")\n\
+$(i18n "hpkg-make <command>")\n\
 \n\
 $(i18n "Commands"):\n\
   build			$(i18n "Read Buildfile and build package")\n\
@@ -36,7 +36,7 @@ $(i18n "Commands"):\n\
   mrproper		$(i18n "Completely purge everyrhing related to package")\n\
   install		$(i18n "Install built package")\n\
 \n\
-$(i18n "More information available at hmake(1) manpage")\n\
+$(i18n "More information available at hpkg-make(1) manpage")\n\
 $(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
 exit 0
 }
@@ -115,7 +115,7 @@ build(){
 	popd &>/dev/null
 	popd &>/dev/null
 	pointer "$(i18n "Entering chroot environment")..."
-	fakeroot <<EOF
+	fakeroot /bin/bash <<EOF
 	pushd $BUILDDIR &>/dev/null
 	pushd $SRCDIR	&>/dev/null
 	pointer "$(i18n "Running compilesrc()")"
