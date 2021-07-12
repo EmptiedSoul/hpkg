@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 log(){
 	local DATE=$(date)
 	printf "[ %s ] %s\n" "$DATE" "$1" >> $ROOT/var/log/packages
@@ -83,7 +81,7 @@ done
 
 [[ -z "$PKG" ]] && error "$(i18n "Package is not set"). $(i18n "Consult a manpage or '--help' option")" "32"
 [[ -e "$PKG" ]] || error "$PKG: $(i18n "No such package")" "1"
-[[ "$PKG" != *.hard ]] && error "\"$PKG\" $(i18n "is not a .hard package")" "1"
+[[ "$PKG" != *.hard ]] && error "\"$PKG\" $(i18n "is not a .hard package")" "2"
 is_true "$PRETEND" || {
 	[[ "$UID" != "0" ]] && error "$(i18n "You need root permissions for this action")" "32" 
 }
@@ -128,7 +126,7 @@ done
 error "$(i18n "Installed package conflicts with $PKGNAME")" "16"
 }
 
-is_true "$PRETEND" && { _cleanup; exit 0 }
+is_true "$PRETEND" && { _cleanup; exit 0; }
 
 type pkg_preinstall 1>&${FD1} 2>&${FD2} && { pointer "$(i18n "Running 'pkg_preinstall'")"; pkg_preinstall || warn "$(i18n "'pkg_preinstall' exited with non-zero code")"; }
 
@@ -191,4 +189,4 @@ is_true "$NOHOOK" || {
 type pkg_postinstall 1>&${FD1} 2>&${FD2}&& { pointer "$(i18n "Running 'pkg_postinstall'")..."; pkg_postinstall || warn "$(i18n "'pkg_postinstall' exited with non-zero code")"; }
 
 _cleanup
-exit 0;
+exit 0

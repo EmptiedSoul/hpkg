@@ -1,0 +1,46 @@
+#!/bin/bash
+
+. /usr/lib/hpkglib.sh
+. /var/hardman/modules/index.sh
+
+need_root(){
+	[[ "$UID" == 0 ]] || error "$(i18n "You need root permissions for this action")" 32
+}
+
+usage(){
+printf "\
+$(i18n "hardman - high-level package managing utility")\n\
+\n\
+$(i18n "hardman [command]")\n\
+\n\
+$(i18n "Commands"):\n"
+for cmd in "${COMMANDS[@]}"
+do
+	echo "  $cmd"	
+done
+printf "\n\
+$(i18n "More information available at hardman(8) manpage")\n\
+$(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
+exit 0;
+}
+
+[[ -z "$1" ]] && usage
+
+case $1 in
+	--help|-h|--usage|help)
+		usage;;
+	-V|--version|version)
+		version;;
+	*)
+		compgen -A function $1 &>/dev/null && {
+			func=$1
+			shift
+			$func $*
+			exit $?
+		} || {
+			warn "$1: $(i18n "No such command, maybe you mistyped it or appropriate module isnt enabled.")"
+			error "$(i18n "Use '--help' to obtain full list of commands")" 32
+		}
+		;;
+esac
+	

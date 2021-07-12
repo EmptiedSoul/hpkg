@@ -1,0 +1,20 @@
+#!/bin/bash
+
+__MODULE_COMMANDS__=(remove info explode local-install)
+
+local-install(){
+	hpkg $*
+}
+
+remove(){
+	hpkg-remove $*
+}
+
+info(){
+	hpkg-info $*
+}
+
+explode(){
+	hpkg-explode $*
+}
+

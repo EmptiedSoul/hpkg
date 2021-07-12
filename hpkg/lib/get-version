@@ -1,0 +1,6 @@
+#!/bin/bash
+ 
+[[ -e ../../.version ]] && {
+	cat ../../.version
+	exit
+} || git describe --abbrev=7 --always --long --match 'v*' master

@@ -1,0 +1,65 @@
+#!/bin/bash
+
+__MODULE_COMMANDS__=(install i)
+
+i(){
+	install $*	
+}
+
+eval_hpkg_error(){
+	case $? in
+		0)
+			return;;
+		1)
+			error "Package not found. Check your downloader" 1
+			;;
+		2)
+			error "Package is not a .hard package. Check yout downloader" 2
+			;;
+		4)
+			error "Package corrupted" 4
+			;;
+		8)
+			error "Dependency conflict. Check your resolver" 8
+			;;
+		16)
+			error "Conflicting packages found. Check your resolver" 16
+			;;
+		32)
+			error "Invalid parameters" 32
+			;;
+	esac
+}
+
+install(){
+	need_root
+	EXPLICIT_PKGS=()
+	for exp_pkg in $@
+	do
+		EXPLICIT_PKGS+=($exp_pkg)
+	done
+	resolve $*
+	echo "$(i18n "The following packages will be installed")"
+	echo -e "\n$QUERY\n"
+	yesno "$(i18n "Do you wish to continue?")" || {
+		echo "Aborting"
+		exit 0
+	}
+	download $QUERY
+	for i in "${!PKGS_NV[@]}"
+	do
+		pointer "($(((i+1)))/${#PKGS_NV[@]}) Installing ${PKGS[i]}..."
+		for pkg in "${EXPLICIT_PKGS[@]}"
+		do
+			[[ "${PKGS_NV[i]}" == "$pkg" ]] && is_expl=y
+		done
+		if [[ -z "$is_expl" ]]; then
+		      	local-install -fsdp "${DLPKGS[i]}" 
+			eval_hpkg_error
+		else
+			local-install -fsp  "${DLPKGS[i]}"
+			eval_hpkg_error
+		fi
+		is_expl=""
+	done
+}

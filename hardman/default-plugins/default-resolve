@@ -1,0 +1,7 @@
+#!/bin/bash
+
+__MODULE_COMMANDS__=(resolve)
+
+resolve(){
+	QUERY=$(/usr/libexec/hardman/hsfd-resolv $*)
+}

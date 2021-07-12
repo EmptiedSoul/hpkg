@@ -10,23 +10,28 @@ WARNFLAGS = -Wall -Wextra -pedantic -Wshadow -Wno-unused-result -Werror
 all: hsfd-resolv
 
 hsfd-resolv: ${OBJS}
-	${CC} -o hsfd-resolv ${OBJS} ${RCFLAGS} ${WARNFLAGS} ${DBGFLAGS}
+	@echo "  LINK        hsfd-resolv"
+	@${CC} -o hsfd-resolv ${OBJS} ${RCFLAGS} ${WARNFLAGS} ${DBGFLAGS}
 
 %.o: %.c
-	${CC} -o $@ -c $< $(RCFLAGS) ${WARNFLAGS} ${DBGFLAGS}
+	@echo "  CC          $@"
+	@${CC} -o $@ -c $< $(RCFLAGS) ${WARNFLAGS} ${DBGFLAGS}
 clean:
-	rm -f *.o hsfd-resolv
+	@echo "  CLEAN       hsfd-resolv"
+	@rm -f *.o hsfd-resolv
 test: all
-	./hsfd-resolv ${TEST_PKG}
+	@echo "  TEST        hsfd-resolv"
+	@./hsfd-resolv ${TEST_PKG}
 
 pgo: clean
-	make CFLAGS="${CFLAGS} -fprofile-generate"
-	make test TEST_PKG="${TEST_PKG}"
-	make clean
-	make CFLAGS="${CFLAGS} -fprofile-use"
-	rm *.gcda
+	@make CFLAGS="${CFLAGS} -fprofile-generate"
+	@make test TEST_PKG="${TEST_PKG}"
+	@make clean
+	@make CFLAGS="${CFLAGS} -fprofile-use"
+	@rm *.gcda
 
 install: all
-	mkdir -p /usr/libexec/hardman
-	install -m755 ./hsfd-resolv /usr/libexec/hardman/hsfd-resolv
+	@echo "  INSTALL     hsfd-resolv"
+	@mkdir -p ${DESTDIR}/usr/libexec/hardman
+	@install -m755 ./hsfd-resolv ${DESTDIR}/usr/libexec/hardman/hsfd-resolv
 

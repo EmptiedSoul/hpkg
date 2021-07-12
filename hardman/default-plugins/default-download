@@ -1,0 +1,33 @@
+#!/bin/bash
+
+__MODULE_COMMANDS__=(download)
+
+_curldl(){
+	for i in "${!URLS[@]}"
+	do
+		pointer "($(((i+1)))/${#URLS[@]}) $(i18n "Downloading") ${PKGS[i]}"
+		curl -# -LO ${URLS[i]}
+	done
+	unset URLS
+}
+
+download(){
+	resolve_pkg_url $*
+	cd /var/hardman/cached-packages/
+	${DLAGENT:-_curldl}
+}
+
+resolve_pkg_url(){
+	URLS=( )
+	DLPKGS=( )
+	PKGS=( )
+	PKGS_NV=( )
+	for pkg in $@
+	do
+		. /var/hardman/repo/$pkg
+		URLS+=("$URL ")
+		DLPKGS+=("/var/hardman/cached-packages/${PKGNAME}_${VERSION}.hard")
+		PKGS+=("$PKGNAME-$VERSION ")
+		PKGS_NV+=("$PKGNAME")
+	done
+}

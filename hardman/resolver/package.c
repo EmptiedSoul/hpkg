@@ -15,8 +15,9 @@
 bool package_is_installed(char* package_name){
 	static const char* path_stub = "/var/hpkg/packages/%s";
 	struct stat* buffer = malloc(sizeof(struct stat));
-	char* filename = malloc(strlen(path_stub)+strlen(package_name)+1);
-	sprintf(filename, path_stub, package_name);
+	size_t str_size = strlen(path_stub) + strlen(package_name);
+	char* filename = malloc(str_size + 1);
+	snprintf(filename, str_size, path_stub, package_name);
 	int retval = stat(filename, buffer);
 	free(buffer);
 	free(filename);
@@ -36,8 +37,9 @@ bool package_is_in_query(char* package_name){
 
 char* package_get_dependencies_string(char* package_name){
 	static const char* path_stub = "/var/hardman/repo/%s";
-	char* filename = malloc(strlen(path_stub)+strlen(package_name)+1);
-	sprintf(filename, path_stub, package_name);
+	size_t str_size = strlen(path_stub) + strlen(package_name);
+	char* filename = malloc(str_size + 1);
+	snprintf(filename, str_size, path_stub, package_name);
 	FILE* metadata = fopen(filename, "r");
 	free(filename);
 	if(metadata == NULL) {
@@ -70,8 +72,9 @@ char* package_get_dependencies_string(char* package_name){
 
 char* package_get_conflicts_string(char* package_name){
 	static const char* path_stub = "/var/hardman/repo/%s";
-	char* filename = malloc(strlen(path_stub)+strlen(package_name)+1);
-	sprintf(filename, path_stub, package_name);
+	size_t str_size = strlen(path_stub) + strlen(package_name);
+	char* filename = malloc(str_size + 1);
+	snprintf(filename, str_size, path_stub, package_name);
 	FILE* metadata = fopen(filename, "r");
 	free(filename);
 	if(metadata == NULL) {
@@ -104,8 +107,9 @@ char* package_get_conflicts_string(char* package_name){
 bool package_can_be_installed(char* package_name){
 	static const char* path_stub = "/var/hpkg/packages-conflict-with/%s";
 	struct stat* buffer = malloc(sizeof(struct stat));
-	char* filename = malloc(strlen(path_stub)+strlen(package_name)+1);
-	sprintf(filename, path_stub, package_name);
+	size_t str_size = strlen(path_stub) + strlen(package_name);
+	char* filename = malloc(str_size + 1);
+	snprintf(filename, str_size, path_stub, package_name);
 	int retval = stat(filename, buffer);
 	free(buffer);
 	free(filename);

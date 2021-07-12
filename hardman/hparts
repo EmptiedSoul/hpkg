@@ -1,0 +1,83 @@
+#!/bin/bash
+
+. /usr/lib/hpkglib.sh
+
+get_module_status(){
+	[[ -e /var/hardman/modules/enabled/$1 ]] && {
+		echo -e "[enabled ] $1"
+	} || {
+		echo -e "[disabled] $1"
+	}
+}
+
+enable_module(){
+	pointer "Enabling module $1..."
+	[[ -e /var/hardman/modules/$1 ]] || {
+		error "$1: $(i18n "No such module")" 1
+	}
+	[[ -e /var/hardman/modules/enabled/$1 ]] && return
+
+	ln -s /var/hardman/modules/$1 /var/hardman/modules/enabled/$1
+}
+
+disable_module(){
+	pointer "Disabling module $1..."
+	[[ -e /var/hardman/modules/$1 ]] || {
+		error "$1: $(i18n "No such module")" 1
+	}
+	[[ -e /var/hardman/modules/enabled/$1 ]] || return
+
+	rm /var/hardman/modules/enabled/$1
+}
+
+update_index(){
+	COMMANDS=" "
+	echo " " > /var/hardman/modules/index.sh
+	for module in $(ls -1 /var/hardman/modules/enabled/)
+	do
+		. /var/hardman/modules/enabled/$module
+		COMMANDS+="${__MODULE_COMMANDS__[@]} "
+		for cmd in "${__MODULE_COMMANDS__[@]}"
+		do
+			echo "$cmd(){ . /var/hardman/modules/enabled/$module; $cmd \$* ; }" >> /var/hardman/modules/index.sh
+		done
+	done
+	echo "COMMANDS=($COMMANDS)" >> /var/hardman/modules/index.sh
+	unset COMMANDS
+}
+
+usage(){
+echo -en "\
+$(i18n "hparts - hardman' module manager")\n\
+\n\
+hparts [enable|disable|list] <module>\n\
+\n\
+$(i18n "More information available at hparts(8) manpage")\n\
+$(i18n "Copyright and licensing information can be obtained via '--version' option")\n"
+exit 0;
+}
+
+[[ -z "$1" ]] && usage
+
+case $1 in 
+	-h|--help|--usage|help|usage)
+		usage;;
+	-V|--version|version)
+		version;;
+	list)
+		for pkg in $(ls /var/hardman/modules/ -1 --hide=index.sh --hide=enabled)
+		do
+			get_module_status "$pkg"	
+		done
+		;;
+	enable)
+		[[ "$UID" == 0 ]] || error "$(i18n "You need root permissions for this action")" 1
+		enable_module $2 
+		update_index
+		;;
+	disable)
+		[[ "$UID" == 0 ]] || error "$(i18n "You need root permissions for this action")" 1
+		disable_module $2
+		update_index
+		;;
+esac
