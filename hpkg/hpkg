@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Look /usr/lib/hpkglib.sh for error codes
+
+# This is really dirty shit, im going to 
+# create a C alternative implementation
+
 log(){
 	local DATE=$(date)
 	printf "[ %s ] %s\n" "$DATE" "$1" >> $ROOT/var/log/packages
@@ -26,7 +31,8 @@ $(i18n "Options"):\n\
   -s			$(i18n "Be silent")\n\
   -d			$(i18n "Install as dependency")\n\
   -n			$(i18n "Disable hooks")\n\
-  -f			$(i18n "Do not resolve dependencies and conflicts")
+  -f			$(i18n "Do not resolve dependencies and conflicts")\n\
+  -x			$(i18n "Do not verify package")\n\
   -P			$(i18n "Do not really install package")\n\
   $(i18n "-C <directory>")	$(i18n "Install in <directory>")\n\
   $(i18n "-p <package>")		$(i18n "Specify package to install")\n\
@@ -40,7 +46,7 @@ exit 0
 { [[ "$1" == "--usage" ]] || [[ "$1" == "--help" ]]; } && usage
 [[ "$1" == "--version" ]] && version
 
-while getopts ":vsdnfhPVC:p:" opt
+while getopts ":xvsdnfhPVC:p:" opt
 do
 case $opt in
 	v)
@@ -55,6 +61,8 @@ case $opt in
 		version;;
 	h)
 		usage;;
+	x)
+		DONT_CHECK="yes";;
 	P)
 		PRETEND="YES";;
 	d)
@@ -95,13 +103,17 @@ pointer "$(i18n "Reading metadata")..."
 PKGDEC="/tmp/${RANDOM}${PKG##*/}.decrypted"
 PKGMET="/tmp/${RANDOM}${PKG##*/}.metadata"
 
-gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
+is_true "$DONT_CHECK" || {
+	gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
 
-is_true "$NOTSIGNED" || \
-	{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
-is_true "$NOTSIGNED" && \
-	{ cat    "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
-
+	is_true "$NOTSIGNED" || \
+		{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
+	is_true "$NOTSIGNED" && \
+		{ tar xvf "$PKG" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
+	: ok
+} || {
+	{ tar xvf "$PKG" METADATA -O > "$PKGMET" || CORRUPTED="YES" ; } 2>&${FD2} 1>&${FD1} 
+}
 
 is_true "$CORRUPTED" && error "$(i18n "Package is corrupted")" "4"
 . "$PKGMET" || error "$(i18n "Package is corrupted")" "4"

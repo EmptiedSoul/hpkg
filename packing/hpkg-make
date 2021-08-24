@@ -71,6 +71,7 @@ strip_result(){
 
 pack(){
 	pushd $PACKAGEDIR
+		echo -n ""				>  METADATA
 		echo "#!/bin/bash"			>> METADATA
 		echo "PKGNAME=\"$PACKAGE\""		>> METADATA
 		echo "VERSION=\"$VER\""			>> METADATA
@@ -87,8 +88,7 @@ pack(){
 		tar cv --numeric-owner --owner=0 --group=0 -f $PACKAGE.hard METADATA
 		tar --append -f $PACKAGE.hard PAYLOAD.tar.zst
 
-		gpg -s $PACKAGE.hard
-		mv $PACKAGE.hard.gpg ${PACKAGE}_${VER}.hard
+		mv $PACKAGE.hard ${PACKAGE}_${VER}.hard
 
 		rm PAYLOAD.tar.zst
 	popd &>/dev/null
@@ -131,6 +131,9 @@ build(){
 		tar cvp -I "zstd -10" -f $PACKAGEDIR/PAYLOAD.tar.zst . 1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to create package")" "1"
 	popd 		&>/dev/null
 EOF
+	retval="$?"
+	[[ "$retval" == "0" ]] || exit $retval
+
 	pointer "$(i18n "Leaving chroot environment")..."
 	pointer "$(i18n "Signing package")..."
 	pack 		1>&${FD1} 2>&${FD1} || error "$(i18n "Failed to create package")" "1"

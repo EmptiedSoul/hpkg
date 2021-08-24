@@ -95,7 +95,7 @@ is_true "$PRETEND" && exit 0
 pointer "$(i18n "Removing package...")"
 {
 	. /var/hpkg/packages/$PKG
-	FILES=$(tac /var/hpkg/installed-files/$PKGNAME-$VER.list | sed -e 's/^\.//' -e 's|^/$||' | tr '\n' ' ')
+	FILES=$(tac /var/hpkg/installed-files/$PKGNAME-$VERSION.list | sed -e 's/^\.//' -e 's|^/$||' | tr '\n' ' ')
 	rm -fvd $FILES
 	to_del=" "
 	for dependency in "${DEPENDS[@]}"
