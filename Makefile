@@ -12,7 +12,7 @@ make-hardman:
 	@$(MAKE) -e -C hardman
 make-hpkg:
 	@echo "  MAKE        hpkg"
-	@$(MAKE) -e -C hpkg
+	@$(MAKE) -e -C shpkg
 make-i18n:
 	@echo "  MAKE        i18n"
 	@$(MAKE) -e -C i18n
