@@ -6,7 +6,7 @@ lightning-fast .hard package manager
  - [X] Lightning speed (up to 35 packages per second!)
  - [X] Modular design
  - [ ] Complete internationalization
- - [X] Entirely written in bash which makes it easy to modify
+ - [X] Entirely (excluding c modules) written in bash which makes it easy to modify
 ### License
 See COPYING
 ### Copyright
