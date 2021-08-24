@@ -2,7 +2,7 @@ Warning! hpkg is being hugely refactored so many parts are omit at the moment (u
 # hpkg
 lightning-fast .hard package manager 
 ### Goals
- - [X] O(1) dependency lookup
+ - [X] O(n) dependency lookup
  - [X] Lightning speed (up to 35 packages per second!)
  - [X] Modular design
  - [ ] Complete internationalization
