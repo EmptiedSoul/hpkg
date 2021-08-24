@@ -13,7 +13,7 @@ log(){
 . /usr/lib/hpkglib.sh
 
 _cleanup(){
-	rm -f $PKGDEC $PKGMET
+	rm -f $PKGMET $PKGDEC
 }
 
 ERRCODE=0
@@ -103,7 +103,11 @@ pointer "$(i18n "Reading metadata")..."
 PKGDEC="/tmp/${RANDOM}${PKG##*/}.decrypted"
 PKGMET="/tmp/${RANDOM}${PKG##*/}.metadata"
 
-is_true "$DONT_CHECK" || {
+is_true "$DONT_CHECK" && {
+	cat $PKG > $PKGDEC
+	{ tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES" ; } 2>&${FD2} 1>&${FD1} 
+	: ok
+} || {
 	gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
 
 	is_true "$NOTSIGNED" || \
@@ -111,9 +115,7 @@ is_true "$DONT_CHECK" || {
 	is_true "$NOTSIGNED" && \
 		{ tar xvf "$PKG" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
 	: ok
-} || {
-	{ tar xvf "$PKG" METADATA -O > "$PKGMET" || CORRUPTED="YES" ; } 2>&${FD2} 1>&${FD1} 
-}
+} 
 
 is_true "$CORRUPTED" && error "$(i18n "Package is corrupted")" "4"
 . "$PKGMET" || error "$(i18n "Package is corrupted")" "4"
