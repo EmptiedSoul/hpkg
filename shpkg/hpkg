@@ -113,7 +113,7 @@ is_true "$DONT_CHECK" && {
 	is_true "$NOTSIGNED" || \
 		{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
 	is_true "$NOTSIGNED" && \
-		{ cat $PKG > $PKGDEC; tar xvf "$PKG" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
+		{ cat $PKG > $PKGDEC; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&${FD2} 1>&${FD1}
 	: ok
 } 
 
