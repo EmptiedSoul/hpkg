@@ -22,7 +22,7 @@ install-hardman:
 	@$(MAKE) -e install -C hardman
 install-hpkg:
 	@echo "  MAKEINSTALL hpkg"
-	@$(MAKE) -e install -C hpkg
+	@$(MAKE) -e install -C shpkg
 install-packing:
 	@echo "  MAKEINSTALL packing"
 	@$(MAKE) -e install -C packing
@@ -35,7 +35,7 @@ clean-hardman:
 	@$(MAKE) -e clean -C hardman
 clean-hpkg:
 	@echo "  MAKECLEAN   hpkg"
-	@$(MAKE) -e clean -C hpkg
+	@$(MAKE) -e clean -C shpkg
 clean-i18n:
 	@echo "  MAKECLEAN   i18n"
 	@$(MAKE) -e clean -C i18n
