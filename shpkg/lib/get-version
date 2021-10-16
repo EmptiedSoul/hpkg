@@ -1,5 +1,7 @@
 #!/bin/bash
- 
+
+cd ${0//get-version/}
+
 [[ -e ../../.version ]] && {
 	cat ../../.version
 	exit

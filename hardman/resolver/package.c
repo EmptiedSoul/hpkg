@@ -3,7 +3,7 @@
  * This file is part of hpkg/hardman
  * Licensed under terms of GPLv3 
  * You should been recieved a copy of license alongside this file (see COPYING)
- * if not - see <http://gnu.org/license>
+ * if not - see <http://gnu.org/licenses>
  *
  * Hardman Simple Fast Dependency RESOLVer (hsfd-resolv)
  */

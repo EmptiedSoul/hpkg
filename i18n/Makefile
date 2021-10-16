@@ -13,7 +13,7 @@ clean:
 	@rm -rf index.lokalize lokalize-scripts main.lqa *.mo 
 en.mo: translations/en/en.po
 	@echo "  MSGFMT      en.mo"
-	@msgfmt -v translations/en/en.po -o en.mo
+	@msgfmt  translations/en/en.po -o en.mo
 ru.mo: translations/ru/ru.po
 	@echo "  MSGFMT      ru.mo"
-	@msgfmt -v translations/ru/ru.po -o ru.mo
+	@msgfmt  translations/ru/ru.po -o ru.mo

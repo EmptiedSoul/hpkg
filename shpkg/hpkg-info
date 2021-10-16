@@ -64,7 +64,7 @@ PKGMET="/tmp/${RANDOM}${PKG##*/}.metadata"
 FD2=3
 FD1=3
 
-gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { warn "$(i18n "Package can not be verified")" && NOTSIGNED="YES"; }
+gpg --verify "$PKG" 2>&${FD2} 1>&${FD1} || { NOTSIGNED="YES"; }
 
 is_true "$NOTSIGNED" || \
 	{ gpg -d "$PKG" > "$PKGDEC"; tar xvf "$PKGDEC" METADATA -O > "$PKGMET" || CORRUPTED="YES"; } 2>&3 2>&3

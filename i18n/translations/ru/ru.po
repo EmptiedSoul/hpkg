@@ -449,3 +449,13 @@ msgstr "Не могу прочитать метаданные"
 #: ../../packing/hmake:189
 msgid "Can not install package"
 msgstr "Не могу установить пакет"
+
+msgid "version"
+msgstr "версия"
+
+msgid "C implementation"
+msgstr "реализация на языке Си"
+
+msgid "bash implementation"
+msgstr "реализация на языке командной оболочки Bash"
+

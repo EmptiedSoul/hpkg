@@ -439,3 +439,12 @@ msgstr "Can not read METADATA"
 #: ../../packing/hmake:189
 msgid "Can not install package"
 msgstr "Can not install package"
+
+msgid "version"
+msgstr "version"
+
+msgid "C implementation"
+msgstr "C implementation"
+
+msgid "bash implementation"
+msgstr "bash implementation"
