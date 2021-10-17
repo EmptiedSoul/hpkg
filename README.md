@@ -1,12 +1,9 @@
-Warning! hpkg is being hugely refactored so many parts are omit at the moment (use on your own risk)
 # hpkg
 lightning-fast .hard package manager 
 ### Goals
  - [X] O(n) dependency lookup
- - [X] Lightning speed (up to 35 packages per second!)
+ - [X] Lightning speed (up to 25 packages per second!)
  - [X] Modular design
- - [ ] Complete internationalization
- - [X] Entirely (excluding c modules) written in bash which makes it easy to modify
 ### License
 See COPYING
 ### Copyright
