@@ -3,10 +3,13 @@ export DESTDIR
 
 MAKEFLAGS+= --no-print-directory
 
-all: make-hardman make-hpkg make-i18n
-install: install-hardman install-hpkg install-packing install-i18n
-clean: clean-hardman clean-hpkg clean-i18n
+all: make-hardman make-hpkg make-i18n make-libhpm
+install: install-hardman install-hpkg install-packing install-i18n install-libhpm
+clean: clean-hardman clean-hpkg clean-i18n clean-libhpm
 
+make-libhpm:
+	@echo "  MAKE        libhpm"
+	@$(MAKE) -e -C libhpm
 make-hardman:
 	@echo "  MAKE        hardman"
 	@$(MAKE) -e -C hardman
@@ -23,6 +26,9 @@ make-i18n:
 	@echo "  MAKE        i18n"
 	@$(MAKE) -e -C i18n
 
+install-libhpm:
+	@echo "  MAKEINSTALL libhpm"
+	@$(MAKE) -e install -C libhpm
 install-hardman:
 	@echo "  MAKEINSTALL hardman"
 	@$(MAKE) -e install -C hardman
@@ -43,6 +49,9 @@ install-i18n:
 	@echo "  MAKEINSTALL i18n"
 	@$(MAKE) -e install -C i18n
 
+clean-libhpm:
+	@echo "  MAKECLEAN   libhpm"
+	@$(MAKE) -e clean -C libhpm
 clean-hardman:
 	@echo "  MAKECLEAN   hardman"
 	@$(MAKE) -e clean -C hardman
