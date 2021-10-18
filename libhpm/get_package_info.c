@@ -18,21 +18,23 @@ package_entry_t* hpm_get_package_info(char* package){
 	strcpy(path, HPKG_PACKAGES);
 	strcat(path, package);
 
+	FILE* config = fopen(path, "r");
+	if (!config) {
+		free(path);
+		return NULL;
+	}
+
 	pkg_info->name = malloc(strlen(package)+1);
 	strcpy(pkg_info->name, package);
 
-	/*
-	 * TODO: 
-	 * 	Remove checks from hrd_cfg_get_string
-	 * 	and place them here
-	 */
-
-	pkg_info->version = hrd_cfg_get_string(path, "VERSION");
-	pkg_info->description = hrd_cfg_get_string(path, "DESCRIPTION");
-	pkg_info->maintainer = hrd_cfg_get_string(path, "MAINTAINER");
+	pkg_info->version = hrd_cfg_get_string(config, "VERSION");
+	pkg_info->description = hrd_cfg_get_string(config, "DESCRIPTION");
+	pkg_info->maintainer = hrd_cfg_get_string(config, "MAINTAINER");
 	
-	char* deps = hrd_cfg_get_string(path, "DEPENDS");
-	char* confs = hrd_cfg_get_string(path, "CONFLICTS");
+	char* deps = hrd_cfg_get_string(config, "DEPENDS");
+	char* confs = hrd_cfg_get_string(config, "CONFLICTS");
+
+	fclose(config);
 
 	hrd_string_discard_chars(deps, '(');
 	hrd_string_discard_chars(deps, ')');

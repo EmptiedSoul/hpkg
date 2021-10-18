@@ -188,7 +188,7 @@ int main(int argc, char** argv){
 		exit(0);
 	}
 
-	char* obtained_key = hrd_cfg_get_string(template, key);
+	char* obtained_key = hrd_cfg_get_string_at(template, key);
 	
 	if (print_formatted) {
 		fprintf(out, "%s=%s\n", key, obtained_key);
