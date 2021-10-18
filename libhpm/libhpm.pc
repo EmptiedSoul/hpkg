@@ -3,8 +3,8 @@ exec_prefix=${prefix}
 includedir=${prefix}/include
 libdir=${exec_prefix}/lib
 
-Name: libhard
-Description: .hard file manipulating library
+Name: libhpm
+Description: hardclanz package management library
 Version: 0.0.1
 Requires: libhrd
-Libs: -L${libdir} -lhard
+Libs: -L${libdir} -lhpm

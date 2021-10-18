@@ -15,3 +15,4 @@ install: libhpm.so libhpm.h
 	@echo "  INSTALL     libhpm"
 	@install -m755 ./libhpm.so /usr/lib/
 	@install -m644 ./libhpm.h  /usr/include/
+	@install -m644 ./libhpm.pc /usr/lib/pkgconfig/
