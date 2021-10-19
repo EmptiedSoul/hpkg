@@ -302,8 +302,8 @@ msgid "Arseniy 'EmptiedSoul' Lesin"
 msgstr "Арсений 'EmptiedSoul' Лесин"
 
 #: ../../hpkg/lib/hpkglib.sh:87
-msgid "License: GPLv3 or newer: <https://gnu.org/license>"
-msgstr "Лицензия: GPLv3 или новее: <https://gnu.org/license>"
+msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
+msgstr "Лицензия: GPLv3 или новее: <https://gnu.org/licenses>"
 
 #: ../../hpkg/lib/hpkglib.sh:88
 msgid ""

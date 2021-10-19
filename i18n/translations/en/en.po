@@ -296,8 +296,8 @@ msgid "Arseniy 'EmptiedSoul' Lesin"
 msgstr "Arseniy 'EmptiedSoul' Lesin"
 
 #: ../../hpkg/lib/hpkglib.sh:87
-msgid "License: GPLv3 or newer: <https://gnu.org/license>"
-msgstr "License: GPLv3 or newer: <https://gnu.org/license>"
+msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
+msgstr "License: GPLv3 or newer: <https://gnu.org/licenses>"
 
 #: ../../hpkg/lib/hpkglib.sh:88
 msgid "This is free software: you can freely run, inspect, modify and distribute this program"

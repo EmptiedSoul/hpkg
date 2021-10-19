@@ -53,7 +53,7 @@
 		VERSION, \
 		gettext("Arseniy 'EmptiedSoul' Lesin"), \
 		gettext("from"), \
-		gettext("License: GPLv3 or newer: <https://gnu.org/license>"), \
+		gettext("License: GPLv3 or newer: <https://gnu.org/licenses>"), \
 		gettext("This is free software: you can freely run, inspect, modify and distribute this program"), \
 		gettext("NO WARRANTY AT ALL")); \
 	exit(0); \
