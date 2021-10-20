@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021 Arseniy 'Emptied Soul' Lesin
+ * This file is part of hpkg
+ * Licensed under terms of GPLv3 
+ * You should been recieved a copy of license alongside this file (see COPYING)
+ * if not - see <http://gnu.org/licenses>
+ */
+
 /* pointer("Doing smth") -> "==> Doing smth" */
 #define pointer(fmt, ...) \
 { \
