@@ -3,9 +3,14 @@ export DESTDIR
 
 MAKEFLAGS+= --no-print-directory
 
+include .config.mk
+
 all: make-hardman make-hpkg make-i18n make-libhpm
 install: install-hardman install-hpkg install-packing install-i18n install-libhpm
 clean: clean-hardman clean-hpkg clean-i18n clean-libhpm
+distclean: clean
+	@mv Makefile .Makefile
+	@rm -f .config.mk
 
 make-libhpm:
 	@echo "  MAKE        libhpm"

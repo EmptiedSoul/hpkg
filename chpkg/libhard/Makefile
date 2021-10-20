@@ -1,13 +1,13 @@
 CC = gcc
 ADDFLAGS =
-CFLAGS = -Ofast -pipe -fomit-frame-pointer -flto -fuse-linker-plugin -fuse-ld=gold -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -fPIC
+CFLAGS = -Ofast -pipe -fomit-frame-pointer -flto -fuse-linker-plugin -fuse-ld=gold -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block
 DBGFLAGS = -g3 -ggdb3
-WARNFLAGS = -Wall -Wextra -Wshadow -Werror -Wno-unused-result
+WARNFLAGS = -Wall -Wextra -Wshadow -Werror -Wno-unused-result -Wno-unused-command-line-argument
 LDFLAGS = -Wl,-O1  -lhrd
 
 MAKEFLAGS += --no-print-directory
 
-FLAGS := ${CFLAGS} ${DBGFLAGS} ${WARNFLAGS} ${ADDFLAGS} 
+FLAGS := ${CFLAGS} ${DBGFLAGS} ${WARNFLAGS} ${ADDFLAGS} -fPIC 
 
 objects = $(patsubst %.c,%.o,$(wildcard *.c))
 

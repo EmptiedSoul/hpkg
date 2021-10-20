@@ -1,0 +1,146 @@
+#!/bin/bash
+
+if [[ -e Makefile ]]; then
+	echo "Already configured. Run make to build hpkg or run 'make distclean; ./configure' to reconfigure"
+	exit 1
+fi
+
+OFAST="-Ofast"
+GRAPHITE_FLAGS="-floop-block -floop-interchange -ftree-loop-distribution -floop-strip-mine"
+LTO_FLAGS="-flto"
+USE_LINKER_PLUGIN="-fuse-linker-plugin"
+USE_GOLD="-fuse-ld=gold"
+WERROR="-Wall -Werror -Wextra"
+
+error(){
+	echo "!!! $@ !!!"
+	exit 1
+}
+
+if [[ -z "$CC" ]]; then
+	printf "%s" "checking for c compiler... "
+	if   type -p gcc;   then
+		CC=gcc
+	elif type -p clang; then
+		CC=clang
+	elif type -p cc;    then
+		CC=cc
+	else
+		echo 'not found'
+		error No C compiler found
+	fi
+fi
+
+printf "%s" "checking if $CC can produce executables... "
+
+cat >> test.c <<EOF
+int main(){return 0;}
+EOF
+
+if $CC test.c -o a.out &>/dev/null && ./a.out &>/dev/null; then
+	rm -f a.out
+	echo "yes"
+else
+	rm -f a.out
+	rm -f test.c
+	echo "no"
+	error "C Compiler can not produce executables"
+fi
+
+printf "%s" "checking if $CC supports -Ofast optimization... "
+
+if $CC $OFAST $WERROR test.c -o a.out &>/dev/null; then
+	OFAST_SUP=1
+	rm -f a.out
+	echo "yes"
+else
+	echo "no"
+fi
+
+printf "%s" "checking if $CC supports graphite optimizations... "
+
+if $CC $GRAPHITE_FLAGS $WERROR test.c -o a.out &>/dev/null; then
+	GRAPHITE_SUP=1
+	rm -f a.out
+	echo "yes"
+else
+	echo "no"
+fi
+
+printf "%s" "checking if $CC supports link-time optimizations... "
+
+if $CC $LTO_FLAGS $WERROR test.c -o a.out &>/dev/null; then
+	LTO_SUP=1
+	rm -f a.out
+	echo "yes"
+else
+	echo "no"
+fi
+
+printf "%s" "checking if $CC supports using linker plugin... "
+
+if $CC $LTO_FLAGS $WERROR $USE_LINKER_PLUGIN test.c -o a.out &>/dev/null; then
+	USE_LINKER_PLUGIN_SUP=1
+	rm -f a.out
+	echo "yes"
+else
+	echo "no"
+fi
+
+printf "%s" "checking if $CC supports using ld.gold... "
+
+if $CC $LTO_FLAGS $USE_GOLD $WERROR test.c -o a.out &>/dev/null; then
+	USE_GOLD_SUP=1
+	rm -f a.out
+	echo "yes"
+else
+	echo "no"
+fi
+
+rm -f a.out test.c
+
+printf "%s" "checking for hrdlib... "
+
+export PKG_CONFIG_PATH=":/usr/lib/pkgconfig/:/usr/lib64/pkgconfig/:"
+
+if pkg-config --libs libhrd &>/dev/null; then
+	echo "found"		
+else
+	echo "not found"
+	error "libhrd which is mandatory for building hpkg was not found"
+fi
+
+CFLAGS=""
+if [[ -n "$OFAST_SUP" ]]; then
+	CFLAGS+=" -Ofast "
+else 
+	CFLAGS+=" -O3 "
+fi
+if [[ -n "$GRAPHITE_SUP" ]]; then
+	CFLAGS+=" $GRAPHITE_FLAGS "
+fi
+if [[ -n "$LTO_SUP" ]]; then
+	CFLAGS+=" $LTO_FLAGS "
+fi
+if [[ -n "$USE_GOLD_SUP" ]]; then
+	CFLAGS+=" $USE_GOLD "
+fi
+if [[ -n "$USE_LINKER_PLUGIN_SUP" ]]; then
+	CFLAGS+=" $USE_LINKER_PLUGIN "
+fi
+echo
+printf "%s" "Generating makefile... "
+
+echo "CC=$CC" >> .config.mk
+echo "CFLAGS=$CFLAGS" >> .config.mk
+echo "export CC" >> .config.mk
+echo "export CFLAGS" >> .config.mk
+
+mv .Makefile Makefile
+
+echo "done"
+echo
+echo "Type 'make' to build hpkg"
+echo "Type 'make install' (as root) to install hpkg"
+echo "Type 'make clean' to clean build"
+echo "Type 'make distclean' to clean build and configured Makefile"

@@ -4,14 +4,14 @@ PREFIX = /usr
 VERSION = $(shell ../shpkg/lib/get-version)
 DESTDIR = 
 ADDFLAGS =
-CFLAGS = -Ofast -pipe -fomit-frame-pointer -flto -fuse-linker-plugin -fuse-ld=gold -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -I./libhard
+CFLAGS = -Ofast -pipe -fomit-frame-pointer -flto -fuse-linker-plugin -fuse-ld=gold -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block
 DBGFLAGS = -g3 -ggdb3
-WARNFLAGS = -Wall -Wextra -Wshadow -Werror -Wno-unused-result
+WARNFLAGS = -Wall -Wextra -Wshadow -Werror -Wno-unused-result -Wno-unused-command-line-argument
 LDFLAGS = -Wl,-O1  -lhrd -lhard -L./libhard 
 
 MAKEFLAGS += --no-print-directory
 
-FLAGS := ${CFLAGS} ${DBGFLAGS} ${WARNFLAGS} ${ADDFLAGS} -DVERSION=\"${VERSION}\"
+FLAGS := ${CFLAGS} ${DBGFLAGS} ${WARNFLAGS} ${ADDFLAGS} -DVERSION=\"${VERSION}\" -I./libhard
 
 all: make-libhard chpkg-info #chpkg chpkg-info 
 

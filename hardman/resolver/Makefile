@@ -1,11 +1,12 @@
 CC = gcc
 TEST_PKG = gcc
 OBJS := $(patsubst %.c,%.o,$(wildcard *.c))
-CFLAGS =
-RCFLAGS := $(CFLAGS) -Ofast -flto -fuse-linker-plugin -fuse-ld=gold
+CFLAGS = -Ofast -flto -fuse-linker-plugin -fuse-ld=gold
+ADDFLAGS = 
+RCFLAGS := $(CFLAGS) $(ADDFLAGS) 
 #DBGFLAGS = -g2 -ggdb
 DBGFLAGS =
-WARNFLAGS = -Wall -Wextra -pedantic -Wshadow -Wno-unused-result -Werror
+WARNFLAGS = -Wall -Wextra -pedantic -Wshadow -Wno-unused-result -Werror -Wno-unused-command-line-argument
 
 all: hsfd-resolv
 
