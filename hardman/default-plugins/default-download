@@ -6,7 +6,7 @@ _curldl(){
 	for i in "${!URLS[@]}"
 	do
 		pointer "($(((i+1)))/${#URLS[@]}) $(i18n "Downloading") ${PKGS[i]}"
-		curl -# -LO ${URLS[i]}
+		curl -f -C -# -LO ${URLS[i]} || error "$(i18n "Failed to download package"): ${PKGS[i]}" 2
 	done
 	unset URLS
 }
@@ -24,7 +24,10 @@ resolve_pkg_url(){
 	PKGS_NV=( )
 	for pkg in $@
 	do
-		. /var/hardman/repo/$pkg
+		. /var/hardman/repo/$pkg || {
+			echo "no such package in repository :("
+			exit 1
+		}
 		URLS+=("$URL ")
 		DLPKGS+=("/var/hardman/cached-packages/${PKGNAME}_${VERSION}.hard")
 		PKGS+=("$PKGNAME-$VERSION ")

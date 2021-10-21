@@ -1,6 +1,6 @@
 #!/bin/bash
 
-__MODULE_COMMANDS__=(install i)
+__MODULE_COMMANDS__=(install)
 
 i(){
 	install $*	
@@ -33,12 +33,22 @@ eval_hpkg_error(){
 
 install(){
 	need_root
+	if [[ -z "$@" ]]; then
+		echo "$(i18n "Usage"): hardman install <packages>"
+		exit 32
+	fi
 	EXPLICIT_PKGS=()
 	for exp_pkg in $@
 	do
+		if ! [[ -e "/var/hardman/repo/$exp_pkg" ]]; then
+			error "$exp_pkg: $(i18n "No such package in repository")" 1
+		fi
 		EXPLICIT_PKGS+=($exp_pkg)
 	done
-	resolve $*
+	resolve $* # Fill $QUERY
+	if [[ -z "$QUERY" ]]; then
+		error "$(i18n "Can not resolve dependenies")" 8
+	fi
 	echo "$(i18n "The following packages will be installed")"
 	echo -e "\n$QUERY\n"
 	yesno "$(i18n "Do you wish to continue?")" || {

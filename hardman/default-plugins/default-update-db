@@ -1,0 +1,18 @@
+#!/bin/bash
+
+__MODULE_COMMANDS__=(updatedb)
+ 
+updatedb(){
+	need_root
+	. /etc/hardman/repo.conf &>/dev/null ||	error "$(i18n "Failed to read repo.conf!")" 32
+	if [[ -z "$REPO" ]]; then
+		error "$(i18n "Repository is not set. Have you configured your /etc/hardman/repo.conf?")" 32
+	fi
+	pushd /tmp &>/dev/null
+		pointer "$(i18n "Retrieving repository metadata...")"
+		curl -LO -# -f $REPO/metadata.tar.zst || error "$(i18n "Failed to retrieve repository metadata")" 2
+		pointer "$(i18n "Installing repository metadata...")"
+		tar xf metadata.tar.zst -C /var/hardman/repo/ || error "$(i18n "Failed to install repository metadata")" 2
+		rm -f metadata.tar.zst
+	popd &>/dev/null
+}
