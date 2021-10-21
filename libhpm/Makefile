@@ -1,18 +1,29 @@
+DESTDIR=/
+CC=gcc
+ADDFLAGS=
+CFLAGS=	-Ofast -pipe -flto -fuse-linker-plugin -fuse-ld=gold
+WARNFLAGS= -Wall -Werror -Wextra -Wshadow -Wno-unused-result -Wno-unused-command-line-argument
+DBGFLAGS= -g3 -ggdb3
+LDFLAGS= -Wl,-O1 -lhrd
+
+FLAGS = $(CFLAGS) $(WARNFLAGS) $(DBGFLAGS) $(LDFLAGS) $(ADDFLAGS) -fPIC
+
 all: libhpm.so
 
 objects = $(patsubst %.c,%.o,$(wildcard *.c))
 
 libhpm.so: ${objects}
 	@echo "  CCLD        $@"
-	@gcc -o $@ $^ -shared -Wl,-O1 -O2 -Wall -Werror -Wextra -Wshadow -flto -fuse-linker-plugin -fuse-ld=gold -pipe -g2 -ggdb -lhrd
+	@$(CC) -o $@ $^ -shared $(FLAGS)
 %.o: %.c
 	@echo "  CC          $@"
-	@gcc -c $< -O2 -Wall -Werror -Wextra -Wno-unused-result -Wshadow -flto -fuse-linker-plugin -fuse-ld=gold -pipe -fPIC -g2 -ggdb 
+	@$(CC) -c $< $(FLAGS) 
 clean:
 	@echo "  CLEAN       libhpm"
 	@rm -f *.o libhpm.so
 install: libhpm.so libhpm.h
 	@echo "  INSTALL     libhpm"
-	@install -m755 ./libhpm.so /usr/lib/
-	@install -m644 ./libhpm.h  /usr/include/
-	@install -m644 ./libhpm.pc /usr/lib/pkgconfig/
+	@mkdir -p $(DESTDIR)/usr/lib/pkgconfig $(DESTDIR)/usr/include
+	@install -m755 ./libhpm.so $(DESTDIR)/usr/lib/
+	@install -m644 ./libhpm.h  $(DESTDIR)/usr/include/
+	@install -m644 ./libhpm.pc $(DESTDIR)/usr/lib/pkgconfig/
