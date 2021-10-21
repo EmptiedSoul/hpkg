@@ -32,6 +32,7 @@ pgo: clean
 	@rm *.gcda
 
 install: all
+	@mkdir -p $(DESTDIR)/usr/libexec/hardman
 	@echo "  INSTALL     hsfd-resolv"
 	@mkdir -p ${DESTDIR}/usr/libexec/hardman
 	@install -m755 ./hsfd-resolv ${DESTDIR}/usr/libexec/hardman/hsfd-resolv

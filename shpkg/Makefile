@@ -16,6 +16,7 @@ install-lib:
 	@echo "  MAKEINSTALL lib"
 	@$(MAKE) -e install -C lib
 install-hpkgs:
+	@mkdir -p $(DESTDIR)/usr/bin
 	@echo "  INSTALL     hpkg"
 	@install -m755 hpkg ${DESTDIR}/usr/bin/hpkg
 	@echo "  INSTALL     hpkg-explode"

@@ -4,8 +4,10 @@ install: install-ru.mo install-en.mo
 
 install-ru.mo: ru.mo
 	@echo "  INSTALL     ru.mo"
+	@mkdir -p $(DESTDIR)/usr/share/locale/ru/LC_MESSAGES/
 	@install ru.mo ${DESTDIR}/usr/share/locale/ru/LC_MESSAGES/hpkg.mo	
 install-en.mo: en.mo
+	@mkdir -p $(DESTDIR)/usr/share/locale/en/LC_MESSAGES/
 	@echo "  INSTALL     en.mo"
 	@install en.mo ${DESTDIR}/usr/share/locale/en/LC_MESSAGES/hpkg.mo	
 clean:

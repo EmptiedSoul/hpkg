@@ -16,7 +16,9 @@ install-modules: install-hparts
 	@$(MAKE) -e install -C default-plugins
 install-hardman:
 	@echo "  INSTALL     hardman"
+	@mkdir -p $(DESTDIR)/usr/bin
 	@install -m755 hardman $(DESTDIR)/usr/bin/hardman
 install-hparts:
 	@echo "  INSTALL     hparts"
+	@mkdir -p $(DESTDIR)/usr/bin
 	@install -m755 hparts $(DESTDIR)/usr/bin/hparts

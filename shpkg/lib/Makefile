@@ -3,6 +3,7 @@ VERSION = $(shell ./get-version)
 all: set-version
 
 install:
+	@mkdir -p $(DESTDIR)/usr/lib
 	@echo "  INSTALL     hpkglib.sh"
 	@install ./hpkglib.sh ${DESTDIR}/usr/lib/hpkglib.sh
 

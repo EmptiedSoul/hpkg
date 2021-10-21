@@ -19,7 +19,7 @@ make-libhard:
 	@echo "  MAKE        libhard"
 	@$(MAKE) -e -C libhard
 libhard-install: libhard
-	@echo "  MKINST      $@"
+	@echo "  MAKEINSTALL $@"
 	@$(MAKE) -e -C libhard install
 
 chpkg: chpkg.o
@@ -44,7 +44,6 @@ libhard-clean:
 	@$(MAKE) -e clean -C    libhard
 
 install: all libhard-install
-	#@echo "  INSTALL chpkg"
-	#@install -m755 chpkg ${DESTDIR}/${PREFIX}/${BINDIR}/chpkg
+	@mkdir -p $(DESTDIR)/$(PREFIX)/$(BINDIR)
 	@echo "  INSTALL      chpkg-info"
 	@install -m755 chpkg-info ${DESTDIR}/${PREFIX}/${BINDIR}/chpkg-info

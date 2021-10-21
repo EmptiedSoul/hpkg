@@ -1,4 +1,5 @@
 install:
+	@mkdir -p $(DESTDIR)/var/hardman/modules/enabled
 	@echo "  INSTALL     default-install"
 	@install default-install ${DESTDIR}/var/hardman/modules/default-install
 	@echo "  INSTALL     default-resolve"	

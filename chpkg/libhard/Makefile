@@ -25,6 +25,7 @@ clean:
 	@echo "  CLEAN       libhard"
 	@rm -f ${objects} libhard.so
 install: all
+	@mkdir -p $(DESTDIR)/usr/lib/pkgconfig $(DESTDIR)/usr/include
 	@echo "  INSTALL     libhard.so"
 	@install -m755 libhard.so ${DESTDIR}/usr/lib/libhard.so
 	@echo "  INSTALL     libhard.h" 
