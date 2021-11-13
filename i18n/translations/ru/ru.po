@@ -459,3 +459,5 @@ msgstr "реализация на языке Си"
 msgid "bash implementation"
 msgstr "реализация на языке командной оболочки Bash"
 
+msgid "Fetched"
+msgstr "Получено:"

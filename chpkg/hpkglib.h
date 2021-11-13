@@ -42,7 +42,7 @@
 #define error(code) \
 { \
 	warn("(%d) %s", code, gettext("Failing due to previous warnings")); \
-	exit(32); \
+	exit(code); \
 }
 
 #define print_version() \

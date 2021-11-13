@@ -110,6 +110,53 @@ else
 	error "libhrd which is mandatory for building hpkg was not found"
 fi
 
+if [[ -z "$CXX" ]]; then
+	printf "%s" "checking for C++ compiler... "
+	if   type -p g++;   then
+		CXX=g++
+	elif type -p clang++; then
+		CXX=clang++
+	elif type -p c++;    then
+		CXX=c++
+	else
+		echo 'not found'
+		echo "!!! Disabling 'daria' build due to missing C++ compiler !!!"
+	fi
+fi
+
+cat > test.cpp <<EOF
+#include <iostream>
+int main() {
+	std::cout << "test test test" << std::endl;
+	return 0;
+}
+EOF
+
+if [[ -n "$CXX" ]]; then
+	printf "%s" "checking if C++ compiler can produce executables... "
+	if $CXX test.cpp &>/dev/null && ./a.out &>/dev/null; then
+		echo yes
+		CXX_IS_SANE=yes
+	else
+		echo no
+		echo "!!! Disabling 'daria' build due to C++ compiler insanity !!!"
+	fi
+	rm -f a.out
+fi
+
+rm -f test.cpp
+
+if [[ -n "$CXX_IS_SANE" ]]; then
+	printf "%s" "checking for libaria2... "
+	if pkg-config --libs libaria2 &>/dev/null; then
+		echo found
+		LIBARIA_FOUND=1
+	else
+		echo not found
+		echo "!!! Disabling 'daria' build due to missing libaria2 library !!!"
+	fi
+fi
+
 CFLAGS=""
 if [[ -n "$OFAST_SUP" ]]; then
 	CFLAGS+=" -Ofast "
@@ -128,13 +175,25 @@ fi
 if [[ -n "$USE_LINKER_PLUGIN_SUP" ]]; then
 	CFLAGS+=" $USE_LINKER_PLUGIN "
 fi
+if [[ -n "$CXX" ]] && [[ -n "$CXX_IS_SANE" ]] && [[ "$LIBARIA_FOUND" ]]; then 
+	WITH_DARIA=1
+else
+	WITH_DARIA=0
+fi
+
 echo
 printf "%s" "Generating makefile... "
 
 echo "CC=$CC" >> .config.mk
 echo "CFLAGS=$CFLAGS" >> .config.mk
+echo "WITH_DARIA=$WITH_DARIA" >> .config.mk
+if [[ -n "$CXX" ]] && [[ -n "$CXX_IS_SANE" ]]; then
+	echo "CXX=$CXX" >> .config.mk
+	echo "export CXX" >> .config.mk
+fi
 echo "export CC" >> .config.mk
 echo "export CFLAGS" >> .config.mk
+echo "export WITH_DARIA" >> .config.mk
 
 mv .Makefile Makefile
 
