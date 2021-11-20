@@ -1,3 +1,4 @@
+[![Build](https://github.com/EmptiedSoul/hpkg/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/EmptiedSoul/hpkg/actions/workflows/c-cpp.yml)
 # hpkg
 lightning-fast .hard package manager 
 ### Goals
