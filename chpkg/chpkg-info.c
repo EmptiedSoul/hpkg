@@ -139,6 +139,15 @@ int main(int argc, char** argv){
 		}
 	}
 	
+	char* key_comma = strchr(key, ',');
+	char** key_list = NULL;
+	bool  key_is_list = false;
+
+	if (key_comma) {
+		key_is_list = true;
+		key_list = hrd_string_split(key, ",");
+	}
+
 	char* template = malloc(TMP_FILENAME_SIZE);
 	strcpy(template, TMP_FILE_TEMPLATE);
 
@@ -195,18 +204,45 @@ int main(int argc, char** argv){
 		}
 		exit(0);
 	}
-
-	char* obtained_key = hrd_cfg_get_string_at(template, key);
-	
-	if (print_formatted) {
-		fprintf(out, "%s=%s\n", key, obtained_key);
+	char* obtained_key = NULL;
+	hrd_string_pair* key_vals = NULL;
+	if (!key_is_list) {	
+		obtained_key = hrd_cfg_get_string_at(template, key);
 	} else {
-		if (obtained_key != NULL) {
-			hrd_string_discard_chars(obtained_key, '"');
-			hrd_string_discard_chars(obtained_key, '(');
-			hrd_string_discard_chars(obtained_key, ')');
+		hrd_string_array_foreach (i, key_list) {
+			key_vals = realloc(key_vals, sizeof(hrd_string_pair)*(i+1));
+			key_vals[i].key = strdup(key_list[i]);
+			key_vals[i].value = NULL;
 		}
-		fprintf(out, "%s\n", obtained_key);
+		hrd_cfg_get_strings_at(template, &key_vals);
+	} 
+
+	if (print_formatted) {
+		if (!key_is_list)
+			fprintf(out, "%s=%s\n", key, obtained_key);
+		else {
+			hrd_string_pair_array_foreach (i, key_vals) {
+				fprintf(out, "%s=%s\n", key_vals[i].key, key_vals[i].value);
+			}
+		}
+	} else {
+		if (!key_is_list) {
+			if (obtained_key != NULL) {
+				hrd_string_discard_chars(obtained_key, '"');
+				hrd_string_discard_chars(obtained_key, '(');
+				hrd_string_discard_chars(obtained_key, ')');
+			}
+			fprintf(out, "%s\n", obtained_key);
+		} else {
+			hrd_string_pair_array_foreach (i, key_vals) {
+				if (key_vals[i].value != NULL) {
+					hrd_string_discard_chars(key_vals[i].value, '"');
+					hrd_string_discard_chars(key_vals[i].value, '(');
+					hrd_string_discard_chars(key_vals[i].value, ')');
+				}
+				fprintf(out, "%s\n", key_vals[i].value);
+			}	
+		}
 	}
 	fclose(out);
 	unlink(template);
@@ -216,6 +252,10 @@ int main(int argc, char** argv){
 	if (decrypted != NULL) {
 		unlink(decrypted);
 		free(decrypted);
+	}
+	if (key_is_list) {
+		hrd_string_pair_array_free(key_vals);
+		hrd_string_array_free((void**)key_list);
 	}
 	exit(0);
 }
