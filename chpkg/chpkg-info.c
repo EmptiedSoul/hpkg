@@ -15,6 +15,7 @@
 #include <errno.h>
 #include <sys/sendfile.h>
 #include <libintl.h>
+#include <getopt.h>
 
 #include <libhard.h>
 #include <libhrd.h>
@@ -29,7 +30,7 @@
 #define TMP_DEC_FILENAME_SIZE sizeof(TMP_DEC_FILE_TEMPLATE)+1
 
 int main(int argc, char** argv){
-	setlocale(LC_ALL, getenv("LC_ALL"));
+	setlocale(LC_ALL, "");
 	bindtextdomain("hpkg", "/usr/share/locale");
 	textdomain("hpkg");
 
@@ -46,6 +47,20 @@ int main(int argc, char** argv){
 
 	char* decrypted = NULL;
 
+	int long_optind = 0;
+
+	static struct option long_opts[] = {
+		{"help",	no_argument, 		0, 'h'},
+		{"usage",	no_argument, 		0, 'h'},
+		{"version",	no_argument, 		0, 'V'},
+		{"dump",	no_argument, 		0, 'd'},
+		{"all",		no_argument,		0, 'a'},
+		{"key",		required_argument,	0, 'k'},
+		{"output",	required_argument,	0, 'o'},
+		{"package",	required_argument,	0, 'p'},
+		{0,		0,	     		0,  0 }
+	};
+
 	char* output = NULL;
 	char* pkgname = NULL;
 
@@ -58,7 +73,7 @@ int main(int argc, char** argv){
 	if (strcmp(argv[1], "--version") == 0)
 		print_version();
 
-	while ((opt = getopt(argc, argv, ":Vhdak:o:p:")) != -1){
+	while ((opt = getopt_long(argc, argv, ":Vhdak:o:p:", long_opts, &long_optind)) != -1){
 		switch(opt){
 			case 'V':
 				print_version();
@@ -139,7 +154,9 @@ int main(int argc, char** argv){
 		}
 	}
 	
-	char* key_comma = strchr(key, ',');
+	char* key_comma = NULL;
+	if (!full_dump) 
+		key_comma = strchr(key, ',');
 	char** key_list = NULL;
 	bool  key_is_list = false;
 
@@ -178,7 +195,7 @@ int main(int argc, char** argv){
 	if (output == NULL) {
 		out = stdout;
 	} else {
-		out = fopen(output, "a");
+		out = fopen(output, "w");
 	}
 
 	if (full_dump) {
