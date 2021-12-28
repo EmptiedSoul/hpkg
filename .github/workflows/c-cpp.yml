@@ -24,6 +24,8 @@ jobs:
         make
         sudo make install
         cd ../..
+    - name: autogen
+      run: ./autogen.sh
     - name: configure
       run: ./configure
     - name: make
