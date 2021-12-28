@@ -3,6 +3,9 @@
 # http://www.gnu.org/software/automake
 /m4
 po/stamp-po
+po/*~
+po/*.gmo
+
 Makefile.in
 /ar-lib
 /mdate-sh

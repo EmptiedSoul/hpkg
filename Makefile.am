@@ -2,8 +2,6 @@ AUTOMAKE_OPTIONS = subdir-objects foreign
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_CFLAGS=-Wno-unused-result -Wno-write-strings -pipe # Add optimizations here!
 
-VERSION = `./shpkg/lib/get-version`
-
 var_hardman_moduledir =$(localstatedir)/hardman/modules
 my_libdir =$(libdir)
 
@@ -15,7 +13,13 @@ dist_var_hardman_module_SCRIPTS = hardman/default-plugins/default-install \
 			   hardman/default-plugins/default-resolve \
 			   hardman/default-plugins/default-update-db
 libexec_PROGRAMS = hardman/daria/daria hardman/resolver/hsfd-resolv
-my_lib_SCRIPTS = shpkg/lib/hpkglib.sh
+dist_my_lib_SCRIPTS = shpkg/lib/hpkglib.sh
+
+chpkg_chpkg_info_SOURCES = chpkg/chpkg-info.c
+chpkg_chpkg_info_LDADD   = chpkg/libhard/libhard.la
+
+chpkg_chpkg_info_CFLAGS  = -DPROGNAME=\"chpkg-info\" -I$(top_srcdir)/chpkg/libhard $(EXTRA_CFLAGS)
+
 lib_LTLIBRARIES = chpkg/libhard/libhard.la libhpm/libhpm.la
 
 noinst_HEADERS = chpkg/hpkglib.h chpkg/chpkg-info-help.h hardman/resolver/hsfd-resolv.h
@@ -45,17 +49,14 @@ hardman_resolver_hsfd_resolv_SOURCES	= hardman/resolver/package.c \
 		     		hardman/resolver/resolv.c
 hardman_resolver_hsfd_resolv_CFLAGS	= $(EXTRA_CFLAGS)
 
-chpkg_chpkg_info_SOURCES = chpkg/chpkg-info.c
-chpkg_chpkg_info_LDADD   = chpkg/libhard/libhard.la
 
-chpkg_chpkg_info_CFLAGS  = -DPROGNAME=\"chpkg-info\" $(EXTRA_CFLAGS)
 
 shpkg/lib/hpkglib.sh: shpkg/lib/hpkglib.sh.in
-	@echo "  VER     shpkg/lib/hpkglib.sh"
+	@echo "  VER      shpkg/lib/hpkglib.sh"
 	@sed shpkg/lib/hpkglib.sh.in -e "s/@VERSION@/$(VERSION)/" > shpkg/lib/hpkglib.sh
 
 CLEANFILES=shpkg/lib/hpkglib.sh
 
 SUBDIRS = po
 
-EXTRA_DIST = m4/ChangeLog
+EXTRA_DIST = m4/ChangeLog shpkg/lib/hpkglib.sh.in

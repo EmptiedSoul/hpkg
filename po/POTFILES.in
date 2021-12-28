@@ -18,7 +18,6 @@ chpkg/libhard/split_pkg.c
 chpkg/libhard/is_encrypted.c
 chpkg/libhard/validate.c
 chpkg/chpkg-info.c
-chpkg/chpkg.c
 shpkg/hpkg
 shpkg/hpkg-explode
 shpkg/hpkg-info
