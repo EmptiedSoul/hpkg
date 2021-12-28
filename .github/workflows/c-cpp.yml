@@ -13,6 +13,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Get autopoint
+      run: sudo apt-get install autopoint
     - name: Get libaria2
       run: sudo apt-get install libaria2-0-dev
     - name: Get gettext
