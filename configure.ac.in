@@ -3,7 +3,7 @@ AC_INIT([hpkg], [@VERSION@], [emptiedsoul@hardclanz.org])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIRS([m4])
 
-AM_INIT_AUTOMAKE([gnu dist-xz no-dist-gzip])
+AM_INIT_AUTOMAKE([foreign dist-xz no-dist-gzip])
 AM_SILENT_RULES([yes])
 
 AM_GNU_GETTEXT([external])
