@@ -1,0 +1,636 @@
+# Russian translations for hpkg package
+# Английские переводы для пакета hpkg.
+# Copyright (C) 2021 THE hpkg'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the hpkg package.
+#
+# Арсений Лесин <emptiedsoul@hardclanz.org>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: hpkg @VERSION@\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-28 18:17+0300\n"
+"PO-Revision-Date: 2021-12-28 18:38+0300\n"
+"Last-Translator: emptiedsoul <emptiedsoul@hardclanz.site>\n"
+"Language-Team: Russian <gnu@d07.ru>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 21.12.0\n"
+
+#: shpkg/hpkg:23
+msgid "hpkg - install .hard package"
+msgstr "hpkg - установить пакет .hard"
+
+#: shpkg/hpkg:25
+msgid "hpkg [options] -p <package>"
+msgstr "hpkg [опции] -p <пакетик>"
+
+#: shpkg/hpkg:27 shpkg/hpkg-explode:11 shpkg/hpkg-info:15 shpkg/hpkg-remove:16
+#: chpkg/chpkg-info-help.h:27
+msgid "Options"
+msgstr "Опции"
+
+#: shpkg/hpkg:28 shpkg/hpkg-explode:12 shpkg/hpkg-info:16 shpkg/hpkg-remove:17
+#: chpkg/chpkg-info-help.h:28
+msgid "Print version info and exit"
+msgstr "Вывести информацию о версии и выйти"
+
+#: shpkg/hpkg:29 shpkg/hpkg-info:17 shpkg/hpkg-remove:18
+#: chpkg/chpkg-info-help.h:29
+msgid "Print this help"
+msgstr "Вывести этот текст"
+
+#: shpkg/hpkg:30 shpkg/hpkg-explode:14 shpkg/hpkg-remove:19
+msgid "Be verbose"
+msgstr "Подробный режим"
+
+#: shpkg/hpkg:31 shpkg/hpkg-explode:15 shpkg/hpkg-remove:20
+msgid "Be silent"
+msgstr "Тихий режим"
+
+#: shpkg/hpkg:32
+msgid "Install as dependency"
+msgstr "Установить как зависимость"
+
+#: shpkg/hpkg:33
+msgid "Disable hooks"
+msgstr "Отменить выполнение хуков"
+
+#: shpkg/hpkg:34
+msgid "Do not resolve dependencies and conflicts"
+msgstr "Не разрешать зависимости и конфликты"
+
+#: shpkg/hpkg:35
+msgid "Do not verify package"
+msgstr "Не проверять подлинность пакета"
+
+#: shpkg/hpkg:36
+msgid "Do not really install package"
+msgstr "Не устанавливать пакет на самом деле"
+
+#: shpkg/hpkg:37 shpkg/hpkg-explode:17 shpkg/hpkg-remove:23
+msgid "-C <directory>"
+msgstr "-C <директория>"
+
+#: shpkg/hpkg:37
+msgid "Install in <directory>"
+msgstr "Установить в <директорию>"
+
+#: shpkg/hpkg:38 shpkg/hpkg-explode:18 shpkg/hpkg-remove:24
+msgid "-p <package>"
+msgstr "-p <пакетик>"
+
+#: shpkg/hpkg:38
+msgid "Specify package to install"
+msgstr "Указать пакет для установки"
+
+#: shpkg/hpkg:40
+msgid "More information available at hpkg(8) manpage"
+msgstr "Больше информации доступно на man-странице hpkg(8)"
+
+#: shpkg/hpkg:41 shpkg/hpkg-explode:21 shpkg/hpkg-info:24 shpkg/hpkg-remove:27
+#: packing/hpkg-make:40 hardman/hardman:23 hardman/hparts:56
+#: chpkg/chpkg-info-help.h:37
+msgid ""
+"Copyright and licensing information can be obtained via '--version' option"
+msgstr ""
+"Информация о авторском праве и лицензировании может быть получена с помощью "
+"опции '--version'"
+
+#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
+#: shpkg/hpkg-info:44 shpkg/hpkg-info:45 shpkg/hpkg-info:46
+#: shpkg/hpkg-remove:59 chpkg/chpkg-info.c:104 chpkg/chpkg-info.c:112
+#: chpkg/chpkg-info.c:120
+msgid "Option"
+msgstr "Опция"
+
+#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
+#: shpkg/hpkg-info:44 shpkg/hpkg-info:45 shpkg/hpkg-info:46
+#: shpkg/hpkg-remove:59 chpkg/chpkg-info.c:105 chpkg/chpkg-info.c:113
+#: chpkg/chpkg-info.c:121
+msgid "requires"
+msgstr "требует"
+
+#: shpkg/hpkg:80 shpkg/hpkg-explode:53
+msgid "<directory> argument"
+msgstr "аргумент <директория>"
+
+#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg:84 shpkg/hpkg:90
+#: shpkg/hpkg-explode:53 shpkg/hpkg-explode:55 shpkg/hpkg-explode:57
+#: shpkg/hpkg-explode:64 shpkg/hpkg-info:44 shpkg/hpkg-info:45
+#: shpkg/hpkg-info:46 shpkg/hpkg-info:57 shpkg/hpkg-remove:59
+#: shpkg/hpkg-remove:61 chpkg/chpkg-info.c:107 chpkg/chpkg-info.c:115
+#: chpkg/chpkg-info.c:123 chpkg/chpkg-info.c:130 chpkg/chpkg-info.c:138
+msgid "Consult a manpage or '--help' option"
+msgstr "Обратитесь к man-странице или опции '--help'"
+
+#: shpkg/hpkg:82 shpkg/hpkg-explode:55 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
+#: chpkg/chpkg-info.c:122
+msgid "<package> argument"
+msgstr "аргумент <пакетик>"
+
+#: shpkg/hpkg:84 shpkg/hpkg-explode:57 shpkg/hpkg-info:47 shpkg/hpkg-remove:61
+#: chpkg/chpkg-info.c:128
+msgid "Unknown option"
+msgstr "Неизвестная опция"
+
+#: shpkg/hpkg:90 shpkg/hpkg-explode:64 shpkg/hpkg-info:57
+#: chpkg/chpkg-info.c:138
+msgid "Package is not set"
+msgstr "Пакет не указан"
+
+#: shpkg/hpkg:91 shpkg/hpkg-explode:65 shpkg/hpkg-info:58
+msgid "No such package"
+msgstr "Нет такого пакета"
+
+#: shpkg/hpkg:92 shpkg/hpkg-explode:66 shpkg/hpkg-info:59
+#: chpkg/chpkg-info.c:152
+msgid "is not a .hard package"
+msgstr "не является пакетом .hard"
+
+#: shpkg/hpkg:94 shpkg/hpkg-remove:77 hardman/hardman:7 hardman/hparts:74
+#: hardman/hparts:79
+msgid "You need root permissions for this action"
+msgstr "Вам необходимы права администратора для этого действия"
+
+#: shpkg/hpkg:101
+msgid "Reading metadata"
+msgstr "Читаю метаданные"
+
+#: shpkg/hpkg:111 shpkg/hpkg-explode:75
+msgid "Package can not be verified"
+msgstr "Пакет не может быть верифицирован"
+
+#: shpkg/hpkg:120 shpkg/hpkg:121 shpkg/hpkg-info:74 shpkg/hpkg-info:81
+msgid "Package is corrupted"
+msgstr "Пакет поврежден"
+
+#: shpkg/hpkg:123 shpkg/hpkg-remove:85
+msgid "Dependency tracking disabled"
+msgstr "Отслеживание зависимостей отключено"
+
+#: shpkg/hpkg:129
+msgid "Can not resolve dependency"
+msgstr "Не могу разрешить зависимость"
+
+#: shpkg/hpkg:129
+msgid "needed for"
+msgstr "необходимую для"
+
+#: shpkg/hpkg:136
+msgid "Conflict"
+msgstr "Конфликт"
+
+#: shpkg/hpkg:145
+msgid "Running 'pkg_preinstall'"
+msgstr "Запускаю 'pkg_preinstall'"
+
+#: shpkg/hpkg:145
+msgid "'pkg_preinstall' exited with non-zero code"
+msgstr "'pkg_preinstall' завершился с ошибкой"
+
+#: shpkg/hpkg:147
+msgid "Installing package"
+msgstr "Устанавливаю пакет"
+
+#: shpkg/hpkg:196
+msgid "Running hooks"
+msgstr "Запускаю хуки"
+
+#: shpkg/hpkg:199
+msgid "Hook exited with non-zero code"
+msgstr "Хук завершился с ошибкой"
+
+#: shpkg/hpkg:203
+msgid "Running 'pkg_postinstall'"
+msgstr "Запускаю 'pkg_postinstall'"
+
+#: shpkg/hpkg:203
+msgid "'pkg_postinstall' exited with non-zero code"
+msgstr "'pkg_postinstall' завершился с ошибкой"
+
+#: shpkg/hpkg-explode:7
+msgid "hpkg-explode - rawly extract .hard archive"
+msgstr "hpkg-explode - грубо распаковать пакет .hard"
+
+#: shpkg/hpkg-explode:9
+msgid "hpkg-explode [options] -p <package>"
+msgstr "hpkg-explode [опции] -p <пакетик>"
+
+#: shpkg/hpkg-explode:13
+msgid "Print this text"
+msgstr "Вывести этот текст"
+
+#: shpkg/hpkg-explode:16
+msgid "Also extract PAYLOAD.tar.xz"
+msgstr "Также распаковать PAYLOAD.tar"
+
+#: shpkg/hpkg-explode:17
+msgid "Extract in directory"
+msgstr "Распаковать в директорию"
+
+#: shpkg/hpkg-explode:18
+msgid "Specify package to be extracted"
+msgstr "Указать пакет для распаковки"
+
+#: shpkg/hpkg-explode:20
+msgid "More information available at hpkg-explode(1) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-explode(1)"
+
+#: shpkg/hpkg-explode:73
+msgid "Extracting"
+msgstr "Распаковываю"
+
+#: shpkg/hpkg-explode:87
+msgid "Extracting PAYLOAD"
+msgstr "Распаковываю PAYLOAD"
+
+#: shpkg/hpkg-explode:90
+msgid "is corrupted"
+msgstr "поврежден"
+
+#: shpkg/hpkg-explode:96
+msgid "Moving to"
+msgstr "Перемещаю в"
+
+#: shpkg/hpkg-info:11 chpkg/chpkg-info-help.h:25
+msgid "hpkg-info - obtain information about .hard package"
+msgstr "hpkg-info - получить информацию о пакете .hard"
+
+#: shpkg/hpkg-info:13 chpkg/chpkg-info-help.h:26
+msgid "hpkg-info [options] -p <package>"
+msgstr "hpkg-info [опции] -p <пакетик>"
+
+#: shpkg/hpkg-info:18 chpkg/chpkg-info-help.h:30
+msgid "Dump entire METADATA file"
+msgstr "Вывести файл METADATA целиком"
+
+#: shpkg/hpkg-info:19 chpkg/chpkg-info-help.h:31
+msgid "Print as \"KEY=VALUE\""
+msgstr "Выводить в формате: КЛЮЧ=ЗНАЧЕНИЕ"
+
+#: shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:32
+msgid "-k <key>"
+msgstr "-k <ключ>"
+
+#: shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:33
+msgid "Specify key to obtain"
+msgstr "Указать ключ для вывода"
+
+#: shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:34
+msgid "-o <file>"
+msgstr "-o <файл>"
+
+#: shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:35
+msgid "Specify output (default stdout)"
+msgstr "Указать куда перенаправить вывод (по-умолчанию на терминал)"
+
+#: shpkg/hpkg-info:23 chpkg/chpkg-info-help.h:36
+msgid "More information available at hpkg-info(1) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-info(1)"
+
+#: shpkg/hpkg-info:44 chpkg/chpkg-info.c:106
+msgid "<key> argument"
+msgstr "аргумент <ключ>"
+
+#: shpkg/hpkg-info:45
+msgid "<file> argurment"
+msgstr "аргумент <файл>"
+
+#: shpkg/hpkg-info:47
+msgid "Consult a manpage or `--help' option"
+msgstr "Обратитесь к man-странице или опции '--help'"
+
+#: shpkg/hpkg-info:54 chpkg/chpkg-info.c:143
+msgid "You should specify a key to obtain"
+msgstr "Вы должны указать ключ для получения"
+
+#: shpkg/hpkg-remove:12
+msgid "hpkg-remove - uninstall .hard package"
+msgstr "hpkg-remove - удалить пакет .hard"
+
+#: shpkg/hpkg-remove:14
+msgid "hpkg-remove [options] -p <package>"
+msgstr "hpkg-remove [опции] -p <пакетик>"
+
+#: shpkg/hpkg-remove:21
+msgid "Ignore dependencies and conflicts"
+msgstr "Игнорировать зависимости и конфликты"
+
+#: shpkg/hpkg-remove:22
+msgid "Do not really remove package"
+msgstr "Не удалять пакет на самом деле"
+
+#: shpkg/hpkg-remove:23
+msgid "Remove from <directory>"
+msgstr "Удалить из <директории>"
+
+#: shpkg/hpkg-remove:24
+msgid "Specify package to remove"
+msgstr "Укажите пакет для удаления"
+
+#: shpkg/hpkg-remove:26
+msgid "More information available at hpkg-remove(8) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-remove(8)"
+
+#: shpkg/hpkg-remove:82
+msgid "Package is not installed so not removed"
+msgstr "Пакет не будет удалён, так как он не был установлен"
+
+#: shpkg/hpkg-remove:87
+msgid "Following packages depend on"
+msgstr "Следующие пакеты зависят от"
+
+#: shpkg/hpkg-remove:89
+msgid "Cannot remove package due to dependency breakage"
+msgstr "Невозможно удалить пакет, так как это вызовет разрыв зависимости"
+
+#: shpkg/hpkg-remove:95
+msgid "Removing package..."
+msgstr "Удаляю пакет..."
+
+#: shpkg/lib/hpkglib.sh.in:32
+msgid "hpkg"
+msgstr "hpkg"
+
+#: shpkg/lib/hpkglib.sh.in:83 chpkg/hpkglib.h:44
+msgid "Failing due to previous warnings"
+msgstr "Выхожу ввиду предыдущих сообщений"
+
+#: shpkg/lib/hpkglib.sh.in:88 chpkg/hpkglib.h:56
+msgid "This is"
+msgstr "Это"
+
+#: shpkg/lib/hpkglib.sh.in:88 shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:58
+#: chpkg/hpkglib.h:63
+msgid "from"
+msgstr "из"
+
+#: shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:62
+msgid "Arseniy 'EmptiedSoul' Lesin"
+msgstr "Арсений 'EmptiedSoul' Лесин"
+
+#: shpkg/lib/hpkglib.sh.in:90 chpkg/hpkglib.h:64
+msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
+msgstr "Лицензия: GPLv3 или новее: <https://gnu.org/licenses>"
+
+#: shpkg/lib/hpkglib.sh.in:91 chpkg/hpkglib.h:65
+msgid ""
+"This is free software: you can freely run, inspect, modify and distribute "
+"this program"
+msgstr ""
+"Это свободное ПО: вы можете свободно запускать, изучать, изменять и "
+"распространять эту программу"
+
+#: shpkg/lib/hpkglib.sh.in:92 chpkg/hpkglib.h:66
+msgid "NO WARRANTY AT ALL"
+msgstr "НИКАКИХ ГАРАНТИЙ НЕ ПРЕДОСТАВЛЯЕТСЯ"
+
+#: packing/hpkg-make:27
+msgid "hpkg-make - create .hard package"
+msgstr "hpkg-make - создать пакет .hard"
+
+#: packing/hpkg-make:29
+msgid "hpkg-make <command>"
+msgstr "hpkg-make <команды>"
+
+#: packing/hpkg-make:31 hardman/hardman:16
+msgid "Commands"
+msgstr "Команды"
+
+#: packing/hpkg-make:32
+msgid "Read Buildfile and build package"
+msgstr "Собрать пакет в соответствии с Buildfile"
+
+#: packing/hpkg-make:33
+msgid "<directory>"
+msgstr "<директория>"
+
+#: packing/hpkg-make:33
+msgid "Create package from given directory"
+msgstr "Создать пакет из указанной директории"
+
+#: packing/hpkg-make:34
+msgid "Clean build and destination directories"
+msgstr "Очистить директорию сборки и назначения"
+
+#: packing/hpkg-make:35
+msgid "Like 'clean' but keep destination directory"
+msgstr "Как 'clean', только сохранить директорию назначения"
+
+#: packing/hpkg-make:36
+msgid "Completely purge everyrhing related to package"
+msgstr "Полностью очистить все связаное с пакетом"
+
+#: packing/hpkg-make:37
+msgid "Install built package"
+msgstr "Установить собраный пакет"
+
+#: packing/hpkg-make:39
+msgid "More information available at hpkg-make(1) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-make(1)"
+
+#: packing/hpkg-make:98
+msgid "Cannot read Buildfile"
+msgstr "Не могу прочитать Buildfile"
+
+#: packing/hpkg-make:100
+msgid "Invalid Buildfile"
+msgstr "Некорректный Buildfile"
+
+#: packing/hpkg-make:108
+msgid "Running getsrc()"
+msgstr "Запускаю getsrc()"
+
+#: packing/hpkg-make:109
+msgid "Failed to get sources"
+msgstr "Не удалось получить исходники"
+
+#: packing/hpkg-make:110
+msgid "Running unpacksrc()"
+msgstr "Запускаю unpacksrc()"
+
+#: packing/hpkg-make:111
+msgid "Failed to unpack sources"
+msgstr "Не удалось распаковать исходники"
+
+#: packing/hpkg-make:113
+msgid "Running preparesrc()"
+msgstr "Запускаю preparesrc()"
+
+#: packing/hpkg-make:114
+msgid "Failed to prepare sources"
+msgstr "Не удалось подготовить исходники"
+
+#: packing/hpkg-make:117
+msgid "Entering chroot environment"
+msgstr "Вхожу в окружение chroot"
+
+#: packing/hpkg-make:121
+msgid "Running compilesrc()"
+msgstr "Запускаю compilesrc()"
+
+#: packing/hpkg-make:122
+msgid "Failed to compile sources"
+msgstr "Не удалось скомпилировать исходники"
+
+#: packing/hpkg-make:123
+msgid "Running installsrc()"
+msgstr "Запускаю installsrc()"
+
+#: packing/hpkg-make:124
+msgid "Failed to install into package"
+msgstr "Установка в пакет не удалась"
+
+#: packing/hpkg-make:125
+msgid "Stripping"
+msgstr "Очищаю ненужные секции бинарников"
+
+#: packing/hpkg-make:126
+msgid "Failed to strip"
+msgstr "Не удалось произвести зачистку бинарников"
+
+#: packing/hpkg-make:129
+msgid "Creating package"
+msgstr "Создаю пакет"
+
+#: packing/hpkg-make:131 packing/hpkg-make:139
+msgid "Failed to create package"
+msgstr "Не удалось создать пакет"
+
+#: packing/hpkg-make:137
+msgid "Leaving chroot environment"
+msgstr "Покидаю окружение chroot"
+
+#: packing/hpkg-make:138
+msgid "Signing package"
+msgstr "Подписываю пакет"
+
+#: packing/hpkg-make:143 packing/hpkg-make:152 packing/hpkg-make:160
+#: packing/hpkg-make:189
+msgid "Can not read Buildfile"
+msgstr "Не могу прочитать Buildfile"
+
+#: packing/hpkg-make:177
+msgid "Can not read METADATA"
+msgstr "Не могу прочитать метаданные"
+
+#: packing/hpkg-make:190
+msgid "Can not install package"
+msgstr "Не могу установить пакет"
+
+#: hardman/hardman:12
+msgid "hardman - high-level package managing utility"
+msgstr "hardman - высокоуровневая утилита для управления пакетами"
+
+#: hardman/hardman:14
+msgid "hardman [command]"
+msgstr "hardman [команда]"
+
+#: hardman/hardman:22
+msgid "More information available at hardman(8) manpage"
+msgstr "Больше информации доступно на man-странице hardman(8)"
+
+#: hardman/hardman:41
+msgid ""
+"No such command, maybe you mistyped it or appropriate module isnt enabled."
+msgstr ""
+"Нет такой команды, возможно вы опечатались или подходящий модуль не подключён"
+
+#: hardman/hardman:42
+msgid "Use '--help' to obtain full list of commands"
+msgstr "Используйте опцию '--help', чтобы получить полный список команд"
+
+#: hardman/hparts:16 hardman/hparts:26
+msgid "No such module"
+msgstr "Нет такого модуля"
+
+#: hardman/hparts:51
+msgid "hparts - hardman' module manager"
+msgstr "hparts - менеджер модулей hardman"
+
+#: hardman/hparts:55
+msgid "More information available at hparts(8) manpage"
+msgstr "Больше информации доступно на man-странице hparts(8)"
+
+#: hardman/default-plugins/default-download:8
+msgid "Downloading"
+msgstr "Загрузка"
+
+#: hardman/default-plugins/default-download:9
+msgid "Failed to download package"
+msgstr "Не удалось загрузить пакет"
+
+#: hardman/default-plugins/default-install:37
+msgid "Usage"
+msgstr "Использование"
+
+#: hardman/default-plugins/default-install:44
+msgid "No such package in repository"
+msgstr "В репозитории не такого пакета"
+
+#: hardman/default-plugins/default-install:50
+msgid "Can not resolve dependenies"
+msgstr ""
+
+#: hardman/default-plugins/default-install:52
+msgid "The following packages will be installed"
+msgstr "Следующие пакеты будут установлены"
+
+#: hardman/default-plugins/default-install:54
+msgid "Do you wish to continue?"
+msgstr "Хотите продолжить?"
+
+#: hardman/default-plugins/default-update-db:7
+msgid "Failed to read repo.conf!"
+msgstr "Не удалось прочитать repo.conf!"
+
+#: hardman/default-plugins/default-update-db:9
+msgid "Repository is not set. Have you configured your /etc/hardman/repo.conf?"
+msgstr "Репозиторий не указан. Вы настроили /etc/hardman/repo.conf?"
+
+#: hardman/default-plugins/default-update-db:12
+msgid "Retrieving repository metadata..."
+msgstr "Получение метаданных репозитория"
+
+#: hardman/default-plugins/default-update-db:13
+msgid "Failed to retrieve repository metadata"
+msgstr "Не удалось получить метаданные репозитория"
+
+#: hardman/default-plugins/default-update-db:14
+msgid "Installing repository metadata..."
+msgstr "Устанавливаю метаданные репозитория"
+
+#: hardman/default-plugins/default-update-db:15
+msgid "Failed to install repository metadata"
+msgstr "Не удалось установить метаданные репозитория"
+
+#: chpkg/hpkglib.h:59
+msgid "C implementation"
+msgstr "реализация на языке Си"
+
+#: chpkg/hpkglib.h:60
+msgid "version"
+msgstr "версия"
+
+#: chpkg/chpkg-info.c:114
+msgid "<file> argument"
+msgstr "параметр <file>"
+
+#~ msgid "hmake - create .hard package"
+#~ msgstr "hmake - создать пакет .hard"
+
+#~ msgid "hmake <command>"
+#~ msgstr "hmake <команда>"
+
+#~ msgid "More information available at hmake(1) manpage"
+#~ msgstr "Больше информации доступно на man-странице hmake(1)"
+
+#~ msgid "bash implementation"
+#~ msgstr "реализация на языке командной оболочки Bash"
+
+#~ msgid "Fetched"
+#~ msgstr "Получено:"

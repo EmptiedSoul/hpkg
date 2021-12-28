@@ -1,0 +1,49 @@
+AC_INIT([hpkg], [@VERSION@], [emptiedsoul@hardclanz.org])
+
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIRS([m4])
+
+AM_INIT_AUTOMAKE([foreign dist-xz no-dist-gzip])
+AM_SILENT_RULES([yes])
+
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.21])
+
+LT_INIT
+
+AC_PROG_CXX
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+
+# Checks for libraries.
+# FIXME: Replace 'main' with a function in '-laria2':
+#AC_CHECK_LIB([aria2], [main])
+# FIXME: Replace 'main' with a function in '-lhard':
+AC_CHECK_LIB([hard], [hard_split_pkg])
+# FIXME: Replace 'main' with a function in '-lhrd':
+AC_CHECK_LIB([hrd], [hrd_string_split])
+
+# Checks for header files.
+AC_CHECK_HEADERS([fcntl.h libintl.h sys/ioctl.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
+AC_TYPE_OFF_T
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_FORK
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([dup2 memset setlocale strchr strdup strerror strstr strtol])
+
+
+AC_CONFIG_FILES([Makefile po/Makefile.in])
+
+AC_OUTPUT
