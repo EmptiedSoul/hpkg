@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = subdir-objects foreign
+AUTOMAKE_OPTIONS = subdir-objects
 ACLOCAL_AMFLAGS = -I m4
 EXTRA_CFLAGS=-Wno-unused-result -Wno-write-strings -pipe # Add optimizations here!
 

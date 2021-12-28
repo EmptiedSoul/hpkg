@@ -56,6 +56,7 @@ int main(int argc, char** argv){
 		{"dump",	no_argument, 		0, 'd'},
 		{"all",		no_argument,		0, 'a'},
 		{"key",		required_argument,	0, 'k'},
+		{"keys",	required_argument, 	0, 'k'},
 		{"output",	required_argument,	0, 'o'},
 		{"package",	required_argument,	0, 'p'},
 		{0,		0,	     		0,  0 }
@@ -98,7 +99,7 @@ int main(int argc, char** argv){
 				break;
 			case ':':
 			default:
-				switch(optopt){
+				switch((char)optopt){
 					case 'k':
 						warn("%s '-k' %s %s. %s", 
 								gettext("Option"),
@@ -120,6 +121,13 @@ int main(int argc, char** argv){
 								gettext("Option"),
 								gettext("requires"),
 								gettext("<package> argument"),
+								gettext("Consult a manpage or '--help' option"));
+						error(32);
+						break;
+					case '\0':
+						warn("%s '%s'. %s", 
+								gettext("Unknown option"),
+								argv[optind-1],
 								gettext("Consult a manpage or '--help' option"));
 						error(32);
 						break;
