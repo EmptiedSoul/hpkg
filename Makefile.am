@@ -53,7 +53,7 @@ hardman_resolver_hsfd_resolv_CFLAGS	= $(EXTRA_CFLAGS)
 
 shpkg/lib/hpkglib.sh: shpkg/lib/hpkglib.sh.in
 	@echo "  VER      shpkg/lib/hpkglib.sh"
-	@sed shpkg/lib/hpkglib.sh.in -e "s/@VERSION@/$(VERSION)/" > shpkg/lib/hpkglib.sh
+	@sed shpkg/lib/hpkglib.sh.in -e s/VERSION_MACRO/$(VERSION)/ > shpkg/lib/hpkglib.sh
 
 CLEANFILES=shpkg/lib/hpkglib.sh
 
