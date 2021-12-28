@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE([foreign dist-xz no-dist-gzip])
 AM_SILENT_RULES([yes])
 
 AM_GNU_GETTEXT([external])
-AM_GNU_GETTEXT_VERSION([0.21])
+AM_GNU_GETTEXT_VERSION([0.19])
 
 LT_INIT
 
