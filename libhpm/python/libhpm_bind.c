@@ -2,6 +2,8 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <structmember.h>
+
+#include <libhrd.h>
 #include <libhpm.h>
 
 static PyTypeObject package_info;
@@ -161,7 +163,7 @@ static PyObject* get_package_file_list(PyObject* self, PyObject* args){
 		result = Py_None;
 	}
 
-	hrd_array_free((void**)files);
+	hrd_string_array_free((void**)files);
 
 	return result;
 }
