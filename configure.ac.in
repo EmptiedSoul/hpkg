@@ -11,6 +11,31 @@ AM_GNU_GETTEXT_VERSION([0.19])
 
 LT_INIT
 
+WITHOUT_PYTHON=no
+WITHOUT_LIBHPM=no
+WITHOUT_DARIA=no
+WITHOUT_LIBHARD=no
+WITHOUT_SHELL_HPKG=no
+WITHOUT_HARDMAN=no
+WITHOUT_HMAKE=no
+
+AC_ARG_WITH([no-python-bindings], AS_HELP_STRING([--with-no-python-bindings], ["disable libhpm python bindings"]), [WITHOUT_PYTHON=yes], [WITHOUT_PYTHON=no])
+AC_ARG_WITH([no-libhpm], AS_HELP_STRING([--with-no-libhpm], ["do not build hardclanz package management library"]), [WITHOUT_LIBHPM=yes], [WITHOUT_LIBHPM=no])
+AC_ARG_WITH([no-daria], AS_HELP_STRING([--with-no-daria], ["do not build aria2-based downloader"]), [WITHOUT_DARIA=yes], [WITHOUT_DARIA=no])
+AC_ARG_WITH([no-libhard], AS_HELP_STRING([--with-no-libhard], ["do not build libarchive-based hpkg"]), [WITHOUT_LIBHARD=yes], [WITHOUT_LIBHARD=no])
+AC_ARG_WITH([no-shell-hpkg], AS_HELP_STRING([--with-no-shell-hpkg], ["do not install shell-written hpkg"]), [WITHOUT_SHELL_HPKG=yes], [WITHOUT_SHELL_HPKG=no])
+AC_ARG_WITH([no-hardman], AS_HELP_STRING([--with-no-hardman], ["disable high-level package manager"]), [WITHOUT_HARDMAN=yes], [WITHOUT_HARDMAN=no])
+AC_ARG_WITH([no-hpkg-make], AS_HELP_STRING([--with-no-hpkg-make], ["disable package creating tool"]), [WITHOUT_HMAKE=yes], [WITHOUT_HMAKE=no])
+
+if test x"$WITHOUT_PYTHON" != xyes; then
+	AM_PATH_PYTHON(3.6.0)
+	PY_PREFIX=`$PYTHON -c 'import sys ; print (sys.prefix)'`
+	PY_LIBS="-lpython$PYTHON_VERSION"
+	PY_CFLAGS="-I$PY_PREFIX/include/python$PYTHON_VERSION"
+	AC_SUBST([PY_LIBS])
+	AC_SUBST([PY_CFLAGS])
+fi
+
 AC_PROG_CXX
 AC_PROG_AWK
 AC_PROG_CC
@@ -19,13 +44,41 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
+DIALECT="-std=c++98"
+echo 'int main() {return 0;}' > ./log.cpp 
+( $CXX $DIALECT ./log.cpp && ( ./a.out || ./a.exe ) ) || DIALECT="no"
+rm -f ./log.cpp ./a.out ./a.exe
+
+if test x$DIALECT = xno; then
+	AC_MSG_NOTICE([C++ compiler does not work])
+	CXX_IS_BROKEN=yes
+else
+	CXX_IS_BROKEN=no
+fi
+
 # Checks for libraries.
-# FIXME: Replace 'main' with a function in '-laria2':
-#AC_CHECK_LIB([aria2], [main])
-# FIXME: Replace 'main' with a function in '-lhard':
-AC_CHECK_LIB([hard], [hard_split_pkg])
-# FIXME: Replace 'main' with a function in '-lhrd':
-AC_CHECK_LIB([hrd], [hrd_string_split])
+AC_CHECK_LIB([hrd], [hrd_string_split], [
+	LIBHRD_FOUND=yes
+	      ], [
+	AC_MSG_ERROR([libhrd is required to build hpkg])
+		  ])
+if test x"$WITHOUT_LIBHARD" != xyes; then
+	AC_CHECK_LIB([archive], [archive_read_new], [
+		LIBARCHIVE_FOUND=yes
+		      ], [
+		LIBARCHIVE_FOUND=no
+			  ])
+fi
+
+if test x"$CXX_IS_BROKEN" != xyes || test x"$WITHOUT_DARIA" = xno; then
+	AC_LANG_PUSH([C++])
+	AC_CHECK_LIB([aria2], [main], [
+		LIBARIA2_FOUND=yes
+		      ], [
+		LIBARIA2_FOUND=no
+			  ])
+	AC_LANG_POP([C++])
+fi
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h libintl.h sys/ioctl.h unistd.h])
@@ -46,4 +99,162 @@ AC_CHECK_FUNCS([dup2 memset setlocale strchr strdup strerror strstr strtol])
 
 AC_CONFIG_FILES([Makefile po/Makefile.in])
 
+if test x"$CXX_IS_BROKEN" = xyes || test x"$WITHOUT_DARIA" = xyes || test x"$LIBARIA2_FOUND" = xno; then
+	DARIA_BUILD=no
+else
+	DARIA_BUILD=yes
+fi
+
+if test x"$WITHOUT_LIBHARD" = xyes || test x"$LIBARCHIVE_FOUND" = xno; then
+	CHPKG_BUILD=no
+	CHPKG_INFO_BUILD=no
+	CHPKG_EXPLODE_BUILD=no
+	CHPKG_REMOVE_BUILD=no
+	LIBHARD_BUILD=no
+else
+	CHPKG_BUILD=yes
+	CHPKG_INFO_BUILD=yes
+	CHPKG_EXPLODE_BUILD=yes
+	LIBHARD_BUILD=yes
+	CHPKG_REMOVE_BUILD=yes
+fi
+
+if test x"$WITHOUT_SHELL_HPKG" = xyes; then
+	SHPKG_BUILD=no
+	SHPKG_INFO_BUILD=no
+	SHPKG_EXPL_BUILD=no
+	SHPKG_REMV_BUILD=no
+else
+	SHPKG_BUILD=yes
+	SHPKG_INFO_BUILD=yes
+	SHPKG_EXPL_BUILD=yes
+	SHPKG_REMV_BUILD=yes
+fi
+
+if test x"$WITHOUT_LIBHPM" = xyes; then
+	LIBHPM_BUILD=no
+else
+	LIBHPM_BUILD=yes
+fi
+
+if test x"$WITHOUT_PYTHON" = xyes || test x"$WITHOUT_LIBHPM" = xyes || test x"$PYTHON_VERSION" = x; then
+	LIBHPM_PY_BUILD=no
+else
+	LIBHPM_PY_BUILD=yes
+fi
+
+if test x"$WITHOUT_HMAKE" = xyes; then
+	HMAKE_BUILD=no
+else
+	HMAKE_BUILD=yes
+fi
+
+if test x"$WITHOUT_HARDMAN" = xyes; then
+	HARDMAN_BUILD=no
+	DEFDL_BUILD=no
+	DEFIN_BUILD=no
+	DEFLL_BUILD=no
+	DEFUD_BUILD=no
+	DEFRS_BUILD=no
+	RESLV_BUILD=no
+else
+	HARDMAN_BUILD=yes
+	DEFDL_BUILD=yes
+	DEFIN_BUILD=yes
+	DEFLL_BUILD=yes
+	DEFUD_BUILD=yes
+	DEFRS_BUILD=yes
+	RESLV_BUILD=yes
+fi
+
+AC_SUBST([LIBHRD_FOUND])
+AC_SUBST([LIBARCHIVE_FOUND])
+AC_SUBST([LIBARIA2_FOUND])
+AC_SUBST([PYTHON_VERSION])
+AC_SUBST([CHPKG_BUILD])
+AC_SUBST([CHPKG_INFO_BUILD])
+AC_SUBST([CHPKG_REMOVE_BUILD])
+AC_SUBST([CHPKG_EXPLODE_BUILD])
+AC_SUBST([LIBHARD_BUILD])
+AC_SUBST([HARDMAN_BUILD])
+AC_SUBST([DEFDL_BUILD])
+AC_SUBST([DEFIN_BUILD])
+AC_SUBST([DEFLL_BUILD])
+AC_SUBST([DEFUD_BUILD])
+AC_SUBST([DEFRS_BUILD])
+AC_SUBST([DARIA_BUILD])
+AC_SUBST([RESLV_BUILD])
+AC_SUBST([HMAKE_BUILD])
+AC_SUBST([SHPKG_BUILD])
+AC_SUBST([SHPKG_INFO_BUILD])
+AC_SUBST([SHPKG_EXPL_BUILD])
+AC_SUBST([SHPKG_REMV_BUILD])
+AC_SUBST([LIBHPM_BUILD])
+AC_SUBST([LIBHPM_PY_BUILD])
+
+AM_CONDITIONAL([LIBHRD_FOUND], [test x$LIBHRD_FOUND = xyes])
+AM_CONDITIONAL([LIBARCHIVE_FOUND], [test x$LIBARCHIVE_FOUND = xyes])
+AM_CONDITIONAL([LIBARIA2_FOUND], [test x$LIBARIA2_FOUND = xyes])
+AM_CONDITIONAL([PYTHON_VERSION], [test x$PYTHON_VERSION = xyes])
+AM_CONDITIONAL([CHPKG_BUILD], [test x$CHPKG_BUILD = xyes])
+AM_CONDITIONAL([CHPKG_INFO_BUILD], [test x$CHPKG_INFO_BUILD = xyes])
+AM_CONDITIONAL([CHPKG_REMOVE_BUILD], [test x$CHPKG_REMOVE_BUILD = xyes])
+AM_CONDITIONAL([CHPKG_EXPLODE_BUILD], [test x$CHPKG_EXPLODE_BUILD = xyes])
+AM_CONDITIONAL([LIBHARD_BUILD], [test x$LIBHARD_BUILD = xyes])
+AM_CONDITIONAL([HARDMAN_BUILD], [test x$HARDMAN_BUILD = xyes])
+AM_CONDITIONAL([DEFDL_BUILD], [test x$DEFDL_BUILD = xyes])
+AM_CONDITIONAL([DEFIN_BUILD], [test x$DEFIN_BUILD = xyes])
+AM_CONDITIONAL([DEFLL_BUILD], [test x$DEFLL_BUILD = xyes])
+AM_CONDITIONAL([DEFUD_BUILD], [test x$DEFUD_BUILD = xyes])
+AM_CONDITIONAL([DEFRS_BUILD], [test x$DEFRS_BUILD = xyes])
+AM_CONDITIONAL([DARIA_BUILD], [test x$DARIA_BUILD = xyes])
+AM_CONDITIONAL([RESLV_BUILD], [test x$RESLV_BUILD = xyes])
+AM_CONDITIONAL([HMAKE_BUILD], [test x$HMAKE_BUILD = xyes])
+AM_CONDITIONAL([SHPKG_BUILD], [test x$SHPKG_BUILD = xyes])
+AM_CONDITIONAL([SHPKG_INFO_BUILD], [test x$SHPKG_INFO_BUILD = xyes])
+AM_CONDITIONAL([SHPKG_EXPL_BUILD], [test x$SHPKG_EXPL_BUILD = xyes])
+AM_CONDITIONAL([SHPKG_REMV_BUILD], [test x$SHPKG_REMV_BUILD = xyes])
+AM_CONDITIONAL([LIBHPM_BUILD], [test x$LIBHPM_BUILD = xyes])
+AM_CONDITIONAL([LIBHPM_PY_BUILD], [test x$LIBHPM_PY_BUILD = xyes])
+
+
 AC_OUTPUT
+
+echo "--------------------------------------"
+echo "          HPKG Configuration          "
+echo "--------------------------------------"
+echo "  CC:             $CC"
+echo "  CXX:            $CXX"
+echo "  CXX is broken:  $CXX_IS_BROKEN"
+echo "  CFLAGS:         $CFLAGS"
+echo "  CXXFLAGS:       $CXXFLAGS"
+echo "  LDFLAGS:        $LDFLAGS"
+echo "  PY_LIBS:        $PY_LIBS"
+echo "  PY_CFLAGS:      $PY_CFLAGS"
+echo "--------------------------------------"
+echo "  libhrd found.....................$LIBHRD_FOUND"
+echo "  libaria2 found...................$LIBARIA2_FOUND"
+echo "  libarchive found.................$LIBARCHIVE_FOUND"
+echo "  python found.....................$PYTHON_VERSION"
+echo "--------------------------------------"
+echo "  (C) hpkg.........................$CHPKG_BUILD"
+echo "  (C) hpkg-info....................$CHPKG_INFO_BUILD"
+echo "  (C) hpkg-remove..................$CHPKG_REMOVE_BUILD"
+echo "  (C) hpkg-explode.................$CHPKG_EXPLODE_BUILD"
+echo "  libhard..........................$LIBHARD_BUILD"
+echo "  hardman..........................$HARDMAN_BUILD"
+echo "  default-download.................$DEFDL_BUILD"
+echo "  default-install..................$DEFIN_BUILD"
+echo "  default-lowlevel.................$DEFLL_BUILD"
+echo "  default-update-db................$DEFUD_BUILD"
+echo "  default-resolve..................$DEFRS_BUILD"
+echo "  daria............................$DARIA_BUILD"
+echo "  hsfd-resolv......................$RESLV_BUILD"
+echo "  hpkg-make........................$HMAKE_BUILD"
+echo "  (sh) hpkg........................$SHPKG_BUILD"
+echo "  (sh) hpkg-info...................$SHPKG_INFO_BUILD"
+echo "  (sh) hpkg-explode................$SHPKG_EXPL_BUILD"
+echo "  (sh) hpkg-remove.................$SHPKG_REMV_BUILD"
+echo "  libhpm...........................$LIBHPM_BUILD"
+echo "  libhpm for python................$LIBHPM_PY_BUILD"
+echo "--------------------------------------"
