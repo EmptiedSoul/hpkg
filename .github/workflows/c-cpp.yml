@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get dependencies
-      run: sudo apt-get install autopoint libaria2-0-dev gettext libarchive-dev libzstd-dev libacl-dev
+      run: sudo apt-get install autopoint libaria2-0-dev gettext libarchive-dev libzstd-dev libacl1-dev
     - name: Get libhrd
       run: |
         git clone https://github.com/EmptiedSoul/hrdlib.git
