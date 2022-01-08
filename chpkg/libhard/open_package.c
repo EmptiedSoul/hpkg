@@ -22,10 +22,10 @@
 char hard_package_type;
 
 FILE* hard_open_package(char* filename) {
-	FILE* package;
-	char  magic[10];
-	bool  dot_hard_suffix;
-	bool  is_pgp_encrypted;
+	FILE* 		package;
+	unsigned char 	magic[10];
+	bool  		dot_hard_suffix;
+	bool  		is_pgp_encrypted;
 
 	package = fopen(filename, "r");
 
@@ -37,8 +37,8 @@ FILE* hard_open_package(char* filename) {
 	fread(magic, 10, 1, package);
 	rewind(package);
 
-	if (magic[0] == 0x85 &&
-	    magic[3] == 0x03)
+	if (magic[0] == 163 &&
+	    magic[1] == 1)
 		is_pgp_encrypted = true;
 	else if (!strcmp(magic, "METADATA"))
 		hard_package_type = HARD_PLAIN_PACKAGE;

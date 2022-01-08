@@ -27,7 +27,7 @@ int hard_decrypt_package(char* package, char* decrypted_file){
 			return -1;
 			break;
 		case 0:
-			execlp("gpg", "gpg", "-d", package, "-o", decrypted_file, NULL);
+			execlp("gpg", "gpg", "--batch", "--yes", "--output", decrypted_file, "--decrypt", package, NULL);
 			break;
 		default:
 			wait(&status);
