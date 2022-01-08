@@ -4,6 +4,8 @@ libhpm/libhpm.h
 chpkg/libhard/libhard.h
 chpkg/hpkglib.h
 chpkg/chpkg-info-help.h
+chpkg/chpkg-explode-help.h
+chpkg/chpkg-explode.c
 hardman/resolver/package.c
 hardman/resolver/resolv.c
 hardman/resolver/query.c
@@ -15,8 +17,7 @@ libhpm/run_hardman_command.c
 libhpm/package_is_installed.c
 chpkg/libhard/decrypt.c
 chpkg/libhard/split_pkg.c
-chpkg/libhard/is_encrypted.c
-chpkg/libhard/validate.c
+chpkg/libhard/open_package.c
 chpkg/chpkg-info.c
 shpkg/hpkg
 shpkg/hpkg-explode

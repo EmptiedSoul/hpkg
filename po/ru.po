@@ -1,15 +1,15 @@
 # Russian translations for hpkg package
 # Английские переводы для пакета hpkg.
-# Copyright (C) 2021 THE hpkg'S COPYRIGHT HOLDER
+# Copyright (C) 2021, 2022 THE hpkg'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the hpkg package.
 #
-# Арсений Лесин <emptiedsoul@hardclanz.org>, 2021.
+# Арсений Лесин <emptiedsoul@hardclanz.org>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: hpkg @VERSION@\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-28 18:17+0300\n"
-"PO-Revision-Date: 2021-12-28 18:38+0300\n"
+"POT-Creation-Date: 2022-01-08 19:04+0300\n"
+"PO-Revision-Date: 2022-01-08 19:18+0300\n"
 "Last-Translator: emptiedsoul <emptiedsoul@hardclanz.site>\n"
 "Language-Team: Russian <gnu@d07.ru>\n"
 "Language: ru\n"
@@ -20,6 +20,315 @@ msgstr ""
 "=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Lokalize 21.12.0\n"
 
+#: chpkg/hpkglib.h:44 shpkg/lib/hpkglib.sh.in:83
+msgid "Failing due to previous warnings"
+msgstr "Выхожу ввиду предыдущих сообщений"
+
+#: chpkg/hpkglib.h:64 shpkg/lib/hpkglib.sh.in:88 chpkg/hpkglib.h:56
+msgid "This is"
+msgstr "Это"
+
+#: chpkg/hpkglib.h:66 chpkg/hpkglib.h:71 shpkg/lib/hpkglib.sh.in:88
+#: shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:58 chpkg/hpkglib.h:63
+msgid "from"
+msgstr "из"
+
+#: chpkg/hpkglib.h:67 chpkg/hpkglib.h:59
+msgid "C implementation"
+msgstr "реализация на языке Си"
+
+#: chpkg/hpkglib.h:68 chpkg/hpkglib.h:60
+msgid "version"
+msgstr "версия"
+
+#: chpkg/hpkglib.h:70 shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:62
+msgid "Arseniy 'EmptiedSoul' Lesin"
+msgstr "Арсений 'EmptiedSoul' Лесин"
+
+#: chpkg/hpkglib.h:72 shpkg/lib/hpkglib.sh.in:90 chpkg/hpkglib.h:64
+msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
+msgstr "Лицензия: GPLv3 или новее: <https://gnu.org/licenses>"
+
+#: chpkg/hpkglib.h:73 shpkg/lib/hpkglib.sh.in:91 chpkg/hpkglib.h:65
+msgid ""
+"This is free software: you can freely run, inspect, modify and distribute "
+"this program"
+msgstr ""
+"Это свободное ПО: вы можете свободно запускать, изучать, изменять и "
+"распространять эту программу"
+
+#: chpkg/hpkglib.h:74 shpkg/lib/hpkglib.sh.in:92 chpkg/hpkglib.h:66
+msgid "NO WARRANTY AT ALL"
+msgstr "НИКАКИХ ГАРАНТИЙ НЕ ПРЕДОСТАВЛЯЕТСЯ"
+
+#: chpkg/chpkg-info-help.h:30 shpkg/hpkg-info:11 chpkg/chpkg-info-help.h:25
+msgid "hpkg-info - obtain information about .hard package"
+msgstr "hpkg-info - получить информацию о пакете .hard"
+
+#: chpkg/chpkg-info-help.h:31 shpkg/hpkg-info:13 chpkg/chpkg-info-help.h:26
+msgid "hpkg-info [options] -p <package>"
+msgstr "hpkg-info [опции] -p <пакетик>"
+
+#: chpkg/chpkg-info-help.h:32 chpkg/chpkg-explode-help.h:33 shpkg/hpkg:27
+#: shpkg/hpkg-explode:11 shpkg/hpkg-info:15 shpkg/hpkg-remove:16
+#: chpkg/chpkg-info-help.h:27
+msgid "Options"
+msgstr "Опции"
+
+#: chpkg/chpkg-info-help.h:33 chpkg/chpkg-explode-help.h:34 shpkg/hpkg:28
+#: shpkg/hpkg-explode:12 shpkg/hpkg-info:16 shpkg/hpkg-remove:17
+#: chpkg/chpkg-info-help.h:28
+msgid "Print version info and exit"
+msgstr "Вывести информацию о версии и выйти"
+
+#: chpkg/chpkg-info-help.h:34 chpkg/chpkg-explode-help.h:35 shpkg/hpkg:29
+#: shpkg/hpkg-info:17 shpkg/hpkg-remove:18 chpkg/chpkg-info-help.h:29
+msgid "Print this help"
+msgstr "Вывести этот текст"
+
+#: chpkg/chpkg-info-help.h:35 shpkg/hpkg-info:18 chpkg/chpkg-info-help.h:30
+msgid "Dump entire METADATA file"
+msgstr "Вывести файл METADATA целиком"
+
+#: chpkg/chpkg-info-help.h:36 shpkg/hpkg-info:19 chpkg/chpkg-info-help.h:31
+msgid "Print as \"KEY=VALUE\""
+msgstr "Выводить в формате: КЛЮЧ=ЗНАЧЕНИЕ"
+
+#: chpkg/chpkg-info-help.h:37
+msgid "-k <key1,key2>"
+msgstr "-k <ключ1,ключ2>"
+
+#: chpkg/chpkg-info-help.h:38
+msgid "--keys=<key1,key2>"
+msgstr "--keys=<ключ1,ключ2>"
+
+#: chpkg/chpkg-info-help.h:39 shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:33
+msgid "Specify key to obtain"
+msgstr "Указать ключ для вывода"
+
+#: chpkg/chpkg-info-help.h:40 shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:34
+msgid "-o <file>"
+msgstr "-o <файл>"
+
+#: chpkg/chpkg-info-help.h:41
+msgid "--output <file>"
+msgstr "--output <файл>"
+
+#: chpkg/chpkg-info-help.h:42 shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:35
+msgid "Specify output (default stdout)"
+msgstr "Указать куда перенаправить вывод (по-умолчанию на терминал)"
+
+#: chpkg/chpkg-info-help.h:43 shpkg/hpkg-info:23 chpkg/chpkg-info-help.h:36
+msgid "More information available at hpkg-info(1) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-info(1)"
+
+#: chpkg/chpkg-info-help.h:44 chpkg/chpkg-explode-help.h:46 shpkg/hpkg:41
+#: shpkg/hpkg-explode:21 shpkg/hpkg-info:24 shpkg/hpkg-remove:27
+#: packing/hpkg-make:40 hardman/hardman:23 hardman/hparts:56
+#: chpkg/chpkg-info-help.h:37
+msgid ""
+"Copyright and licensing information can be obtained via '--version' option"
+msgstr ""
+"Информация о авторском праве и лицензировании может быть получена с помощью "
+"опции '--version'"
+
+#: chpkg/chpkg-explode-help.h:31
+msgid "hpkg-explode - extract .hard package"
+msgstr "hpkg-explode - распаковать пакет .hard"
+
+#: chpkg/chpkg-explode-help.h:32 shpkg/hpkg-explode:9
+msgid "hpkg-explode [options] -p <package>"
+msgstr "hpkg-explode [опции] -p <пакетик>"
+
+#: chpkg/chpkg-explode-help.h:36 shpkg/hpkg:30 shpkg/hpkg-explode:14
+#: shpkg/hpkg-remove:19
+msgid "Be verbose"
+msgstr "Подробный режим"
+
+#: chpkg/chpkg-explode-help.h:37 shpkg/hpkg:31 shpkg/hpkg-explode:15
+#: shpkg/hpkg-remove:20
+msgid "Be silent"
+msgstr "Тихий режим"
+
+#: chpkg/chpkg-explode-help.h:38
+msgid "Also extract PAYLOAD.tar.zst"
+msgstr "Также распаковать PAYLOAD.tar.zst"
+
+#: chpkg/chpkg-explode-help.h:39 shpkg/hpkg:37 shpkg/hpkg-explode:17
+#: shpkg/hpkg-remove:23
+msgid "-C <directory>"
+msgstr "-C <директория>"
+
+#: chpkg/chpkg-explode-help.h:40
+msgid "--directory=<directory>"
+msgstr "--directory <директория>"
+
+#: chpkg/chpkg-explode-help.h:41
+msgid "Extract to <directory>"
+msgstr "Распаковать в <директорию>"
+
+#: chpkg/chpkg-explode-help.h:42 shpkg/hpkg:38 shpkg/hpkg-explode:18
+#: shpkg/hpkg-remove:24
+msgid "-p <package>"
+msgstr "-p <пакетик>"
+
+#: chpkg/chpkg-explode-help.h:43
+msgid "--package=<package>"
+msgstr "--package=<пакетик>"
+
+#: chpkg/chpkg-explode-help.h:44
+msgid "Specify package to extract"
+msgstr "Указать пакет для распаковки"
+
+#: chpkg/chpkg-explode-help.h:45 shpkg/hpkg-explode:20
+msgid "More information available at hpkg-explode(1) manpage"
+msgstr "Больше информации доступно на man-странице hpkg-explode(1)"
+
+#: chpkg/chpkg-explode.c:102 chpkg/chpkg-explode.c:111 chpkg/chpkg-info.c:105
+#: chpkg/chpkg-info.c:113 chpkg/chpkg-info.c:121 shpkg/hpkg:80 shpkg/hpkg:82
+#: shpkg/hpkg-explode:53 shpkg/hpkg-explode:55 shpkg/hpkg-info:44
+#: shpkg/hpkg-info:45 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
+#: chpkg/chpkg-info.c:104 chpkg/chpkg-info.c:112 chpkg/chpkg-info.c:120
+msgid "Option"
+msgstr "Опция"
+
+#: chpkg/chpkg-explode.c:104 chpkg/chpkg-explode.c:113 chpkg/chpkg-info.c:106
+#: chpkg/chpkg-info.c:114 chpkg/chpkg-info.c:122 shpkg/hpkg:80 shpkg/hpkg:82
+#: shpkg/hpkg-explode:53 shpkg/hpkg-explode:55 shpkg/hpkg-info:44
+#: shpkg/hpkg-info:45 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
+#: chpkg/chpkg-info.c:105 chpkg/chpkg-info.c:113 chpkg/chpkg-info.c:121
+msgid "requires"
+msgstr "требует"
+
+#: chpkg/chpkg-explode.c:105 shpkg/hpkg:80 shpkg/hpkg-explode:53
+msgid "<directory> argument"
+msgstr "аргумент <директория>"
+
+#: chpkg/chpkg-explode.c:106 chpkg/chpkg-explode.c:115
+#: chpkg/chpkg-explode.c:122 chpkg/chpkg-explode.c:129
+#: chpkg/chpkg-explode.c:136 chpkg/chpkg-info.c:108 chpkg/chpkg-info.c:116
+#: chpkg/chpkg-info.c:124 chpkg/chpkg-info.c:131 chpkg/chpkg-info.c:138
+#: chpkg/chpkg-info.c:146 shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg:84
+#: shpkg/hpkg:90 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
+#: shpkg/hpkg-explode:57 shpkg/hpkg-explode:64 shpkg/hpkg-info:44
+#: shpkg/hpkg-info:45 shpkg/hpkg-info:46 shpkg/hpkg-info:57
+#: shpkg/hpkg-remove:59 shpkg/hpkg-remove:61 chpkg/chpkg-info.c:107
+#: chpkg/chpkg-info.c:115 chpkg/chpkg-info.c:123 chpkg/chpkg-info.c:130
+msgid "Consult a manpage or '--help' option"
+msgstr "Обратитесь к man-странице или опции '--help'"
+
+#: chpkg/chpkg-explode.c:114 chpkg/chpkg-info.c:123 shpkg/hpkg:82
+#: shpkg/hpkg-explode:55 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
+#: chpkg/chpkg-info.c:122
+msgid "<package> argument"
+msgstr "аргумент <пакетик>"
+
+#: chpkg/chpkg-explode.c:120 chpkg/chpkg-explode.c:127 chpkg/chpkg-info.c:129
+#: chpkg/chpkg-info.c:136 shpkg/hpkg:84 shpkg/hpkg-explode:57
+#: shpkg/hpkg-info:47 shpkg/hpkg-remove:61 chpkg/chpkg-info.c:128
+msgid "Unknown option"
+msgstr "Неизвестная опция"
+
+#: chpkg/chpkg-explode.c:136 chpkg/chpkg-info.c:146 shpkg/hpkg:90
+#: shpkg/hpkg-explode:64 shpkg/hpkg-info:57 chpkg/chpkg-info.c:138
+msgid "Package is not set"
+msgstr "Пакет не указан"
+
+#: chpkg/chpkg-explode.c:144 chpkg/chpkg-info.c:159 shpkg/hpkg:92
+#: shpkg/hpkg-explode:66 shpkg/hpkg-info:59 chpkg/chpkg-info.c:152
+msgid "is not a .hard package"
+msgstr "не является пакетом .hard"
+
+#: chpkg/chpkg-explode.c:151
+#, c-format
+msgid "%s is a valid .hard package"
+msgstr "%s является пакетом .hard"
+
+#: chpkg/chpkg-explode.c:157
+#, c-format
+msgid "Directory: %s"
+msgstr "Директория: %s"
+
+#: chpkg/chpkg-explode.c:160
+#, c-format
+msgid "%s is encrypted, decrypting..."
+msgstr "%s зашифрован, расшифровываю..."
+
+#: chpkg/chpkg-explode.c:174
+msgid "Creating directory..."
+msgstr "Создаю директорию"
+
+#: chpkg/chpkg-explode.c:179 chpkg/chpkg-explode.c:210
+#, c-format
+msgid "Failed to create directory: %s: %s"
+msgstr "Не удалось создать директорию: %s: %s"
+
+#: chpkg/chpkg-explode.c:189
+#, c-format
+msgid "Extracting %s..."
+msgstr "Распаковываю %s..."
+
+#: chpkg/chpkg-explode.c:192
+#, c-format
+msgid "Writing %s/METADATA"
+msgstr "Записываю %s/METADATA"
+
+#: chpkg/chpkg-explode.c:195
+#, c-format
+msgid "Writing %s/PAYLOAD.tar.zst"
+msgstr "Записываю %s/PAYLOAD.tar.zst"
+
+#: chpkg/chpkg-explode.c:198
+#, c-format
+msgid "Closing %s"
+msgstr "Закрываю %s"
+
+#: chpkg/chpkg-explode.c:204
+msgid "Option '--recursive' was not passed. Exiting"
+msgstr "Опция '--recursive' не была дана. Завершаю работу"
+
+#: chpkg/chpkg-explode.c:208
+#, c-format
+msgid "Creating directory %s/PAYLOAD..."
+msgstr "Создаю директорию %s/PAYLOAD..."
+
+#: chpkg/chpkg-explode.c:235
+#, c-format
+msgid "Extracting %s/PAYLOAD.tar.zst..."
+msgstr "Распаковываю %s/PAYLOAD.tar.zst"
+
+#: chpkg/chpkg-explode.c:238
+msgid "Failed to read PAYLOAD.tar.zst"
+msgstr "Не удалось прочесть PAYLOAD.tar.zst"
+
+#: chpkg/chpkg-explode.c:248 chpkg/chpkg-explode.c:257
+#: chpkg/chpkg-explode.c:262 chpkg/chpkg-explode.c:273
+#, c-format
+msgid "PAYLOAD.tar.zst: %s"
+msgstr "PAYLOAD.tar.zst: %s"
+
+#: chpkg/chpkg-explode.c:251 chpkg/chpkg-explode.c:265
+#: chpkg/chpkg-explode.c:276
+msgid "Fatal error occured while extracting PAYLOAD.tar.zst"
+msgstr "Произошла фатальная ошибка во время распаковки PAYLOAD.tar.zst"
+
+#: chpkg/chpkg-explode.c:286
+#, c-format
+msgid "Removing %s/PAYLOAD.tar.zst"
+msgstr "Удаляю %s/PAYLOAD.tar.zst"
+
+#: chpkg/chpkg-info.c:107 shpkg/hpkg-info:44 chpkg/chpkg-info.c:106
+msgid "<key> argument"
+msgstr "аргумент <ключ>"
+
+#: chpkg/chpkg-info.c:115 chpkg/chpkg-info.c:114
+msgid "<file> argument"
+msgstr "параметр <file>"
+
+#: chpkg/chpkg-info.c:151 shpkg/hpkg-info:54 chpkg/chpkg-info.c:143
+msgid "You should specify a key to obtain"
+msgstr "Вы должны указать ключ для получения"
+
 #: shpkg/hpkg:23
 msgid "hpkg - install .hard package"
 msgstr "hpkg - установить пакет .hard"
@@ -27,29 +336,6 @@ msgstr "hpkg - установить пакет .hard"
 #: shpkg/hpkg:25
 msgid "hpkg [options] -p <package>"
 msgstr "hpkg [опции] -p <пакетик>"
-
-#: shpkg/hpkg:27 shpkg/hpkg-explode:11 shpkg/hpkg-info:15 shpkg/hpkg-remove:16
-#: chpkg/chpkg-info-help.h:27
-msgid "Options"
-msgstr "Опции"
-
-#: shpkg/hpkg:28 shpkg/hpkg-explode:12 shpkg/hpkg-info:16 shpkg/hpkg-remove:17
-#: chpkg/chpkg-info-help.h:28
-msgid "Print version info and exit"
-msgstr "Вывести информацию о версии и выйти"
-
-#: shpkg/hpkg:29 shpkg/hpkg-info:17 shpkg/hpkg-remove:18
-#: chpkg/chpkg-info-help.h:29
-msgid "Print this help"
-msgstr "Вывести этот текст"
-
-#: shpkg/hpkg:30 shpkg/hpkg-explode:14 shpkg/hpkg-remove:19
-msgid "Be verbose"
-msgstr "Подробный режим"
-
-#: shpkg/hpkg:31 shpkg/hpkg-explode:15 shpkg/hpkg-remove:20
-msgid "Be silent"
-msgstr "Тихий режим"
 
 #: shpkg/hpkg:32
 msgid "Install as dependency"
@@ -71,17 +357,9 @@ msgstr "Не проверять подлинность пакета"
 msgid "Do not really install package"
 msgstr "Не устанавливать пакет на самом деле"
 
-#: shpkg/hpkg:37 shpkg/hpkg-explode:17 shpkg/hpkg-remove:23
-msgid "-C <directory>"
-msgstr "-C <директория>"
-
 #: shpkg/hpkg:37
 msgid "Install in <directory>"
 msgstr "Установить в <директорию>"
-
-#: shpkg/hpkg:38 shpkg/hpkg-explode:18 shpkg/hpkg-remove:24
-msgid "-p <package>"
-msgstr "-p <пакетик>"
 
 #: shpkg/hpkg:38
 msgid "Specify package to install"
@@ -91,65 +369,9 @@ msgstr "Указать пакет для установки"
 msgid "More information available at hpkg(8) manpage"
 msgstr "Больше информации доступно на man-странице hpkg(8)"
 
-#: shpkg/hpkg:41 shpkg/hpkg-explode:21 shpkg/hpkg-info:24 shpkg/hpkg-remove:27
-#: packing/hpkg-make:40 hardman/hardman:23 hardman/hparts:56
-#: chpkg/chpkg-info-help.h:37
-msgid ""
-"Copyright and licensing information can be obtained via '--version' option"
-msgstr ""
-"Информация о авторском праве и лицензировании может быть получена с помощью "
-"опции '--version'"
-
-#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
-#: shpkg/hpkg-info:44 shpkg/hpkg-info:45 shpkg/hpkg-info:46
-#: shpkg/hpkg-remove:59 chpkg/chpkg-info.c:104 chpkg/chpkg-info.c:112
-#: chpkg/chpkg-info.c:120
-msgid "Option"
-msgstr "Опция"
-
-#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
-#: shpkg/hpkg-info:44 shpkg/hpkg-info:45 shpkg/hpkg-info:46
-#: shpkg/hpkg-remove:59 chpkg/chpkg-info.c:105 chpkg/chpkg-info.c:113
-#: chpkg/chpkg-info.c:121
-msgid "requires"
-msgstr "требует"
-
-#: shpkg/hpkg:80 shpkg/hpkg-explode:53
-msgid "<directory> argument"
-msgstr "аргумент <директория>"
-
-#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg:84 shpkg/hpkg:90
-#: shpkg/hpkg-explode:53 shpkg/hpkg-explode:55 shpkg/hpkg-explode:57
-#: shpkg/hpkg-explode:64 shpkg/hpkg-info:44 shpkg/hpkg-info:45
-#: shpkg/hpkg-info:46 shpkg/hpkg-info:57 shpkg/hpkg-remove:59
-#: shpkg/hpkg-remove:61 chpkg/chpkg-info.c:107 chpkg/chpkg-info.c:115
-#: chpkg/chpkg-info.c:123 chpkg/chpkg-info.c:130 chpkg/chpkg-info.c:138
-msgid "Consult a manpage or '--help' option"
-msgstr "Обратитесь к man-странице или опции '--help'"
-
-#: shpkg/hpkg:82 shpkg/hpkg-explode:55 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
-#: chpkg/chpkg-info.c:122
-msgid "<package> argument"
-msgstr "аргумент <пакетик>"
-
-#: shpkg/hpkg:84 shpkg/hpkg-explode:57 shpkg/hpkg-info:47 shpkg/hpkg-remove:61
-#: chpkg/chpkg-info.c:128
-msgid "Unknown option"
-msgstr "Неизвестная опция"
-
-#: shpkg/hpkg:90 shpkg/hpkg-explode:64 shpkg/hpkg-info:57
-#: chpkg/chpkg-info.c:138
-msgid "Package is not set"
-msgstr "Пакет не указан"
-
 #: shpkg/hpkg:91 shpkg/hpkg-explode:65 shpkg/hpkg-info:58
 msgid "No such package"
 msgstr "Нет такого пакета"
-
-#: shpkg/hpkg:92 shpkg/hpkg-explode:66 shpkg/hpkg-info:59
-#: chpkg/chpkg-info.c:152
-msgid "is not a .hard package"
-msgstr "не является пакетом .hard"
 
 #: shpkg/hpkg:94 shpkg/hpkg-remove:77 hardman/hardman:7 hardman/hparts:74
 #: hardman/hparts:79
@@ -214,11 +436,7 @@ msgstr "'pkg_postinstall' завершился с ошибкой"
 
 #: shpkg/hpkg-explode:7
 msgid "hpkg-explode - rawly extract .hard archive"
-msgstr "hpkg-explode - грубо распаковать пакет .hard"
-
-#: shpkg/hpkg-explode:9
-msgid "hpkg-explode [options] -p <package>"
-msgstr "hpkg-explode [опции] -p <пакетик>"
+msgstr ""
 
 #: shpkg/hpkg-explode:13
 msgid "Print this text"
@@ -226,27 +444,23 @@ msgstr "Вывести этот текст"
 
 #: shpkg/hpkg-explode:16
 msgid "Also extract PAYLOAD.tar.xz"
-msgstr "Также распаковать PAYLOAD.tar"
+msgstr ""
 
 #: shpkg/hpkg-explode:17
 msgid "Extract in directory"
-msgstr "Распаковать в директорию"
+msgstr ""
 
 #: shpkg/hpkg-explode:18
 msgid "Specify package to be extracted"
-msgstr "Указать пакет для распаковки"
-
-#: shpkg/hpkg-explode:20
-msgid "More information available at hpkg-explode(1) manpage"
-msgstr "Больше информации доступно на man-странице hpkg-explode(1)"
+msgstr ""
 
 #: shpkg/hpkg-explode:73
 msgid "Extracting"
-msgstr "Распаковываю"
+msgstr ""
 
 #: shpkg/hpkg-explode:87
 msgid "Extracting PAYLOAD"
-msgstr "Распаковываю PAYLOAD"
+msgstr ""
 
 #: shpkg/hpkg-explode:90
 msgid "is corrupted"
@@ -256,45 +470,9 @@ msgstr "поврежден"
 msgid "Moving to"
 msgstr "Перемещаю в"
 
-#: shpkg/hpkg-info:11 chpkg/chpkg-info-help.h:25
-msgid "hpkg-info - obtain information about .hard package"
-msgstr "hpkg-info - получить информацию о пакете .hard"
-
-#: shpkg/hpkg-info:13 chpkg/chpkg-info-help.h:26
-msgid "hpkg-info [options] -p <package>"
-msgstr "hpkg-info [опции] -p <пакетик>"
-
-#: shpkg/hpkg-info:18 chpkg/chpkg-info-help.h:30
-msgid "Dump entire METADATA file"
-msgstr "Вывести файл METADATA целиком"
-
-#: shpkg/hpkg-info:19 chpkg/chpkg-info-help.h:31
-msgid "Print as \"KEY=VALUE\""
-msgstr "Выводить в формате: КЛЮЧ=ЗНАЧЕНИЕ"
-
 #: shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:32
 msgid "-k <key>"
-msgstr "-k <ключ>"
-
-#: shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:33
-msgid "Specify key to obtain"
-msgstr "Указать ключ для вывода"
-
-#: shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:34
-msgid "-o <file>"
-msgstr "-o <файл>"
-
-#: shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:35
-msgid "Specify output (default stdout)"
-msgstr "Указать куда перенаправить вывод (по-умолчанию на терминал)"
-
-#: shpkg/hpkg-info:23 chpkg/chpkg-info-help.h:36
-msgid "More information available at hpkg-info(1) manpage"
-msgstr "Больше информации доступно на man-странице hpkg-info(1)"
-
-#: shpkg/hpkg-info:44 chpkg/chpkg-info.c:106
-msgid "<key> argument"
-msgstr "аргумент <ключ>"
+msgstr ""
 
 #: shpkg/hpkg-info:45
 msgid "<file> argurment"
@@ -303,10 +481,6 @@ msgstr "аргумент <файл>"
 #: shpkg/hpkg-info:47
 msgid "Consult a manpage or `--help' option"
 msgstr "Обратитесь к man-странице или опции '--help'"
-
-#: shpkg/hpkg-info:54 chpkg/chpkg-info.c:143
-msgid "You should specify a key to obtain"
-msgstr "Вы должны указать ключ для получения"
 
 #: shpkg/hpkg-remove:12
 msgid "hpkg-remove - uninstall .hard package"
@@ -355,39 +529,6 @@ msgstr "Удаляю пакет..."
 #: shpkg/lib/hpkglib.sh.in:32
 msgid "hpkg"
 msgstr "hpkg"
-
-#: shpkg/lib/hpkglib.sh.in:83 chpkg/hpkglib.h:44
-msgid "Failing due to previous warnings"
-msgstr "Выхожу ввиду предыдущих сообщений"
-
-#: shpkg/lib/hpkglib.sh.in:88 chpkg/hpkglib.h:56
-msgid "This is"
-msgstr "Это"
-
-#: shpkg/lib/hpkglib.sh.in:88 shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:58
-#: chpkg/hpkglib.h:63
-msgid "from"
-msgstr "из"
-
-#: shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:62
-msgid "Arseniy 'EmptiedSoul' Lesin"
-msgstr "Арсений 'EmptiedSoul' Лесин"
-
-#: shpkg/lib/hpkglib.sh.in:90 chpkg/hpkglib.h:64
-msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
-msgstr "Лицензия: GPLv3 или новее: <https://gnu.org/licenses>"
-
-#: shpkg/lib/hpkglib.sh.in:91 chpkg/hpkglib.h:65
-msgid ""
-"This is free software: you can freely run, inspect, modify and distribute "
-"this program"
-msgstr ""
-"Это свободное ПО: вы можете свободно запускать, изучать, изменять и "
-"распространять эту программу"
-
-#: shpkg/lib/hpkglib.sh.in:92 chpkg/hpkglib.h:66
-msgid "NO WARRANTY AT ALL"
-msgstr "НИКАКИХ ГАРАНТИЙ НЕ ПРЕДОСТАВЛЯЕТСЯ"
 
 #: packing/hpkg-make:27
 msgid "hpkg-make - create .hard package"
@@ -607,18 +748,6 @@ msgstr "Устанавливаю метаданные репозитория"
 #: hardman/default-plugins/default-update-db:15
 msgid "Failed to install repository metadata"
 msgstr "Не удалось установить метаданные репозитория"
-
-#: chpkg/hpkglib.h:59
-msgid "C implementation"
-msgstr "реализация на языке Си"
-
-#: chpkg/hpkglib.h:60
-msgid "version"
-msgstr "версия"
-
-#: chpkg/chpkg-info.c:114
-msgid "<file> argument"
-msgstr "параметр <file>"
 
 #~ msgid "hmake - create .hard package"
 #~ msgstr "hmake - создать пакет .hard"

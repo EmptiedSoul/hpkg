@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-28 18:17+0300\n"
+"POT-Creation-Date: 2022-01-08 19:04+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,35 +17,317 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: chpkg/hpkglib.h:44 shpkg/lib/hpkglib.sh.in:83
+msgid "Failing due to previous warnings"
+msgstr ""
+
+#: chpkg/hpkglib.h:64 shpkg/lib/hpkglib.sh.in:88 chpkg/hpkglib.h:56
+msgid "This is"
+msgstr ""
+
+#: chpkg/hpkglib.h:66 chpkg/hpkglib.h:71 shpkg/lib/hpkglib.sh.in:88
+#: shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:58 chpkg/hpkglib.h:63
+msgid "from"
+msgstr ""
+
+#: chpkg/hpkglib.h:67 chpkg/hpkglib.h:59
+msgid "C implementation"
+msgstr ""
+
+#: chpkg/hpkglib.h:68 chpkg/hpkglib.h:60
+msgid "version"
+msgstr ""
+
+#: chpkg/hpkglib.h:70 shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:62
+msgid "Arseniy 'EmptiedSoul' Lesin"
+msgstr ""
+
+#: chpkg/hpkglib.h:72 shpkg/lib/hpkglib.sh.in:90 chpkg/hpkglib.h:64
+msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
+msgstr ""
+
+#: chpkg/hpkglib.h:73 shpkg/lib/hpkglib.sh.in:91 chpkg/hpkglib.h:65
+msgid ""
+"This is free software: you can freely run, inspect, modify and distribute "
+"this program"
+msgstr ""
+
+#: chpkg/hpkglib.h:74 shpkg/lib/hpkglib.sh.in:92 chpkg/hpkglib.h:66
+msgid "NO WARRANTY AT ALL"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:30 shpkg/hpkg-info:11 chpkg/chpkg-info-help.h:25
+msgid "hpkg-info - obtain information about .hard package"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:31 shpkg/hpkg-info:13 chpkg/chpkg-info-help.h:26
+msgid "hpkg-info [options] -p <package>"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:32 chpkg/chpkg-explode-help.h:33 shpkg/hpkg:27
+#: shpkg/hpkg-explode:11 shpkg/hpkg-info:15 shpkg/hpkg-remove:16
+#: chpkg/chpkg-info-help.h:27
+msgid "Options"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:33 chpkg/chpkg-explode-help.h:34 shpkg/hpkg:28
+#: shpkg/hpkg-explode:12 shpkg/hpkg-info:16 shpkg/hpkg-remove:17
+#: chpkg/chpkg-info-help.h:28
+msgid "Print version info and exit"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:34 chpkg/chpkg-explode-help.h:35 shpkg/hpkg:29
+#: shpkg/hpkg-info:17 shpkg/hpkg-remove:18 chpkg/chpkg-info-help.h:29
+msgid "Print this help"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:35 shpkg/hpkg-info:18 chpkg/chpkg-info-help.h:30
+msgid "Dump entire METADATA file"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:36 shpkg/hpkg-info:19 chpkg/chpkg-info-help.h:31
+msgid "Print as \"KEY=VALUE\""
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:37
+msgid "-k <key1,key2>"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:38
+msgid "--keys=<key1,key2>"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:39 shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:33
+msgid "Specify key to obtain"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:40 shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:34
+msgid "-o <file>"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:41
+msgid "--output <file>"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:42 shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:35
+msgid "Specify output (default stdout)"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:43 shpkg/hpkg-info:23 chpkg/chpkg-info-help.h:36
+msgid "More information available at hpkg-info(1) manpage"
+msgstr ""
+
+#: chpkg/chpkg-info-help.h:44 chpkg/chpkg-explode-help.h:46 shpkg/hpkg:41
+#: shpkg/hpkg-explode:21 shpkg/hpkg-info:24 shpkg/hpkg-remove:27
+#: packing/hpkg-make:40 hardman/hardman:23 hardman/hparts:56
+#: chpkg/chpkg-info-help.h:37
+msgid ""
+"Copyright and licensing information can be obtained via '--version' option"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:31
+msgid "hpkg-explode - extract .hard package"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:32 shpkg/hpkg-explode:9
+msgid "hpkg-explode [options] -p <package>"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:36 shpkg/hpkg:30 shpkg/hpkg-explode:14
+#: shpkg/hpkg-remove:19
+msgid "Be verbose"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:37 shpkg/hpkg:31 shpkg/hpkg-explode:15
+#: shpkg/hpkg-remove:20
+msgid "Be silent"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:38
+msgid "Also extract PAYLOAD.tar.zst"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:39 shpkg/hpkg:37 shpkg/hpkg-explode:17
+#: shpkg/hpkg-remove:23
+msgid "-C <directory>"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:40
+msgid "--directory=<directory>"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:41
+msgid "Extract to <directory>"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:42 shpkg/hpkg:38 shpkg/hpkg-explode:18
+#: shpkg/hpkg-remove:24
+msgid "-p <package>"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:43
+msgid "--package=<package>"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:44
+msgid "Specify package to extract"
+msgstr ""
+
+#: chpkg/chpkg-explode-help.h:45 shpkg/hpkg-explode:20
+msgid "More information available at hpkg-explode(1) manpage"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:102 chpkg/chpkg-explode.c:111 chpkg/chpkg-info.c:105
+#: chpkg/chpkg-info.c:113 chpkg/chpkg-info.c:121 shpkg/hpkg:80 shpkg/hpkg:82
+#: shpkg/hpkg-explode:53 shpkg/hpkg-explode:55 shpkg/hpkg-info:44
+#: shpkg/hpkg-info:45 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
+#: chpkg/chpkg-info.c:104 chpkg/chpkg-info.c:112 chpkg/chpkg-info.c:120
+msgid "Option"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:104 chpkg/chpkg-explode.c:113 chpkg/chpkg-info.c:106
+#: chpkg/chpkg-info.c:114 chpkg/chpkg-info.c:122 shpkg/hpkg:80 shpkg/hpkg:82
+#: shpkg/hpkg-explode:53 shpkg/hpkg-explode:55 shpkg/hpkg-info:44
+#: shpkg/hpkg-info:45 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
+#: chpkg/chpkg-info.c:105 chpkg/chpkg-info.c:113 chpkg/chpkg-info.c:121
+msgid "requires"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:105 shpkg/hpkg:80 shpkg/hpkg-explode:53
+msgid "<directory> argument"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:106 chpkg/chpkg-explode.c:115
+#: chpkg/chpkg-explode.c:122 chpkg/chpkg-explode.c:129
+#: chpkg/chpkg-explode.c:136 chpkg/chpkg-info.c:108 chpkg/chpkg-info.c:116
+#: chpkg/chpkg-info.c:124 chpkg/chpkg-info.c:131 chpkg/chpkg-info.c:138
+#: chpkg/chpkg-info.c:146 shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg:84
+#: shpkg/hpkg:90 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
+#: shpkg/hpkg-explode:57 shpkg/hpkg-explode:64 shpkg/hpkg-info:44
+#: shpkg/hpkg-info:45 shpkg/hpkg-info:46 shpkg/hpkg-info:57
+#: shpkg/hpkg-remove:59 shpkg/hpkg-remove:61 chpkg/chpkg-info.c:107
+#: chpkg/chpkg-info.c:115 chpkg/chpkg-info.c:123 chpkg/chpkg-info.c:130
+msgid "Consult a manpage or '--help' option"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:114 chpkg/chpkg-info.c:123 shpkg/hpkg:82
+#: shpkg/hpkg-explode:55 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
+#: chpkg/chpkg-info.c:122
+msgid "<package> argument"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:120 chpkg/chpkg-explode.c:127 chpkg/chpkg-info.c:129
+#: chpkg/chpkg-info.c:136 shpkg/hpkg:84 shpkg/hpkg-explode:57
+#: shpkg/hpkg-info:47 shpkg/hpkg-remove:61 chpkg/chpkg-info.c:128
+msgid "Unknown option"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:136 chpkg/chpkg-info.c:146 shpkg/hpkg:90
+#: shpkg/hpkg-explode:64 shpkg/hpkg-info:57 chpkg/chpkg-info.c:138
+msgid "Package is not set"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:144 chpkg/chpkg-info.c:159 shpkg/hpkg:92
+#: shpkg/hpkg-explode:66 shpkg/hpkg-info:59 chpkg/chpkg-info.c:152
+msgid "is not a .hard package"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:151
+#, c-format
+msgid "%s is a valid .hard package"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:157
+#, c-format
+msgid "Directory: %s"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:160
+#, c-format
+msgid "%s is encrypted, decrypting..."
+msgstr ""
+
+#: chpkg/chpkg-explode.c:174
+msgid "Creating directory..."
+msgstr ""
+
+#: chpkg/chpkg-explode.c:179 chpkg/chpkg-explode.c:210
+#, c-format
+msgid "Failed to create directory: %s: %s"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:189
+#, c-format
+msgid "Extracting %s..."
+msgstr ""
+
+#: chpkg/chpkg-explode.c:192
+#, c-format
+msgid "Writing %s/METADATA"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:195
+#, c-format
+msgid "Writing %s/PAYLOAD.tar.zst"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:198
+#, c-format
+msgid "Closing %s"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:204
+msgid "Option '--recursive' was not passed. Exiting"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:208
+#, c-format
+msgid "Creating directory %s/PAYLOAD..."
+msgstr ""
+
+#: chpkg/chpkg-explode.c:235
+#, c-format
+msgid "Extracting %s/PAYLOAD.tar.zst..."
+msgstr ""
+
+#: chpkg/chpkg-explode.c:238
+msgid "Failed to read PAYLOAD.tar.zst"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:248 chpkg/chpkg-explode.c:257
+#: chpkg/chpkg-explode.c:262 chpkg/chpkg-explode.c:273
+#, c-format
+msgid "PAYLOAD.tar.zst: %s"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:251 chpkg/chpkg-explode.c:265
+#: chpkg/chpkg-explode.c:276
+msgid "Fatal error occured while extracting PAYLOAD.tar.zst"
+msgstr ""
+
+#: chpkg/chpkg-explode.c:286
+#, c-format
+msgid "Removing %s/PAYLOAD.tar.zst"
+msgstr ""
+
+#: chpkg/chpkg-info.c:107 shpkg/hpkg-info:44 chpkg/chpkg-info.c:106
+msgid "<key> argument"
+msgstr ""
+
+#: chpkg/chpkg-info.c:115 chpkg/chpkg-info.c:114
+msgid "<file> argument"
+msgstr ""
+
+#: chpkg/chpkg-info.c:151 shpkg/hpkg-info:54 chpkg/chpkg-info.c:143
+msgid "You should specify a key to obtain"
+msgstr ""
+
 #: shpkg/hpkg:23
 msgid "hpkg - install .hard package"
 msgstr ""
 
 #: shpkg/hpkg:25
 msgid "hpkg [options] -p <package>"
-msgstr ""
-
-#: shpkg/hpkg:27 shpkg/hpkg-explode:11 shpkg/hpkg-info:15 shpkg/hpkg-remove:16
-#: chpkg/chpkg-info-help.h:27
-msgid "Options"
-msgstr ""
-
-#: shpkg/hpkg:28 shpkg/hpkg-explode:12 shpkg/hpkg-info:16 shpkg/hpkg-remove:17
-#: chpkg/chpkg-info-help.h:28
-msgid "Print version info and exit"
-msgstr ""
-
-#: shpkg/hpkg:29 shpkg/hpkg-info:17 shpkg/hpkg-remove:18
-#: chpkg/chpkg-info-help.h:29
-msgid "Print this help"
-msgstr ""
-
-#: shpkg/hpkg:30 shpkg/hpkg-explode:14 shpkg/hpkg-remove:19
-msgid "Be verbose"
-msgstr ""
-
-#: shpkg/hpkg:31 shpkg/hpkg-explode:15 shpkg/hpkg-remove:20
-msgid "Be silent"
 msgstr ""
 
 #: shpkg/hpkg:32
@@ -68,16 +350,8 @@ msgstr ""
 msgid "Do not really install package"
 msgstr ""
 
-#: shpkg/hpkg:37 shpkg/hpkg-explode:17 shpkg/hpkg-remove:23
-msgid "-C <directory>"
-msgstr ""
-
 #: shpkg/hpkg:37
 msgid "Install in <directory>"
-msgstr ""
-
-#: shpkg/hpkg:38 shpkg/hpkg-explode:18 shpkg/hpkg-remove:24
-msgid "-p <package>"
 msgstr ""
 
 #: shpkg/hpkg:38
@@ -88,62 +362,8 @@ msgstr ""
 msgid "More information available at hpkg(8) manpage"
 msgstr ""
 
-#: shpkg/hpkg:41 shpkg/hpkg-explode:21 shpkg/hpkg-info:24 shpkg/hpkg-remove:27
-#: packing/hpkg-make:40 hardman/hardman:23 hardman/hparts:56
-#: chpkg/chpkg-info-help.h:37
-msgid ""
-"Copyright and licensing information can be obtained via '--version' option"
-msgstr ""
-
-#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
-#: shpkg/hpkg-info:44 shpkg/hpkg-info:45 shpkg/hpkg-info:46
-#: shpkg/hpkg-remove:59 chpkg/chpkg-info.c:104 chpkg/chpkg-info.c:112
-#: chpkg/chpkg-info.c:120
-msgid "Option"
-msgstr ""
-
-#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg-explode:53 shpkg/hpkg-explode:55
-#: shpkg/hpkg-info:44 shpkg/hpkg-info:45 shpkg/hpkg-info:46
-#: shpkg/hpkg-remove:59 chpkg/chpkg-info.c:105 chpkg/chpkg-info.c:113
-#: chpkg/chpkg-info.c:121
-msgid "requires"
-msgstr ""
-
-#: shpkg/hpkg:80 shpkg/hpkg-explode:53
-msgid "<directory> argument"
-msgstr ""
-
-#: shpkg/hpkg:80 shpkg/hpkg:82 shpkg/hpkg:84 shpkg/hpkg:90
-#: shpkg/hpkg-explode:53 shpkg/hpkg-explode:55 shpkg/hpkg-explode:57
-#: shpkg/hpkg-explode:64 shpkg/hpkg-info:44 shpkg/hpkg-info:45
-#: shpkg/hpkg-info:46 shpkg/hpkg-info:57 shpkg/hpkg-remove:59
-#: shpkg/hpkg-remove:61 chpkg/chpkg-info.c:107 chpkg/chpkg-info.c:115
-#: chpkg/chpkg-info.c:123 chpkg/chpkg-info.c:130 chpkg/chpkg-info.c:138
-msgid "Consult a manpage or '--help' option"
-msgstr ""
-
-#: shpkg/hpkg:82 shpkg/hpkg-explode:55 shpkg/hpkg-info:46 shpkg/hpkg-remove:59
-#: chpkg/chpkg-info.c:122
-msgid "<package> argument"
-msgstr ""
-
-#: shpkg/hpkg:84 shpkg/hpkg-explode:57 shpkg/hpkg-info:47 shpkg/hpkg-remove:61
-#: chpkg/chpkg-info.c:128
-msgid "Unknown option"
-msgstr ""
-
-#: shpkg/hpkg:90 shpkg/hpkg-explode:64 shpkg/hpkg-info:57
-#: chpkg/chpkg-info.c:138
-msgid "Package is not set"
-msgstr ""
-
 #: shpkg/hpkg:91 shpkg/hpkg-explode:65 shpkg/hpkg-info:58
 msgid "No such package"
-msgstr ""
-
-#: shpkg/hpkg:92 shpkg/hpkg-explode:66 shpkg/hpkg-info:59
-#: chpkg/chpkg-info.c:152
-msgid "is not a .hard package"
 msgstr ""
 
 #: shpkg/hpkg:94 shpkg/hpkg-remove:77 hardman/hardman:7 hardman/hparts:74
@@ -211,10 +431,6 @@ msgstr ""
 msgid "hpkg-explode - rawly extract .hard archive"
 msgstr ""
 
-#: shpkg/hpkg-explode:9
-msgid "hpkg-explode [options] -p <package>"
-msgstr ""
-
 #: shpkg/hpkg-explode:13
 msgid "Print this text"
 msgstr ""
@@ -229,10 +445,6 @@ msgstr ""
 
 #: shpkg/hpkg-explode:18
 msgid "Specify package to be extracted"
-msgstr ""
-
-#: shpkg/hpkg-explode:20
-msgid "More information available at hpkg-explode(1) manpage"
 msgstr ""
 
 #: shpkg/hpkg-explode:73
@@ -251,44 +463,8 @@ msgstr ""
 msgid "Moving to"
 msgstr ""
 
-#: shpkg/hpkg-info:11 chpkg/chpkg-info-help.h:25
-msgid "hpkg-info - obtain information about .hard package"
-msgstr ""
-
-#: shpkg/hpkg-info:13 chpkg/chpkg-info-help.h:26
-msgid "hpkg-info [options] -p <package>"
-msgstr ""
-
-#: shpkg/hpkg-info:18 chpkg/chpkg-info-help.h:30
-msgid "Dump entire METADATA file"
-msgstr ""
-
-#: shpkg/hpkg-info:19 chpkg/chpkg-info-help.h:31
-msgid "Print as \"KEY=VALUE\""
-msgstr ""
-
 #: shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:32
 msgid "-k <key>"
-msgstr ""
-
-#: shpkg/hpkg-info:20 chpkg/chpkg-info-help.h:33
-msgid "Specify key to obtain"
-msgstr ""
-
-#: shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:34
-msgid "-o <file>"
-msgstr ""
-
-#: shpkg/hpkg-info:21 chpkg/chpkg-info-help.h:35
-msgid "Specify output (default stdout)"
-msgstr ""
-
-#: shpkg/hpkg-info:23 chpkg/chpkg-info-help.h:36
-msgid "More information available at hpkg-info(1) manpage"
-msgstr ""
-
-#: shpkg/hpkg-info:44 chpkg/chpkg-info.c:106
-msgid "<key> argument"
 msgstr ""
 
 #: shpkg/hpkg-info:45
@@ -297,10 +473,6 @@ msgstr ""
 
 #: shpkg/hpkg-info:47
 msgid "Consult a manpage or `--help' option"
-msgstr ""
-
-#: shpkg/hpkg-info:54 chpkg/chpkg-info.c:143
-msgid "You should specify a key to obtain"
 msgstr ""
 
 #: shpkg/hpkg-remove:12
@@ -349,37 +521,6 @@ msgstr ""
 
 #: shpkg/lib/hpkglib.sh.in:32
 msgid "hpkg"
-msgstr ""
-
-#: shpkg/lib/hpkglib.sh.in:83 chpkg/hpkglib.h:44
-msgid "Failing due to previous warnings"
-msgstr ""
-
-#: shpkg/lib/hpkglib.sh.in:88 chpkg/hpkglib.h:56
-msgid "This is"
-msgstr ""
-
-#: shpkg/lib/hpkglib.sh.in:88 shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:58
-#: chpkg/hpkglib.h:63
-msgid "from"
-msgstr ""
-
-#: shpkg/lib/hpkglib.sh.in:89 chpkg/hpkglib.h:62
-msgid "Arseniy 'EmptiedSoul' Lesin"
-msgstr ""
-
-#: shpkg/lib/hpkglib.sh.in:90 chpkg/hpkglib.h:64
-msgid "License: GPLv3 or newer: <https://gnu.org/licenses>"
-msgstr ""
-
-#: shpkg/lib/hpkglib.sh.in:91 chpkg/hpkglib.h:65
-msgid ""
-"This is free software: you can freely run, inspect, modify and distribute "
-"this program"
-msgstr ""
-
-#: shpkg/lib/hpkglib.sh.in:92 chpkg/hpkglib.h:66
-msgid "NO WARRANTY AT ALL"
 msgstr ""
 
 #: packing/hpkg-make:27
@@ -598,16 +739,4 @@ msgstr ""
 
 #: hardman/default-plugins/default-update-db:15
 msgid "Failed to install repository metadata"
-msgstr ""
-
-#: chpkg/hpkglib.h:59
-msgid "C implementation"
-msgstr ""
-
-#: chpkg/hpkglib.h:60
-msgid "version"
-msgstr ""
-
-#: chpkg/chpkg-info.c:114
-msgid "<file> argument"
 msgstr ""
