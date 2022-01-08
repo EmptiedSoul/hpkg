@@ -105,9 +105,8 @@ endif
 
 if LIBHARD_BUILD
 chpkg_libhard_libhard_la_SOURCES= chpkg/libhard/decrypt.c \
-		     chpkg/libhard/is_encrypted.c \
 		     chpkg/libhard/split_pkg.c \
-		     chpkg/libhard/validate.c
+		     chpkg/libhard/open_package.c
 chpkg_libhard_libhard_la_LIBADD = -lhrd
 chpkg_libhard_libhard_la_CFLAGS = $(EXTRA_CFLAGS)
 endif

@@ -9,9 +9,14 @@
 #ifndef LIBHARD_H
 #define LIBHARD_H
 
-extern bool hard_is_hard(char* filename);
-extern void hard_split_pkg(FILE* package, FILE* metadatam, FILE* payload);
-extern int  hard_decrypt_package(char* package, char* decrypted_file);
-extern bool hard_is_package_encrypted(FILE* package);
+#define HARD_NOT_A_PACKAGE 	0
+#define HARD_ENCRYPTED_PACKAGE	1
+#define HARD_PLAIN_PACKAGE 	2
+
+extern char hard_package_type;
+
+extern FILE* hard_open_package(char* filename);
+extern void  hard_split_pkg(FILE* package, FILE* metadata, FILE* payload);
+extern int   hard_decrypt_package(char* package, char* decrypted_file);
 
 #endif

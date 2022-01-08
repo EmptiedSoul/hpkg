@@ -152,12 +152,14 @@ int main(int argc, char** argv){
 		error(32);
 	}
 
-	if (!hard_is_hard(pkgname)){
-		if (errno == ENOENT) {
-			warn("%s: %s", pkgname, strerror(errno));
-			error(1);
-		} else { /* errno == EINVAL */
+	FILE* package;
+
+	if ((package = hard_open_package(pkgname)) == NULL) {
+		if (errno == EINVAL) {
 			warn("%s: %s", pkgname, gettext("is not a .hard package"));
+			error(1);
+		} else {
+			warn("%s: %s", pkgname, strerror(errno));
 			error(1);
 		}
 	}
@@ -179,9 +181,7 @@ int main(int argc, char** argv){
 	int metadata_fd = mkstemp(template);
 	FILE* metadata = fdopen(metadata_fd, "w+");
 
-	FILE* package = fopen(pkgname, "r");
-
-	if (hard_is_package_encrypted(package)) {
+	if (hard_package_type == HARD_ENCRYPTED_PACKAGE) {
 		decrypted = malloc(TMP_DEC_FILENAME_SIZE);
 		strcpy(decrypted, TMP_DEC_FILE_TEMPLATE);
 

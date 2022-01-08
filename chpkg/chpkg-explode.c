@@ -137,12 +137,14 @@ int main(int argc, char** argv) {
 		error(32);
 	}
 
-	if (!hard_is_hard(package)) {
-		if (errno == ENOENT) {
-			warn("%s: %s", package, strerror(errno));
+	FILE* pkg;
+
+	if ((pkg = hard_open_package(package)) == NULL) {
+		if (errno == EINVAL) {
+			warn("%s: %s", package, gettext("is not a .hard package"));
 			error(1);
 		} else {
-			warn("%s: %s", package, gettext("is not a .hard package"));
+			warn("%s: %s", package, strerror(errno));
 			error(1);
 		}
 	}
@@ -154,9 +156,7 @@ int main(int argc, char** argv) {
 	}
 	verbose_msg(gettext("Directory: %s"), directory);
 
-	FILE* pkg = fopen(package, "r");
-
-	if (hard_is_package_encrypted(pkg)) {
+	if (hard_package_type == HARD_ENCRYPTED_PACKAGE) {
 		verbose_msg(gettext("%s is encrypted, decrypting..."), package);
 		decrypted = malloc(TMP_DEC_FILENAME_SIZE);
 		strcpy(decrypted, TMP_DEC_FILE_TEMPLATE);
