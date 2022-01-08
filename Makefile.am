@@ -74,12 +74,12 @@ endif
 
 if CHPKG_INFO_BUILD
 chpkg_chpkg_info_SOURCES= chpkg/chpkg-info.c
-chpkg_chpkg_info_LDADD  = chpkg/libhard/libhard.la
+chpkg_chpkg_info_LDADD  = chpkg/libhard/libhard.la -lhrd
 chpkg_chpkg_info_CFLAGS = -DPROGNAME=\"chpkg-info\" -I$(top_srcdir)/chpkg/libhard $(EXTRA_CFLAGS)
 endif
 if CHPKG_EXPLODE_BUILD
 chpkg_chpkg_explode_SOURCES = chpkg/chpkg-explode.c
-chpkg_chpkg_explode_LDADD   = chpkg/libhard/libhard.la -l:libarchive.a -lacl -lzstd
+chpkg_chpkg_explode_LDADD   = chpkg/libhard/libhard.la -l:libarchive.a -lacl -lzstd -lhrd
 chpkg_chpkg_explode_CFLAGS  = -DPROGNAME=\"chpkg-explode\" -I$(top_srcdir)/chpkg/libhard $(EXTRA_CFLAGS)
 endif
 
