@@ -12,12 +12,17 @@
 		"%s\n" \
 		"\n" \
 		"%s:\n" \
-		"  -V | --version	%s\n" \
-		"  -h | --help | --usage %s\n" \
-		"  -d			%s\n" \
-		"  -a			%s\n" \
-		"  %s		%s\n" \
-		"  %s		%s\n" \
+		"  -V | --version           %s\n" \
+		"  -h | --help | --usage    %s\n" \
+		"  -d | --dump              %s\n" \
+		"  -a | --all               %s\n" \
+		"\n" \
+		"  %s\n" \
+		"  %s\n" \
+		"                           %s\n" \
+		"  %s\n" \
+		"  %s\n" \
+		"                           %s\n" \
 		"\n" \
 		"%s\n" \
 		"%s\n", \
@@ -29,9 +34,11 @@
 		gettext("Print this help"), \
 		gettext("Dump entire METADATA file"), \
 		gettext("Print as \"KEY=VALUE\""), \
-		gettext("-k <key>"), \
+		gettext("-k <key1,key2>"), \
+		gettext("--keys=<key1,key2>"), \
 		gettext("Specify key to obtain"), \
 		gettext("-o <file>"), \
+		gettext("--output <file>"), \
 		gettext("Specify output (default stdout)"), \
 		gettext("More information available at hpkg-info(1) manpage"), \
 		gettext("Copyright and licensing information can be obtained via '--version' option")); \

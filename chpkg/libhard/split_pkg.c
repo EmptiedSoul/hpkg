@@ -36,7 +36,7 @@ void hard_split_pkg(FILE* package, FILE* metadata, FILE* payload){
 	}
 
 	payload_offset = metadata_offset + metadata_size;
-	payload_offset += payload_offset % 512; /* padding */
+	payload_offset += 512 - (metadata_size % 512); /* padding */
 	payload_offset += 512; /* tar header */
 	
 	/* Seek next header */

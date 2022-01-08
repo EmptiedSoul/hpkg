@@ -45,6 +45,14 @@
 	exit(code); \
 }
 
+#define verbose_msg(fmt, ...) \
+{ \
+	if (verbose && !silent) { \
+		printf(fmt, ##__VA_ARGS__); \
+		puts(""); \
+	} \
+}
+
 #define print_version() \
 { \
 	printf( "%s %s %s hpkg-utils (%s, %s %s)\n" \
