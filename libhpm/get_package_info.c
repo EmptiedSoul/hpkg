@@ -35,12 +35,14 @@ package_entry_t* hpm_get_package_info(char* package){
 	pkg_info->name = malloc(strlen(package)+1);
 	strcpy(pkg_info->name, package);
 
-	pkg_info->version = hrd_cfg_get_string(config, "VERSION");
-	pkg_info->description = hrd_cfg_get_string(config, "DESCRIPTION");
-	pkg_info->maintainer = hrd_cfg_get_string(config, "MAINTAINER");
+	hrd_config* cfg = hrd_cfg_read(config);
+
+	pkg_info->version = hrd_cfg_get_string(cfg, NULL, "VERSION");
+	pkg_info->description = hrd_cfg_get_string(cfg, NULL, "DESCRIPTION");
+	pkg_info->maintainer = hrd_cfg_get_string(cfg, NULL, "MAINTAINER");
 	
-	char* deps = hrd_cfg_get_string(config, "DEPENDS");
-	char* confs = hrd_cfg_get_string(config, "CONFLICTS");
+	char* deps = hrd_cfg_get_string(cfg, NULL, "DEPENDS");
+	char* confs = hrd_cfg_get_string(cfg, NULL, "CONFLICTS");
 
 	fclose(config);
 

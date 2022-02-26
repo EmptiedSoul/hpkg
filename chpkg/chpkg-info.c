@@ -231,16 +231,23 @@ int main(int argc, char** argv){
 	}
 	char* obtained_key = NULL;
 	hrd_string_pair* key_vals = NULL;
+
+	hrd_config* cfg = hrd_cfg_read_at(template);
+	
 	if (!key_is_list) {	
-		obtained_key = hrd_cfg_get_string_at(template, key);
+		obtained_key = hrd_cfg_get_string(cfg, NULL, key);
 	} else {
+		int j;
 		hrd_string_array_foreach (i, key_list) {
 			key_vals = realloc(key_vals, sizeof(hrd_string_pair)*(i+1));
 			key_vals[i].key = strdup(key_list[i]);
-			key_vals[i].value = NULL;
+			key_vals[i].value = hrd_cfg_get_string(cfg, NULL, key_list[i]);
+			j = i;
 		}
-		hrd_cfg_get_strings_at(template, &key_vals);
+		key_vals[j+1].key = NULL;
 	} 
+
+	hrd_cfg_free(cfg);
 
 	if (print_formatted) {
 		if (!key_is_list)

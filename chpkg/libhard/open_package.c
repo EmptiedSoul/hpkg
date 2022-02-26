@@ -25,7 +25,7 @@ FILE* hard_open_package(char* filename) {
 	FILE* 		package;
 	unsigned char 	magic[10];
 	bool  		dot_hard_suffix;
-	bool  		is_pgp_encrypted;
+	bool  		is_pgp_encrypted = false;
 
 	package = fopen(filename, "r");
 
