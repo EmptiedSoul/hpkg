@@ -17,7 +17,11 @@
 
 #include "libhpm.h"
 
-bool hpm_is_package_installed(char* package){
+bool hpm_is_package_installed(char* package, int context){
+	if (context == HPM_LOCAL_CTX) {
+		errno = ENOSYS;
+		return false;
+	}
 	char* path;
         struct stat file_stats;
 	int ret;

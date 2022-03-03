@@ -80,7 +80,7 @@ static PyObject* get_package_info(PyObject* self, PyObject* args){
 	if (!PyArg_ParseTuple(args, "s", &package))
 		return NULL;
 	
-	package_entry_t* _pkg = hpm_get_package_info(package);
+	package_entry_t* _pkg = hpm_get_package_info(package, HPM_SYSTEM_CTX);
 	package_entry_t pkg = *_pkg;
 
 	//PyTypeObject* package_info;
@@ -172,7 +172,7 @@ static PyObject* is_package_installed(PyObject* self, PyObject* args){
 	char* package;
 	if (!PyArg_ParseTuple(args, "s", &package))
 		return NULL;
-	if (hpm_is_package_installed(package))
+	if (hpm_is_package_installed(package, HPM_SYSTEM_CTX))
 		Py_RETURN_TRUE;
 	else
 		Py_RETURN_FALSE;

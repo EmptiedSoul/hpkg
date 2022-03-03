@@ -19,7 +19,11 @@
 
 #include "libhpm.h"
 
-package_entry_t* hpm_get_package_info(char* package){
+package_entry_t* hpm_get_package_info(char* package, int context){
+	if (context == HPM_LOCAL_CTX) {
+		errno = ENOSYS;
+		return NULL;
+	}
 	package_entry_t* pkg_info = malloc(sizeof(package_entry_t));
 	
 	char* path = malloc(strlen(HPKG_PACKAGES) + strlen(package) + 1);

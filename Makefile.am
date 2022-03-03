@@ -117,8 +117,9 @@ libhpm_libhpm_la_SOURCES  	= libhpm/free_cmd_result.c \
 		     libhpm/get_file_list.c \
 		     libhpm/get_package_info.c \
 		     libhpm/package_is_installed.c \
-		     libhpm/run_hardman_command.c
-libhpm_libhpm_la_LIBADD		= -lhrd
+		     libhpm/run_hardman_command.c \
+		     libhpm/load_module.c
+libhpm_libhpm_la_LIBADD		= -lhrd -ldl
 libhpm_libhpm_la_CFLAGS		= $(EXTRA_CFLAGS)
 endif
 
