@@ -57,7 +57,7 @@
 { \
 	printf( "%s %s %s hpkg-utils (%s, %s %s)\n" \
 		"\n" \
-		"Copyright (C) 2020-2021, %s %s hardclanz.org\n" \
+		"Copyright (C) 2020-2022, %s %s hardclanz.org\n" \
 		"%s\n" \
 		"%s\n" \
 		"%s\n", \

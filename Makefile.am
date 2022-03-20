@@ -32,7 +32,10 @@ if HMAKE_BUILD
 dist_bin_SCRIPTS += packing/hpkg-make
 endif
 if HARDMAN_BUILD
-dist_bin_SCRIPTS += hardman/hardman hardman/hparts
+bin_PROGRAMS += hardman/hardman 
+hardman_hardman_SOURCES = hardman/hardman.c hardman/builtin.c 
+hardman_hardman_LDADD  = -lhrd libhpm/libhpm.la
+hardman_hardman_CFLAGS  = -I$(top_srcdir)/libhpm/ $(EXTRA_CFLAGS) -DPROGNAME=\"hardman\"
 endif
 
 dist_var_hardman_module_SCRIPTS =
@@ -118,7 +121,8 @@ libhpm_libhpm_la_SOURCES  	= libhpm/free_cmd_result.c \
 		     libhpm/get_package_info.c \
 		     libhpm/package_is_installed.c \
 		     libhpm/run_hardman_command.c \
-		     libhpm/load_module.c
+		     libhpm/load_module.c \
+		     libhpm/get_package_list.c
 libhpm_libhpm_la_LIBADD		= -lhrd -ldl
 libhpm_libhpm_la_CFLAGS		= $(EXTRA_CFLAGS)
 endif

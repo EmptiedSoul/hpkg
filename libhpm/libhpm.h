@@ -63,7 +63,11 @@ extern package_entry_t* hpm_get_package_info(char* package, int context);
 extern char** hpm_get_package_file_list(package_entry_t* pkg_info);
 #define hpm_free_package_file_list(file_list) hrd_array_free((void**)file_list)
 extern void hpm_free_package_info(package_entry_t* pkg);
-extern hardman_cmd_result* hpm_run_hardman_cmd(char* cmd, char** args);
-extern void hpm_free_cmd_result(hardman_cmd_result* cmd_result);
+
+extern char** hpm_get_package_list(int context);
+#define hpm_free_package_list(list) hrd_array_free((void**)list)
+
+extern DEPRECATED hardman_cmd_result* hpm_run_hardman_cmd(char* cmd, char** args);
+extern DEPRECATED void hpm_free_cmd_result(hardman_cmd_result* cmd_result);
 
 #endif 
