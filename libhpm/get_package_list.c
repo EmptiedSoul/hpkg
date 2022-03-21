@@ -29,6 +29,7 @@ char** hpm_get_package_list(int ctx) {
 			TODO(Implement support for local packages)
 			break;
 		case HPM_SYSTEM_CTX:
+			{
 			int i = 0;
 			char** package_list = NULL;
 			DIR* pkg_dir = opendir(HPKG_PACKAGES);
@@ -58,6 +59,7 @@ char** hpm_get_package_list(int ctx) {
 			return package_list;
 
 			break;
+			}
 		default:
 			errno = EINVAL;
 			return NULL;
