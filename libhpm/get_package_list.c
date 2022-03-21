@@ -26,7 +26,7 @@ char** hpm_get_package_list(int ctx) {
 		case HPM_LOCAL_CTX:
 			errno = ENOSYS;
 			return NULL;
-			TODO(Implement support for local packages);
+			TODO(Implement support for local packages)
 			break;
 		case HPM_SYSTEM_CTX:
 			int i = 0;
